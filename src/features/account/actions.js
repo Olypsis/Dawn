@@ -18,7 +18,7 @@ export const signMetamaskLogin = () => async (dispatch, getState) => {
 	const { shh } = getState().whisper;
 
 	const msg =
-		'0x879a053d4800c6354e76c7985a865d2922c82fb5b3f4577b2fe08b998954f2e0';
+		'Logging into DAWN with Metamask.';
 	const accounts = await web3.eth.getAccounts();
 	const from = accounts[0];
 
@@ -27,7 +27,7 @@ export const signMetamaskLogin = () => async (dispatch, getState) => {
 	try {
 		const hash = await web3.eth.sign(msg, from);
 
-		alert(`LOGIN SIGNED: ${hash}`);
+		// alert(`LOGIN SIGNED: ${hash}`);
 
 		const loginHash = hash.slice(0, 66);
 		dispatch(signLoginMetamaskAction(loginHash));

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Web3 from 'web3';
 import util from 'ethjs-util';
 import isEmpty from '../../util/is-empty';
@@ -21,14 +20,8 @@ import {
   shhext_requestMessages,
 } from '../../util/whispercalls';
 
-// 
-
-// const enode =
-//   'enode://36a800cb285d1b98c53c350e0560382662db31590640e17b493ad489409454d3c175bab112724ab28b4efc25921f86e45dcfb8eb84adc8cfdec912ebf6e8161c@104.197.46.74:30303';
-
 let enode = 'enode://015e22f6cd2b44c8a51bd7a23555e271e0759c7d7f52432719665a74966f2da456d28e154e836bee6092b4d686fe67e331655586c57b718be3997c1629d24167@35.226.21.19:30504'
 enode = "enode://015e22f6cd2b44c8a51bd7a23555e271e0759c7d7f52432719665a74966f2da456d28e154e836bee6092b4d686fe67e331655586c57b718be3997c1629d24167@35.226.21.19:30504"
-// enode = "enode://8a64b3c349a2e0ef4a32ea49609ed6eb3364be1110253c20adc17a3cebbc39a219e5d3e13b151c0eee5d8e0f9a8ba2cd026014e67b41a4ab7d1d5dd67ca27427@206.189.243.168:30504"
 
 const test = () => async dispatch => alert('test');
 
@@ -47,13 +40,16 @@ export const setWhisper = (wsProvider, httpProvider) => async dispatch => {
   dispatch(setWhisperProviderAction(provider));
   const shh = web3.shh;
   dispatch(setWhisperAction(shh));
-  console.log('Set `shh` with provider:', provider);
+  console.log('setWhisper: Set `shh` with provider:', provider);
 };
 
-export const getWhisper = shh => async dispatch => {
+export const getWhisper = shh => async (dispatch, getState) => {
+
+  const { shh } = getState().whisper
+
   try {
-    console.log('Shh Current Provider', shh.currentProvider);
-    console.log('Shh Given Provider:', shh.givenProvider);
+    console.log('getWhisper: Shh Current Provider', shh.currentProvider);
+    console.log('getWhisper: Shh Given Provider:', shh.givenProvider);
 
     // Get node info
     const info = await shh.getInfo();
@@ -61,8 +57,11 @@ export const getWhisper = shh => async dispatch => {
     // const peerCount = await shh.net.getPeerCount();
     // const netId = await shh.net.getId();
 
+    console.log("getWhisper: shh Get Info:", info)
     // Get Identity
     const keyPairId = await shh.newKeyPair();
+    console.log("getWhisper: shh new keyPair:", keyPairId)
+
     const symKeyId = await shh.newSymKey();
     const publicKey = await shh.getPublicKey(keyPairId);
     const privateKey = await shh.getPrivateKey(keyPairId);
@@ -76,10 +75,10 @@ export const getWhisper = shh => async dispatch => {
       publicKey,
       privateKey,
     };
-    console.log('New Whisper Peer Identity!');
+    console.log("getWhisper: New Anonymous Whisper Peer Identity!", whisper)
     return dispatch(getWhisperAction(whisper));
   } catch (err) {
-    console.log("Couldn't Get Whisper Details: ", err.message);
+    console.log("getWhisper: Couldn't Get Whisper Details: ", err.message);
     return new Error(err.message);
   }
 };
@@ -87,26 +86,15 @@ export const getWhisper = shh => async dispatch => {
 export const sendMessage = (opts, payload, shh) => async dispatch => {
   console.log('PAYLOAD 0:', payload);
 
-  /*
-   shh
-    .post(opts)
-    .then(h => {
-      console.log(`Message with hash ${h} was successfuly sent`);
-      console.log('PAYLOAD:', payload);
-      dispatch(sendMessageAction(payload));
-    })
-    .catch(err => console.log('Error: ', err));
-  */
-
   // shhext_post
   try {
     const response = await shhext_post(opts);
     const hash = JSON.parse(response).result;
-    console.log(`Message with hash ${hash} was successfuly sent`);
-    console.log('PAYLOAD:', payload);
+    console.log(`sendMessage: Message with hash ${hash} was successfuly sent`);
+    console.log('sendMessage: PAYLOAD:', payload);
     dispatch(sendMessageAction(payload));
   } catch (err) {
-    console.log('Error in action sendMessage: ', err);
+    console.log('sendMessage: Error: ', err);
   }
 };
 
@@ -114,12 +102,11 @@ export const createListener = () => async (dispatch, getState) => {
   const { shh } = getState().whisper;
   const keyPairID = getState().whisper.details.keyPairId;
 
-  // Generate new identity
+  // Constant Topic for listener
   let topics = [topic1];
-
   topics = topics.map(t => util.fromAscii(t));
 
-  // will receive also its own message send, below
+  // Create a new subscription
   const subscription = await shh
     .subscribe('messages', {
       privateKeyID: keyPairID,
@@ -130,24 +117,23 @@ export const createListener = () => async (dispatch, getState) => {
       const payload = JSON.parse(util.toAscii(data.payload));
       dispatch(receivedMessageAction(payload));
       console.log(`Hash Received! Hash: ${payload.hash}`);
-      // this.notify(`Hash Received! Hash: ${payload.hash}`, 'info');
     });
+  console.log('createListener: SUBSCRIPTION CREATED', subscription);
 
+  // Create New Message Filter
   const newMessageFilter = await shh.newMessageFilter({
     privateKeyID: keyPairID,
     topics,
     allowP2P: true,
   });
-
-  console.log('SUBSCRIPTION', subscription);
-  console.log('MESSAGE FILTER', newMessageFilter);
+  console.log('createListener: MESSAGE FILTER CREATED', newMessageFilter);
 
   dispatch(createListenerAction(subscription));
   dispatch(createMessageFilterAction(newMessageFilter));
 
-  // log
+  // Log
   console.log(
-    'Created Listener! Listening for topics:',
+    'createListener: Created Listener! Listening for topics:',
     topics.map(t => util.toAscii(t)),
   );
 };
@@ -169,17 +155,7 @@ export const markTrustedEnode = () => async (dispatch, getState) => {
 
 export const getFilterMessages = () => async (dispatch, getState) => {
   const { messageFilters, shh } = getState().whisper;
-
-  // web3.getFilterMessages
-  // const messages = await shh.getFilterMessages(messageFilters[0]);
-  // messages.map(msg => {
-  //   console.log('GETFILTERMESSAGES', util.toAscii(msg.payload));
-  //   const payload = JSON.parse(util.toAscii(msg.payload));
-  //   dispatch(receivedMessageAction(payload));
-  // });
-
   // shhext_getNewFilterMessages
-
   try {
     messageFilters.forEach(async filter => {
       const response = await shhext_getNewFilterMessages(filter);

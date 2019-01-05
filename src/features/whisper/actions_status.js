@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 import util from 'ethjs-util';
 
-import StatusJS from 'status-js-api'
+import StatusJS from 'status-js-api';
 
 import isEmpty from '../../util/is-empty';
 
@@ -23,37 +23,46 @@ import {
 // Whisper calls
 import { getWhisperInfo, shhext_post } from '../../util/whispercalls';
 
-
 // config variables
 const { httpProvider } = config.whisper;
 const { corsProxy } = config;
 const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
 
-export const newStatus = () => async dispatch => {
+export const connectStatus = () => async (dispatch, getState) => {
   const status = new StatusJS();
   console.log('NEW STATUS', status);
-  return dispatch(newStatusInstanceAction(status));
-};
-
-export const connectStatus = (provider = httpProvider) => async (
-  dispatch,
-  getState,
-) => {
-  // const { status } = getState().whisper;
-  const status = new StatusJS();
-  console.log('Connecting to Status with provider:', provider);
+  dispatch(newStatusInstanceAction(status));
   try {
-    await status.connect(
-      corsProxy + provider,
-      '0x6ebc4595f4ba7702fb63aff89a5ba11a4888c9a8acd29a784668b58212541d02',
-    );
-    dispatch(statusConnectAction());
+    const {keyId, publicKey, userName} = await loginWithStatus(status);
+    console.log("Status KeyId:", keyId, "publicKey:", publicKey, "userName:", userName)
+    dispatch(statusConnectAction(keyId, publicKey, userName));
   } catch (err) {
     console.log(new Error(err));
   }
 };
 
-  
+// Status Helper Function
+// Can be used with any auth methods to generate your status keypair
+export const loginWithStatus = (
+  status,
+  provider = httpProvider,
+  privateKey = null,
+) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await status.connect(
+        corsProxy + provider,
+        privateKey,
+      );
+      const keyId = await status.getKeyId();
+      const publicKey = await status.getPublicKey();
+      const userName = await status.getUserName();
+      resolve({keyId, publicKey, userName});
+    } catch (err) {
+      reject(err);
+    }
+  });
+
 export const sendMessage = (opts, payload, shh) => dispatch => {
   console.log('PAYLOAD 0:', payload);
 
@@ -123,8 +132,9 @@ const newStatusInstanceAction = statusInstance => ({
   payload: statusInstance,
 });
 
-const statusConnectAction = () => ({
+const statusConnectAction = (statusKeypairId, statusPublicKey, statusUsername) => ({
   type: STATUS_CONNECTED,
+  payload: {statusKeypairId, statusPublicKey, statusUsername}
 });
 
 const sendMessageAction = payload => ({

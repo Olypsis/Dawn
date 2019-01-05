@@ -11,7 +11,7 @@ import {
   getWhisperIdentityFromPassword,
   markTrustedEnode
 } from './actions';
-import { newStatus, connectStatus } from './actions_status';
+import { connectStatus } from './actions_status';
 
 // Core Component
 import Whisper from './WhisperComponent';
@@ -32,7 +32,6 @@ const mapDispatchToProps = dispatch =>
       getWhisperIdentityFromPassword,
       markTrustedEnode,
       // Status
-      newStatus,
       connectStatus,
     },
     dispatch,

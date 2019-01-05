@@ -12,10 +12,6 @@ import {
 const wsProvider = 'ws://50.2.39.116:8546';
 const httpProvider = 'http://104.197.46.74:8545';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-// const enode =
-  // 'enode://36a800cb285d1b98c53c350e0560382662db31590640e17b493ad489409454d3c175bab112724ab28b4efc25921f86e45dcfb8eb84adc8cfdec912ebf6e8161c@104.197.46.74:30303';
-// const enode =
-//   'enode://015e22f6cd2b44c8a51bd7a23555e271e0759c7d7f52432719665a74966f2da456d28e154e836bee6092b4d686fe67e331655586c57b718be3997c1629d24167@35.226.21.19:30504';
 
 const topic1 = '1234';
 const topic2 = '5678';
@@ -50,8 +46,9 @@ class Whisper extends React.Component {
     // callWhisper();
     // getWhisperInfo();
     // shhextConfirmMessagesProcessed();
-    await this.props.newStatus();
+    // await this.props.newStatus();
     await this.props.connectStatus();
+    
 
     // Set Whisper using default provider
     await this.props.setWhisper(null, proxyUrl + httpProvider);

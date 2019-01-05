@@ -49,19 +49,7 @@ class UploadCard extends Component {
       return alert('Upload a file before sending through whisper!');
     }
 
-    // Set options
-    const opts = {
-      pubKey: this.state.form.publicKey,
-      sig: this.props.whisper.details.keyPairId, // signs the message using the keyPair ID
-      ttl: 10,
-      // topic: '0xffaadd11',
-      topic: util.fromAscii(this.state.form.topic),
-      payload: util.fromAscii(JSON.stringify(payload)),
-      powTime: 3,
-      powTarget: 0.5,
-    };
-
-    this.props.sendMessage(opts, payload, this.props.whisper.shh);
+    this.props.sendMessage(payload, this.state.form.publicKey);
   };
 
   _onTextChange(event) {

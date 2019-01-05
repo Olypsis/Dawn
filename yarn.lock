@@ -13864,7 +13864,7 @@ static-extend@^0.1.1:
 
 status-js-api@sharad-s/status-js#dist:
   version "1.1.2"
-  resolved "https://codeload.github.com/sharad-s/status-js/tar.gz/edee746b272c3c4be1c0b06e2f8f12937c65e107"
+  resolved "https://codeload.github.com/sharad-s/status-js/tar.gz/f5a152ceb071295a0878de52c38b1b6d27534bdc"
   dependencies:
     bip39 "^2.5.0"
     chance "^1.0.16"

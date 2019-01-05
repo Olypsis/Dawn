@@ -84,19 +84,21 @@ export const getWhisper = shh => async dispatch => {
   }
 };
 
-export const sendMessage = (opts, payload, shh) => async dispatch => {
+export const sendMessage = (payload, publicKey) => async (dispatch, getState) => {
+  const { shh } = getState().whisper;
   console.log('PAYLOAD 0:', payload);
 
-  /*
-   shh
-    .post(opts)
-    .then(h => {
-      console.log(`Message with hash ${h} was successfuly sent`);
-      console.log('PAYLOAD:', payload);
-      dispatch(sendMessageAction(payload));
-    })
-    .catch(err => console.log('Error: ', err));
-  */
+    // Set options
+  let opts = {
+    pubKey: publicKey,
+    sig: getState().whisper.details.keyPairId, // signs the message using the keyPair ID
+    ttl: 10,
+    // topic: '0xffaadd11',
+    topic: util.fromAscii(topic1),
+    payload: util.fromAscii(JSON.stringify(payload)),
+    powTime: 3,
+    powTarget: 0.5,
+  };
 
   // shhext_post
   try {

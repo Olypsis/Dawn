@@ -36,12 +36,6 @@ class Whisper extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  // async onSubmitNewSubscription(e) {
-  //   e.preventDefault();
-  //   const topics = this.state.topics.split(',').map(t => t.trim().slice(0, 4));
-  //   await this.createListener(topics);
-  // }
-
   async doGetFilterMessages(e) {
     e.preventDefault();
     await this.props.getFilterMessages();
@@ -49,11 +43,6 @@ class Whisper extends React.Component {
 
   async doRequestHistoricMessages(e) {
     e.preventDefault();
-    // const opts = {
-    //   mailServerPeer: enode,
-    //   topic: topic1,
-    //   symKeyId: this.props.whisper.details.symKeyId,
-    // };
     await this.props.requestHistoricMessages();
   }
 
@@ -61,8 +50,8 @@ class Whisper extends React.Component {
     // callWhisper();
     // getWhisperInfo();
     // shhextConfirmMessagesProcessed();
-    // await this.props.newStatus();
-    // await this.props.connectStatus(null, proxyUrl + httpProvider);
+    await this.props.newStatus();
+    await this.props.connectStatus();
 
     // Set Whisper using default provider
     await this.props.setWhisper(null, proxyUrl + httpProvider);

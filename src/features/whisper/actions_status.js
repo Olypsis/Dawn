@@ -1,6 +1,13 @@
 import Web3 from 'web3';
 import util from 'ethjs-util';
+
+import StatusJS from 'status-js-api'
+
 import isEmpty from '../../util/is-empty';
+
+// config
+import config from '../../config';
+
 import {
   GET_WHISPER,
   SEND_WHISPER_MESSAGE,
@@ -8,49 +15,45 @@ import {
   RECEIVED_MESSAGE,
   SET_WHISPER_PROVIDER,
   SET_WHISPER,
-  CREATE_MESSAGE_FILTER
+  CREATE_MESSAGE_FILTER,
+  NEW_STATUS_INSTANCE,
+  STATUS_CONNECTED,
 } from '../../state/types';
 
-// Whisper calls 
-import { getWhisperInfo, shhext_post } from "../../util/whispercalls"
+// Whisper calls
+import { getWhisperInfo, shhext_post } from '../../util/whispercalls';
 
-import StatusJS from "status-js-api"
 
+// config variables
+const { httpProvider } = config.whisper;
+const { corsProxy } = config;
+const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
 
 export const newStatus = () => async dispatch => {
-	const status = new StatusJS;
-	console.log("NEW STATUS", status)
-}
-
-export const connectStatus = (wsProvider, httpProvider) => async dispatch => {
-	const status = new StatusJS;
-	try {
-		await status.connect(httpProvider)
-		console.log("status.connect")
-	} catch (err) {
-		console.log("ERROR: ", err.message)
-	}
-}
-
-
-export const setWhisper = (wsProvider, httpProvider) => async dispatch => {
-  let status, provider;
-  if (!isEmpty(wsProvider)) {
-    status = new Web3(new Web3.providers.WebsocketProvider(wsProvider));
-    provider = wsProvider;
-  } else if (!isEmpty(httpProvider)) {
-    status = new Web3(new Web3.providers.HttpProvider(httpProvider));
-    provider = httpProvider;
-  }
-  dispatch(setWhisperProviderAction(provider));
-  const shh = status.shh;
-  dispatch(setWhisperAction(shh));
-  console.log("Set `shh` with provider:",provider)
-
+  const status = new StatusJS();
+  console.log('NEW STATUS', status);
+  return dispatch(newStatusInstanceAction(status));
 };
 
+export const connectStatus = (provider = httpProvider) => async (
+  dispatch,
+  getState,
+) => {
+  // const { status } = getState().whisper;
+  const status = new StatusJS();
+  console.log('Connecting to Status with provider:', provider);
+  try {
+    await status.connect(
+      corsProxy + provider,
+      '0x6ebc4595f4ba7702fb63aff89a5ba11a4888c9a8acd29a784668b58212541d02',
+    );
+    dispatch(statusConnectAction());
+  } catch (err) {
+    console.log(new Error(err));
+  }
+};
 
-
+  
 export const sendMessage = (opts, payload, shh) => dispatch => {
   console.log('PAYLOAD 0:', payload);
 
@@ -67,8 +70,7 @@ export const sendMessage = (opts, payload, shh) => dispatch => {
 };
 
 export const createListener = (opts, shh) => async dispatch => {
-
-  console.log("Creating Listener with opts:", opts)
+  console.log('Creating Listener with opts:', opts);
 
   // Generate new identity
   const { topics, privateKeyID } = opts;
@@ -86,15 +88,13 @@ export const createListener = (opts, shh) => async dispatch => {
       // this.notify(`Hash Received! Hash: ${payload.hash}`, 'info');
     });
 
-
   const newMessageFilter = await shh.newMessageFilter({
     privateKeyID,
-    topics
-  })
+    topics,
+  });
 
-  console.log("SUBSCRIPTION", subscription);
-  console.log("MESSAGE FILTER", newMessageFilter);
-
+  console.log('SUBSCRIPTION', subscription);
+  console.log('MESSAGE FILTER', newMessageFilter);
 
   dispatch(createListenerAction(subscription));
   dispatch(createMessageFilterAction(newMessageFilter));
@@ -108,20 +108,29 @@ export const createListener = (opts, shh) => async dispatch => {
 
 export const getFilterMessages = () => async (dispatch, getState) => {
   const { messageFilters, shh } = getState().whisper;
-  const messages = await shh.getFilterMessages(messageFilters[0])
+  const messages = await shh.getFilterMessages(messageFilters[0]);
   messages.map(msg => {
-    console.log("GETFILTERMESSAGES", util.toAscii(msg.payload))
+    console.log('GETFILTERMESSAGES', util.toAscii(msg.payload));
     const payload = JSON.parse(util.toAscii(msg.payload));
     dispatch(receivedMessageAction(payload));
   });
+};
 
-}
+// Action Creators
+
+const newStatusInstanceAction = statusInstance => ({
+  type: NEW_STATUS_INSTANCE,
+  payload: statusInstance,
+});
+
+const statusConnectAction = () => ({
+  type: STATUS_CONNECTED,
+});
 
 const sendMessageAction = payload => ({
   type: SEND_WHISPER_MESSAGE,
   payload,
 });
-
 
 const receivedMessageAction = payload => ({
   type: RECEIVED_MESSAGE,

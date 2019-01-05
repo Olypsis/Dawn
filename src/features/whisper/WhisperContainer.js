@@ -28,11 +28,12 @@ const mapDispatchToProps = dispatch =>
       sendMessage,
       createListener,
       getFilterMessages,
-      newStatus,
-      connectStatus,
       requestHistoricMessages,
       getWhisperIdentityFromPassword,
-      markTrustedEnode
+      markTrustedEnode,
+      // Status
+      newStatus,
+      connectStatus,
     },
     dispatch,
   );

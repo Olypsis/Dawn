@@ -4,6 +4,8 @@ import {
   SET_WHISPER,
   CREATE_MESSAGE_FILTER,
   UPDATE_WHISPER_IDENTITY,
+  NEW_STATUS_INSTANCE,
+  STATUS_CONNECTED,
 } from '../../state/types';
 
 const initialState = {
@@ -18,6 +20,7 @@ const initialState = {
   shh: {},
   subscriptions: [],
   messageFilters: [],
+  status: {},
 };
 
 export default function(state = initialState, action) {
@@ -34,31 +37,16 @@ export default function(state = initialState, action) {
       };
 
     case UPDATE_WHISPER_IDENTITY:
-      const {
-        keyPairId,
-        symKeyId,
-        symKey,
-        pubKey,
-        privateKey,
-      } = action.payload;
-
-    //   alert(`
-    // SymKeyId: ${symKeyId} ;
-    // SymKey: ${symKey} ;
-    // keyPairId: ${keyPairId} ;
-    // PubKey: ${pubKey} ;
-    // PrivKey: ${privateKey} ;
-    // `);
-
       return {
         ...state,
-        details: { 
+        details: {
           ...state.details,
-         keyPairId: keyPairId, 
-         symKey: symKey, 
-         symKeyId: symKeyId, 
-         publicKey: privateKey,  
-         publicKey: pubKey },
+          keyPairId: action.payload.keyPairId,
+          symKey: action.payload.symKey,
+          symKeyId: action.payload.symKeyId,
+          publicKey: action.payload.privateKey,
+          publicKey: action.payload.pubKey,
+        },
       };
 
     case CREATE_LISTENER:
@@ -71,6 +59,17 @@ export default function(state = initialState, action) {
       return {
         ...state,
         messageFilters: [...state.messageFilters, action.payload],
+      };
+
+    case NEW_STATUS_INSTANCE:
+      return {
+        ...state,
+        status: action.payload,
+      };
+
+    case STATUS_CONNECTED:
+      return {
+        ...state,
       };
 
     default:

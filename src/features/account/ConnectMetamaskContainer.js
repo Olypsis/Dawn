@@ -18,7 +18,6 @@ const mapDispatchToProps = dispatch =>
 		{
 			connectMetamask,
 			signMetamaskLogin,
-			createListener,
 		},
 		dispatch,
 	);

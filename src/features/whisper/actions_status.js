@@ -66,6 +66,7 @@ export const loginWithStatus = (
       const userName = await status.getUserName();
       resolve({ keyId, publicKey, userName });
     } catch (err) {
+      console.log(new Error(err))
       reject(err);
     }
   });
@@ -77,11 +78,10 @@ export const sendStatusMessage = (payload, publicKey) => async (
   const { status } = getState().whisper;
   console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
 
-  status.sendUserMessage(publicKey, payload, (res) => console.log(payload));
-  // FIXME: Infinite Loop on sendStatusMessage
-  // console.log(
-  //   `1 - Message with hash ${JSON.parse(payload)} was successfuly sent`,
-  // );
+  status.sendUserMessage(publicKey, payload, (err, res) => {
+    console.log(res);
+    dispatch(sendStatusMessageAction(payload));
+  });
 };
 
 export const createStatusListener = () => async (dispatch, getState) => {
@@ -91,7 +91,9 @@ export const createStatusListener = () => async (dispatch, getState) => {
       const payload = JSON.parse(data.payload);
       // Dispatch Recieved Message Action
       // Payload [1][0] extrapolates the original JSON from the recieved status payload
-      console.log(`Payload Received! Payload: ${JSON.stringify(payload[1][0])}`);
+      console.log(
+        `Payload Received! Payload: ${JSON.stringify(payload[1][0])}`,
+      );
       dispatch(receivedStatusMessageAction(payload[1][0]));
     }
   });
@@ -114,7 +116,7 @@ const newStatusInstanceAction = statusInstance => ({
   payload: statusInstance,
 });
 
-const statusConnectAction = (
+export const statusConnectAction = (
   statusKeypairId,
   statusPublicKey,
   statusUsername,
@@ -123,7 +125,7 @@ const statusConnectAction = (
   payload: { statusKeypairId, statusPublicKey, statusUsername },
 });
 
-const sendMessageAction = payload => ({
+const sendStatusMessageAction = payload => ({
   type: SEND_WHISPER_MESSAGE,
   payload,
 });

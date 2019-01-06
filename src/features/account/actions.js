@@ -13,51 +13,38 @@ import Web3 from 'web3';
 // Whisper functions
 import { updateWhisperIdentityAction } from '../whisper/actions';
 
+// Status functions
+import { loginWithStatus, statusConnectAction} from '../whisper/actions_status';
+
 export const signMetamaskLogin = () => async (dispatch, getState) => {
 	const web3 = getState().web3.web3Instance;
-	const { shh } = getState().whisper;
+	const { status } = getState().whisper;
 
 	const msg =
 		'0x879a053d4800c6354e76c7985a865d2922c82fb5b3f4577b2fe08b998954f2e0';
 	const accounts = await web3.eth.getAccounts();
 	const from = accounts[0];
 
+	// Prompt Metmask connect if access is not granted (privacy mode)
 	if (!from) return connectMetamask();
 
 	try {
 		const hash = await web3.eth.sign(msg, from);
 
-		alert(`LOGIN SIGNED: ${hash}`);
+		console.log(`LOGIN SIGNED: ${hash}`);
 
 		const loginHash = hash.slice(0, 66);
 		dispatch(signLoginMetamaskAction(loginHash));
+		console.log(4)
 
-		let pubKey, privateKey, keyPairId;
+		// Login With Status
+		const { keyId, publicKey, userName } = await loginWithStatus(status, undefined, loginHash);
+		console.log(5)
+		dispatch(statusConnectAction(keyId, publicKey, userName));
+		console.log(6)
 
-		keyPairId = await shh.addPrivateKey(loginHash);
-		pubKey = await shh.getPublicKey(keyPairId);
-		privateKey = await shh.getPrivateKey(keyPairId);
-
-		console.log(
-			'loginHash:',
-			loginHash,
-			'\nkeyPairId',
-			keyPairId,
-			'\npubKey:',
-			pubKey,
-			'\nprivateKey',
-			privateKey,
-		);
-
-		const newIdentity = {
-			keyPairId,
-			pubKey,
-			privateKey,
-		};
-
-		dispatch(updateWhisperIdentityAction(newIdentity));
 	} catch (err) {
-		console.log(new Error(err.message));
+		console.log(err.message);
 	}
 };
 

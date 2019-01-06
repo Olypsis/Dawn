@@ -14,7 +14,6 @@ class ConnectMetamask extends React.Component {
 		console.log('You clicked the Sign Button! LOL!');
 		try {
 			await this.props.signMetamaskLogin();
-			await this.props.createListener();
 		} catch (err) {
 			alert('err.message');
 		}

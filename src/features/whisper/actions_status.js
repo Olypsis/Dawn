@@ -33,8 +33,15 @@ export const connectStatus = () => async (dispatch, getState) => {
   console.log('NEW STATUS', status);
   dispatch(newStatusInstanceAction(status));
   try {
-    const {keyId, publicKey, userName} = await loginWithStatus(status);
-    console.log("Status KeyId:", keyId, "publicKey:", publicKey, "userName:", userName)
+    const { keyId, publicKey, userName } = await loginWithStatus(status);
+    console.log(
+      'Status KeyId:',
+      keyId,
+      'publicKey:',
+      publicKey,
+      'userName:',
+      userName,
+    );
     dispatch(statusConnectAction(keyId, publicKey, userName));
   } catch (err) {
     console.log(new Error(err));
@@ -57,62 +64,36 @@ export const loginWithStatus = (
       const keyId = await status.getKeyId();
       const publicKey = await status.getPublicKey();
       const userName = await status.getUserName();
-      resolve({keyId, publicKey, userName});
+      resolve({ keyId, publicKey, userName });
     } catch (err) {
       reject(err);
     }
   });
 
-export const sendMessage = (opts, payload, shh) => dispatch => {
+export const sendStatusMessage = (payload, publicKey) => async (
+  dispatch,
+  getState,
+) => {
   console.log('PAYLOAD 0:', payload);
+  const { status } = getState().whisper;
 
-  // shh
-  //   .post(opts)
-  //   .then(h => {
-  //     console.log(`Message with hash ${h} was successfuly sent`);
-  //     console.log('PAYLOAD:', payload);
-  //     dispatch(sendMessageAction(payload));
-  //   })
-  //   .catch(err => console.log('Error: ', err));
-
-  shhext_post(opts);
+  await status.sendUserMessage(publicKey, payload, res => console.log(res));
+  // console.log(await shhext_post(opts))
 };
 
-export const createListener = (opts, shh) => async dispatch => {
-  console.log('Creating Listener with opts:', opts);
+export const createStatusListener = () => async (dispatch, getState) => {
 
-  // Generate new identity
-  const { topics, privateKeyID } = opts;
-
-  // will receive also its own message send, below
-  const subscription = await shh
-    .subscribe('messages', {
-      privateKeyID,
-      topics,
-    })
-    .on('data', data => {
-      const payload = JSON.parse(util.toAscii(data.payload));
-      dispatch(receivedMessageAction(payload));
-      console.log(`Hash Received! Hash: ${payload.hash}`);
-      // this.notify(`Hash Received! Hash: ${payload.hash}`, 'info');
+  const { status } = getState().whisper;
+  status.onMessage((err, data) => {
+      console.log("1", data.payload);
     });
 
-  const newMessageFilter = await shh.newMessageFilter({
-    privateKeyID,
-    topics,
-  });
+  setInterval(() => {
+    status.onMessage((err, data) => {
+      if (data) console.log("2", data.payload);
+    });
+  }, 1000);
 
-  console.log('SUBSCRIPTION', subscription);
-  console.log('MESSAGE FILTER', newMessageFilter);
-
-  dispatch(createListenerAction(subscription));
-  dispatch(createMessageFilterAction(newMessageFilter));
-
-  // log
-  console.log(
-    'Created Listener! Listening for topics:',
-    opts.topics.map(t => util.toAscii(t)),
-  );
 };
 
 export const getFilterMessages = () => async (dispatch, getState) => {
@@ -132,9 +113,13 @@ const newStatusInstanceAction = statusInstance => ({
   payload: statusInstance,
 });
 
-const statusConnectAction = (statusKeypairId, statusPublicKey, statusUsername) => ({
+const statusConnectAction = (
+  statusKeypairId,
+  statusPublicKey,
+  statusUsername,
+) => ({
   type: STATUS_CONNECTED,
-  payload: {statusKeypairId, statusPublicKey, statusUsername}
+  payload: { statusKeypairId, statusPublicKey, statusUsername },
 });
 
 const sendMessageAction = payload => ({

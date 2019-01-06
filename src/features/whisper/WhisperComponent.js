@@ -48,6 +48,8 @@ class Whisper extends React.Component {
     // shhextConfirmMessagesProcessed();
     // await this.props.newStatus();
     await this.props.connectStatus();
+    await this.props.createStatusListener();
+
     
 
     // Set Whisper using default provider

@@ -9,9 +9,9 @@ import {
   getFilterMessages,
   requestHistoricMessages,
   getWhisperIdentityFromPassword,
-  markTrustedEnode
+  markTrustedEnode,
 } from './actions';
-import { connectStatus } from './actions_status';
+import { connectStatus, createStatusListener } from './actions_status';
 
 // Core Component
 import Whisper from './WhisperComponent';
@@ -33,6 +33,7 @@ const mapDispatchToProps = dispatch =>
       markTrustedEnode,
       // Status
       connectStatus,
+      createStatusListener,
     },
     dispatch,
   );

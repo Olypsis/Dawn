@@ -49,7 +49,8 @@ class UploadCard extends Component {
       return alert('Upload a file before sending through whisper!');
     }
 
-    this.props.sendMessage(payload, this.state.form.publicKey);
+    // this.props.sendMessage(payload, this.state.form.publicKey);
+    this.props.sendStatusMessage(payload, this.state.form.publicKey);
   };
 
   _onTextChange(event) {

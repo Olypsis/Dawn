@@ -50,25 +50,24 @@ class Whisper extends React.Component {
     await this.props.connectStatus();
     await this.props.createStatusListener();
 
-    
 
-    // Set Whisper using default provider
-    await this.props.setWhisper(null, proxyUrl + httpProvider);
-    // callWhisper()
+    // // Set Whisper using default provider
+    // await this.props.setWhisper(null, proxyUrl + httpProvider);
+    // // callWhisper()
 
-    // Get web3.shh from props
-    const { shh } = this.props.whisper;
+    // // Get web3.shh from props
+    // const { shh } = this.props.whisper;
 
-    // Create a new Whisper Peer Identity
-    await this.props.getWhisper(shh);
+    // // Create a new Whisper Peer Identity
+    // await this.props.getWhisper(shh);
 
-    // Set default values for component
-    console.log('props.whisper: ', this.props.whisper);
+    // // Set default values for component
+    // console.log('props.whisper: ', this.props.whisper);
 
-    await this.props.markTrustedEnode();
+    // await this.props.markTrustedEnode();
 
-    // Create default listener
-    await this.props.createListener();
+    // // Create default listener
+    // await this.props.createListener();
   }
 
   async doGetWhisperIdentityFromPassword(e) {

@@ -74,26 +74,27 @@ export const sendStatusMessage = (payload, publicKey) => async (
   dispatch,
   getState,
 ) => {
-  console.log('PAYLOAD 0:', payload);
   const { status } = getState().whisper;
+  console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
 
-  await status.sendUserMessage(publicKey, payload, res => console.log(res));
-  // console.log(await shhext_post(opts))
+  status.sendUserMessage(publicKey, payload, (res) => console.log(payload));
+  // FIXME: Infinite Loop on sendStatusMessage
+  // console.log(
+  //   `1 - Message with hash ${JSON.parse(payload)} was successfuly sent`,
+  // );
 };
 
 export const createStatusListener = () => async (dispatch, getState) => {
-
   const { status } = getState().whisper;
   status.onMessage((err, data) => {
-      console.log("1", data.payload);
-    });
-
-  setInterval(() => {
-    status.onMessage((err, data) => {
-      if (data) console.log("2", data.payload);
-    });
-  }, 1000);
-
+    if (data) {
+      const payload = JSON.parse(data.payload);
+      // Dispatch Recieved Message Action
+      // Payload [1][0] extrapolates the original JSON from the recieved status payload
+      console.log(`Payload Received! Payload: ${JSON.stringify(payload[1][0])}`);
+      dispatch(receivedStatusMessageAction(payload[1][0]));
+    }
+  });
 };
 
 export const getFilterMessages = () => async (dispatch, getState) => {
@@ -102,7 +103,7 @@ export const getFilterMessages = () => async (dispatch, getState) => {
   messages.map(msg => {
     console.log('GETFILTERMESSAGES', util.toAscii(msg.payload));
     const payload = JSON.parse(util.toAscii(msg.payload));
-    dispatch(receivedMessageAction(payload));
+    // dispatch(receivedMessageAction(payload));
   });
 };
 
@@ -127,7 +128,7 @@ const sendMessageAction = payload => ({
   payload,
 });
 
-const receivedMessageAction = payload => ({
+const receivedStatusMessageAction = payload => ({
   type: RECEIVED_MESSAGE,
   payload,
 });

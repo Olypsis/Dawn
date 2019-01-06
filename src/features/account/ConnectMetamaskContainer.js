@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 // Actions
 import { connectMetamask, signMetamaskLogin } from './actions';
 import { createListener } from '../whisper/actions';
+import { createStatusListener } from '../whisper/actions_status';
+
 
 // Core Component
 import ConnectMetamask from './ConnectMetamask';
@@ -18,7 +20,7 @@ const mapDispatchToProps = dispatch =>
 		{
 			connectMetamask,
 			signMetamaskLogin,
-			createListener,
+			createStatusListener
 		},
 		dispatch,
 	);

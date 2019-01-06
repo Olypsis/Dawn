@@ -1,0 +1,57 @@
+digraph G {
+
+    Login [shape=Mdiamond];
+    Logged_In [shape=Msquare];
+
+    Login -> Client_MM;
+    Login -> Client_SM;
+
+    subgraph cluster0 {
+        label = "Outside Services";
+        MetaMask [shape=box,color=coral,style=filled];
+        OAuth_Firebase_uPort [shape=box,style=filled,color=purple];
+    }
+
+    subgraph cluster1 {
+        label = "Common Parts";
+        Return_Hash -> Truncate_to_64;
+        Truncate_to_64 -> Generate_Whisper_Keypair;
+    }
+
+    subgraph cluster2 {
+        label = "MetaMask Login";
+        node [style=filled,color=white];
+        color=coral;
+        Client_MM[shape=box,color=black];
+        Client_MM -> Install_MetaMask_Prompt -> Connect_To_MetaMask_Prompt -> MetaMask;
+        MetaMask -> Sign_Message -> User_Password -> MetaMask;
+        MetaMask -> Return_Hash;
+    }
+
+    subgraph cluster3 {
+        label = "Social Media / uPort";
+        node [style=filled];
+        color=purple;
+        Client_SM [shape=box,style=filled,color=grey]
+        Client_SM -> LogIn_with_SM -> OAuth_Firebase_uPort;
+        OAuth_Firebase_uPort -> JWT_OAuth -> Key_Server;
+        Key_Server -> Encrypted_User_PK -> Client_SM;
+        Client_SM -> Decrypt_PK_With_Pass -> User_ETH_Private_Key;
+        User_ETH_Private_Key -> Sign_Message_PK -> Return_Hash;
+    }
+
+    subgraph cluster4 {
+        node [style=filled];
+        Client_Anon [shape=box,style=filled,color=grey];
+        Client_Anon -> Web3js -> Generate_ETH_Account;
+        Generate_ETH_Account -> User_ETH_Private_Key;
+        Generate_ETH_Account -> User_Export_ETH_PK
+        label = "Anonymous";
+        color=black;
+    }
+
+
+
+    Generate_Whisper_Keypair -> Logged_In;
+
+}

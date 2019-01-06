@@ -1,0 +1,44 @@
+digraph Transfer {
+    // compound=true;
+    subgraph cluster0 {
+        label="IPFS Upload";
+        // Nodes
+        Client1 [shape=box];
+        IPFS_Client1 [shape=box];
+        Dawn_IPFS_Cluster [shape=box];
+        // Edges
+        node [shape=none];
+        Client1 -> AES -> IPFSUpload -> IPFS_Client1;
+        IPFS_Client1 -> FileHash -> Client1;
+        IPFS_Client1 -> Encrypted_File -> Dawn_IPFS_Cluster;
+    }
+    // Whisper
+    subgraph cluster1 {
+        label="Whisper";
+        // Nodes
+        Client1_Whisper_Node [shape=box];
+        Dawn_Mailserver [shape=box];
+        Client2_Whisper_Node [shape=box];
+        // Edges
+        node [shape=none];
+        Client1 -> Package_File_Message;
+        Package_File_Message -> Client1_Whisper_Node;
+        Client1_Whisper_Node -> Mark_as_trusted1 -> Dawn_Mailserver;
+        Client1_Whisper_Node -> Send_File_Message -> Dawn_Mailserver;
+        Client2_Whisper_Node -> Mark_as_trusted2 -> Dawn_Mailserver;
+        Client2_Whisper_Node -> Request_File_Messages -> Dawn_Mailserver;
+        Dawn_Mailserver -> Send_File_Messages -> Client2_Whisper_Node;
+    }
+    // IPFS Download
+    subgraph cluster3 {
+        label="IPFS Download";
+        // Nodes
+        Client2 [shape=box];
+        // Edges
+        node [shape=none];
+        Client2_Whisper_Node -> Depackaged_Whisper_Messages -> Client2;
+        Client2 -> Request_Encrypted_Files -> Dawn_IFPS_Cluster;
+        Dawn_IPFS_Cluster -> Download_Encrypted_Files -> Client2;
+        Client2 -> Decrypt_Files_with_Keys -> Client2;
+    }
+}

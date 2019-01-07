@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Components
-import UploadCard from '../upload';
+import UploadCard from '../../components/upload/UploadCard';
 import TableContainer from '../download';
 import Header from '../../components/header/Header';
 import Navbar from '../../components/navbar/Navbar';
 
-// Metamask 
+// Metamask
 import ConnectMetamaskContainer from '../../features/account/ConnectMetamaskContainer';
 
 // Whisper

@@ -35,7 +35,6 @@ export const signMetamaskLogin = () => async (dispatch, getState) => {
 
 		const loginHash = hash.slice(0, 66);
 		dispatch(signLoginMetamaskAction(loginHash));
-		console.log(4)
 
 		// Login With Status
 		const { keyId, publicKey, userName } = await loginWithStatus(status, undefined, loginHash);

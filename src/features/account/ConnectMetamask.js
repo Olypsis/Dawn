@@ -15,6 +15,7 @@ class ConnectMetamask extends React.Component {
 		try {
 			await this.props.signMetamaskLogin();
 			await this.props.createStatusListener();
+			await this.props.statusUseMailservers();
 		} catch (err) {
 			alert('onClickSignButton: err.message');
 		}

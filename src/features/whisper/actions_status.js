@@ -27,6 +27,7 @@ import { getWhisperInfo, shhext_post } from '../../util/whispercalls';
 const { httpProvider } = config.whisper;
 const { corsProxy } = config;
 const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
+const channel = 'test999';
 
 export const connectStatus = () => async (dispatch, getState) => {
   const status = new StatusJS();
@@ -66,7 +67,7 @@ export const loginWithStatus = (
       const userName = await status.getUserName();
       resolve({ keyId, publicKey, userName });
     } catch (err) {
-      console.log(new Error(err))
+      console.log(new Error(err));
       reject(err);
     }
   });
@@ -86,6 +87,16 @@ export const sendStatusMessage = (payload, publicKey) => async (
 
 export const createStatusListener = () => async (dispatch, getState) => {
   const { status } = getState().whisper;
+
+  // join public chat #FIXME: remove
+  await status.joinChat(channel);
+
+  // public message handler
+  status.onMessage(channel, (err, data) => {
+    if (data) console.log('Channel Message:', data.payload);
+  });
+
+  // private message handler
   status.onMessage((err, data) => {
     if (data) {
       const payload = JSON.parse(data.payload);
@@ -99,14 +110,39 @@ export const createStatusListener = () => async (dispatch, getState) => {
   });
 };
 
-export const getFilterMessages = () => async (dispatch, getState) => {
-  const { messageFilters, shh } = getState().whisper;
-  const messages = await shh.getFilterMessages(messageFilters[0]);
-  messages.map(msg => {
-    console.log('GETFILTERMESSAGES', util.toAscii(msg.payload));
-    const payload = JSON.parse(util.toAscii(msg.payload));
-    // dispatch(receivedMessageAction(payload));
-  });
+export const statusUseMailservers = () => async (dispatch, getState) => {
+  // FIXME: Use mailservers
+  const { status } = getState().whisper;
+  const enode = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
+
+  try {
+
+    status.mailservers.useMailserver(enode, (err, res) => {
+      console.log('statusUseMailservers: Using mailserver enode:', enode, res);
+
+      // time window
+      let from = parseInt(new Date().getTime() / 1000 - 86400, 10);
+      let to = parseInt(new Date().getTime() / 1000, 10);
+
+      status.mailservers.requestChannelMessages(
+        channel,
+        { from, to },
+        (err, res) => {
+          if (err) console.log(err);
+          console.log('requestChannelMessages: res:', res);
+        },
+      );
+
+      // User messages
+      status.mailservers.requestUserMessages({ from, to }, (err, res) => {
+        if (err) console.log(err);
+        console.log('requestUserMessages: res:', res);
+      });
+      
+    });
+  } catch (err) {
+    console.log(new Error(err));
+  }
 };
 
 // Action Creators

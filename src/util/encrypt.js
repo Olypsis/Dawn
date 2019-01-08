@@ -2,14 +2,13 @@ const path = require('path');
 const CryptoJS = require('crypto-js');
 
 const key = 'SECRET_KEY';
-const iv = '9De0DgMTCDFGNokdEEial'; // You must dynamically create
+const iv = '9De0DgMTCDFGNokdEEial'; // Default ; You must dynamically create
 
 // Input : Data Buffer
 // Output: Encrypted Buffer, iv
 const encrypt = dataBuffer => {
   const dataBase64 = dataBuffer.toString('base64');
-  // const iv = _generateIv();
-  console.log('iv', iv);
+  const iv = _generateIv();
   const encryptFile = CryptoJS.AES.encrypt(dataBase64, key, {
     iv,
   });

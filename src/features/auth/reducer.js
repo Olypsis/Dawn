@@ -1,20 +1,11 @@
 import {
-  GET_WHISPER,
-  CREATE_LISTENER,
-  SET_WHISPER,
-  CREATE_MESSAGE_FILTER,
   UPDATE_WHISPER_IDENTITY,
-  NEW_STATUS_INSTANCE,
-  STATUS_CONNECTED,
+  // CREATE_ETH_ACCOUNT
 } from '../../state/types';
 
 const initialState = {
-  details: {
-    info: {},
-    keyPairId: '',
-    symKeyId: '',
-    symKey: '',
-    publicKey: '',
+  ethereum: {
+    address: {},
     privateKey: '',
   },
   shh: {},
@@ -22,10 +13,10 @@ const initialState = {
   messageFilters: [],
   status: {},
   statusDetails: {
-    keyPairId: '',
     publicKey: '',
-    username: '',
-  },
+    userName: '',
+    
+  }
 };
 
 export default function(state = initialState, action) {
@@ -75,12 +66,6 @@ export default function(state = initialState, action) {
     case STATUS_CONNECTED:
       return {
         ...state,
-        statusDetails: {
-          ...state.statusDetails,
-          keyPairId: action.payload.statusKeypairId,
-          publicKey: action.payload.statusPublicKey,
-          username: action.payload.statusUsername,
-        },
       };
 
     default:

@@ -24,13 +24,13 @@ class HomepageContainer extends React.Component {
             {/* Horizontal Flex - for Transfer, Messages */}
 
             {/* Left Half of Page */}
-            <div className="container element transfer">
+            <div className="container transfer">
               <UploadCard />
               <ConnectMetamaskContainer />
             </div>
 
             {/* Right Half of Page */}
-            <div className="container element messages">
+            <div className="container messages">
               <TableContainer />
               <Whisper />
             </div>

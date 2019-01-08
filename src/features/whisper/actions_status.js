@@ -1,6 +1,13 @@
 import Web3 from 'web3';
 import util from 'ethjs-util';
+
+import StatusJS from 'status-js-api';
+
 import isEmpty from '../../util/is-empty';
+
+// config
+import config from '../../config';
+
 import {
   GET_WHISPER,
   SEND_WHISPER_MESSAGE,
@@ -8,122 +15,158 @@ import {
   RECEIVED_MESSAGE,
   SET_WHISPER_PROVIDER,
   SET_WHISPER,
-  CREATE_MESSAGE_FILTER
+  CREATE_MESSAGE_FILTER,
+  NEW_STATUS_INSTANCE,
+  STATUS_CONNECTED,
 } from '../../state/types';
 
-// Whisper calls 
-import { getWhisperInfo, shhext_post } from "../../util/whispercalls"
+// Whisper calls
+import { getWhisperInfo, shhext_post } from '../../util/whispercalls';
 
-import StatusJS from "status-js-api"
+// config variables
+const { httpProvider } = config.whisper;
+const { corsProxy } = config;
+const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
+const channel = 'test999';
 
-
-export const newStatus = () => async dispatch => {
-	const status = new StatusJS;
-	console.log("NEW STATUS", status)
-}
-
-export const connectStatus = (wsProvider, httpProvider) => async dispatch => {
-	const status = new StatusJS;
-	try {
-		await status.connect(httpProvider)
-		console.log("status.connect")
-	} catch (err) {
-		console.log("ERROR: ", err.message)
-	}
-}
-
-
-export const setWhisper = (wsProvider, httpProvider) => async dispatch => {
-  let status, provider;
-  if (!isEmpty(wsProvider)) {
-    status = new Web3(new Web3.providers.WebsocketProvider(wsProvider));
-    provider = wsProvider;
-  } else if (!isEmpty(httpProvider)) {
-    status = new Web3(new Web3.providers.HttpProvider(httpProvider));
-    provider = httpProvider;
+export const connectStatus = () => async (dispatch, getState) => {
+  const status = new StatusJS();
+  console.log('NEW STATUS', status);
+  dispatch(newStatusInstanceAction(status));
+  try {
+    const { keyId, publicKey, userName } = await loginWithStatus(status);
+    console.log(
+      'Status KeyId:',
+      keyId,
+      'publicKey:',
+      publicKey,
+      'userName:',
+      userName,
+    );
+    dispatch(statusConnectAction(keyId, publicKey, userName));
+  } catch (err) {
+    console.log(new Error(err));
   }
-  dispatch(setWhisperProviderAction(provider));
-  const shh = status.shh;
-  dispatch(setWhisperAction(shh));
-  console.log("Set `shh` with provider:",provider)
-
 };
 
-
-
-export const sendMessage = (opts, payload, shh) => dispatch => {
-  console.log('PAYLOAD 0:', payload);
-
-  // shh
-  //   .post(opts)
-  //   .then(h => {
-  //     console.log(`Message with hash ${h} was successfuly sent`);
-  //     console.log('PAYLOAD:', payload);
-  //     dispatch(sendMessageAction(payload));
-  //   })
-  //   .catch(err => console.log('Error: ', err));
-
-  shhext_post(opts);
-};
-
-export const createListener = (opts, shh) => async dispatch => {
-
-  console.log("Creating Listener with opts:", opts)
-
-  // Generate new identity
-  const { topics, privateKeyID } = opts;
-
-  // will receive also its own message send, below
-  const subscription = await shh
-    .subscribe('messages', {
-      privateKeyID,
-      topics,
-    })
-    .on('data', data => {
-      const payload = JSON.parse(util.toAscii(data.payload));
-      dispatch(receivedMessageAction(payload));
-      console.log(`Hash Received! Hash: ${payload.hash}`);
-      // this.notify(`Hash Received! Hash: ${payload.hash}`, 'info');
-    });
-
-
-  const newMessageFilter = await shh.newMessageFilter({
-    privateKeyID,
-    topics
-  })
-
-  console.log("SUBSCRIPTION", subscription);
-  console.log("MESSAGE FILTER", newMessageFilter);
-
-
-  dispatch(createListenerAction(subscription));
-  dispatch(createMessageFilterAction(newMessageFilter));
-
-  // log
-  console.log(
-    'Created Listener! Listening for topics:',
-    opts.topics.map(t => util.toAscii(t)),
-  );
-};
-
-export const getFilterMessages = () => async (dispatch, getState) => {
-  const { messageFilters, shh } = getState().whisper;
-  const messages = await shh.getFilterMessages(messageFilters[0])
-  messages.map(msg => {
-    console.log("GETFILTERMESSAGES", util.toAscii(msg.payload))
-    const payload = JSON.parse(util.toAscii(msg.payload));
-    dispatch(receivedMessageAction(payload));
+// Status Helper Function
+// Can be used with any auth methods to generate your status keypair
+export const loginWithStatus = (
+  status,
+  provider = httpProvider,
+  privateKey = null,
+) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await status.connect(
+        corsProxy + provider,
+        privateKey,
+      );
+      const keyId = await status.getKeyId();
+      const publicKey = await status.getPublicKey();
+      const userName = await status.getUserName();
+      resolve({ keyId, publicKey, userName });
+    } catch (err) {
+      console.log(new Error(err));
+      reject(err);
+    }
   });
 
-}
+export const sendStatusMessage = (payload, publicKey) => async (
+  dispatch,
+  getState,
+) => {
+  const { status } = getState().whisper;
+  console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
 
-const sendMessageAction = payload => ({
+  status.sendUserMessage(publicKey, payload, (err, res) => {
+    console.log(res);
+    dispatch(sendStatusMessageAction(payload));
+  });
+};
+
+export const createStatusListener = () => async (dispatch, getState) => {
+  const { status } = getState().whisper;
+
+  // join public chat #FIXME: remove
+  await status.joinChat(channel);
+
+  // public message handler
+  status.onMessage(channel, (err, data) => {
+    if (data) console.log('Channel Message:', data.payload);
+  });
+
+  // private message handler
+  status.onMessage((err, data) => {
+    if (data) {
+      const payload = JSON.parse(data.payload);
+      // Dispatch Recieved Message Action
+      // Payload [1][0] extrapolates the original JSON from the recieved status payload
+      console.log(
+        `Payload Received! Payload: ${JSON.stringify(payload[1][0])}`,
+      );
+      dispatch(receivedStatusMessageAction(payload[1][0]));
+    }
+  });
+};
+
+export const statusUseMailservers = () => async (dispatch, getState) => {
+  // FIXME: Use mailservers
+  const { status } = getState().whisper;
+  const enode = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
+
+  try {
+
+    status.mailservers.useMailserver(enode, (err, res) => {
+      console.log('statusUseMailservers: Using mailserver enode:', enode, res);
+
+      // time window
+      let from = parseInt(new Date().getTime() / 1000 - 86400, 10);
+      let to = parseInt(new Date().getTime() / 1000, 10);
+
+      status.mailservers.requestChannelMessages(
+        channel,
+        { from, to },
+        (err, res) => {
+          if (err) console.log(err);
+          console.log('requestChannelMessages: res:', res);
+        },
+      );
+
+      // User messages
+      status.mailservers.requestUserMessages({ from, to }, (err, res) => {
+        if (err) console.log(err);
+        console.log('requestUserMessages: res:', res);
+      });
+      
+    });
+  } catch (err) {
+    console.log(new Error(err));
+  }
+};
+
+// Action Creators
+
+const newStatusInstanceAction = statusInstance => ({
+  type: NEW_STATUS_INSTANCE,
+  payload: statusInstance,
+});
+
+export const statusConnectAction = (
+  statusKeypairId,
+  statusPublicKey,
+  statusUsername,
+) => ({
+  type: STATUS_CONNECTED,
+  payload: { statusKeypairId, statusPublicKey, statusUsername },
+});
+
+const sendStatusMessageAction = payload => ({
   type: SEND_WHISPER_MESSAGE,
   payload,
 });
 
-
-const receivedMessageAction = payload => ({
+const receivedStatusMessageAction = payload => ({
   type: RECEIVED_MESSAGE,
   payload,
 });

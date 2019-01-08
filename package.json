@@ -1,5 +1,5 @@
 {
-  "name": "aurora-light",
+  "name": "dawn-transfer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -27,7 +27,7 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-thunk": "^2.3.0",
     "request-promise": "^4.2.2",
-    "status-js-api": "status-im/status-js#master",
+    "status-js-api": "sharad-s/status-js#dist",
     "urijs": "^1.19.1",
     "web3": "^1.0.0-beta.36",
     "web3-redux": "^0.5.2",

@@ -96,8 +96,12 @@ class UploadCard extends React.Component {
           >
             <MoreVertIcon />
           </IconButton>
-
-          <Fab variant="extended" aria-label="Delete" className={classes.fab}>
+          <Fab
+            color="primary"
+            variant="extended"
+            aria-label="Delete"
+            className={classes.fab}
+          >
             Transfer
           </Fab>
         </CardActions>

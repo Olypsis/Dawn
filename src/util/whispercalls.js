@@ -1,3 +1,12 @@
+/*
+UNUSED after migrating to status-js.
+
+Functions interacting with status-js can be found in
+"/src/features/whisper/actions_status.js"
+
+*/
+
+
 const request = require('request');
 const rp = require('request-promise');
 

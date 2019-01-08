@@ -7,12 +7,16 @@ import logo from '../../logo.svg';
 // Redux
 
 const Header = props => (
-  <header className="App-header">
-    <h1>Aurora</h1>
-    <span className="public-key">
-      Your Public Key: {props.whisper.details.publicKey}
-    </span>
-  </header>
+	<header className="App-header">
+		<h1>Dawn</h1>
+		<span className="public-key">
+			Your Public Key: {props.whisper.statusDetails.publicKey}
+		</span>
+		<br/>
+		<span className="public-key">
+			Your Username: {props.whisper.statusDetails.username}
+		</span>
+	</header>
 );
 
 const mapStateToProps = state => ({

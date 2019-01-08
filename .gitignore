@@ -70,3 +70,6 @@ typings/
 
 # Serverless directories
 .serverless
+
+#.DS_STORE
+.DS_STORE

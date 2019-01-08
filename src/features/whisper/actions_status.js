@@ -9,22 +9,17 @@ import isEmpty from '../../util/is-empty';
 import config from '../../config';
 
 import {
-  GET_WHISPER,
-  SEND_WHISPER_MESSAGE,
-  CREATE_LISTENER,
-  RECEIVED_MESSAGE,
-  SET_WHISPER_PROVIDER,
-  SET_WHISPER,
-  CREATE_MESSAGE_FILTER,
   NEW_STATUS_INSTANCE,
   STATUS_CONNECTED,
+  SEND_WHISPER_MESSAGE,
+  RECEIVED_MESSAGE
 } from '../../state/types';
 
 // Whisper calls
 import { getWhisperInfo, shhext_post } from '../../util/whispercalls';
 
 // config variables
-const { httpProvider, enode } = config.whisper;
+const { httpProvider } = config.whisper;
 const { corsProxy } = config;
 const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
 const channel = 'test999';
@@ -49,8 +44,12 @@ export const connectStatus = () => async (dispatch, getState) => {
   }
 };
 
-// Status Helper Function
-// Can be used with any auth methods to generate your status keypair
+/*
+  Status Helper Function - not a thunk 
+  Can be used with any auth methods to generate your status keypair 
+  Accepts status instance as a parameter such that it can 
+  If no privatekey is input, a whisper keypair is randomly generated
+*/
 export const loginWithStatus = (
   status,
   provider = httpProvider,
@@ -72,38 +71,39 @@ export const loginWithStatus = (
     }
   });
 
+// Send message to a Whisper publicKey over Status
 export const sendStatusMessage = (payload, publicKey) => async (
   dispatch,
   getState,
 ) => {
   const { status } = getState().whisper;
-  console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
 
   status.sendUserMessage(publicKey, payload, (err, res) => {
-    console.log(res);
+    console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
     dispatch(sendStatusMessageAction(payload));
   });
 };
 
+// Create listeners for public and private chat channels
+// Should be called after new keypair / status account login
 export const createStatusListener = () => async (dispatch, getState) => {
   const { status } = getState().whisper;
 
-  // join public chat #FIXME: remove
+  // Join public chat 
   await status.joinChat(channel);
 
-  // public message handler
+  // Public message listener
   status.onMessage(channel, (err, data) => {
     if (data) console.log('Channel Message:', data.payload);
   });
 
-  // private message handler
+  // Private message listener 
+  // payload[1][0] extrapolates the original JSON from the recieved data
   status.onMessage((err, data) => {
     if (data) {
       const payload = JSON.parse(data.payload);
-      // Dispatch Recieved Message Action
-      // Payload [1][0] extrapolates the original JSON from the recieved status payload
       console.log(
-        `Payload Received! Payload: ${JSON.stringify(payload[1][0])}`,
+        `Payload Received! Payload: ${JSON.stringify(payload)}`,
       );
       dispatch(receivedStatusMessageAction(payload[1][0]));
     }
@@ -111,19 +111,19 @@ export const createStatusListener = () => async (dispatch, getState) => {
 };
 
 export const statusUseMailservers = () => async (dispatch, getState) => {
-  // FIXME: Use mailservers
   const { status } = getState().whisper;
   const enode = mailserver;
 
   try {
-
+    // 
     status.mailservers.useMailserver(enode, (err, res) => {
       console.log('statusUseMailservers: Using mailserver enode:', enode, res);
 
-      // time window
+      // 24hr time window from current timestamp
       let from = parseInt(new Date().getTime() / 1000 - 86400, 10);
       let to = parseInt(new Date().getTime() / 1000, 10);
 
+      // Request public channel messages from mailservers
       status.mailservers.requestChannelMessages(
         channel,
         { from, to },
@@ -133,7 +133,7 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
         },
       );
 
-      // User messages
+      // Request user / private messages from mailservers
       status.mailservers.requestUserMessages({ from, to }, (err, res) => {
         if (err) console.log(err);
         console.log('requestUserMessages: res:', res);
@@ -146,20 +146,11 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
 };
 
 // Action Creators
-
 const newStatusInstanceAction = statusInstance => ({
   type: NEW_STATUS_INSTANCE,
   payload: statusInstance,
 });
 
-export const statusConnectAction = (
-  statusKeypairId,
-  statusPublicKey,
-  statusUsername,
-) => ({
-  type: STATUS_CONNECTED,
-  payload: { statusKeypairId, statusPublicKey, statusUsername },
-});
 
 const sendStatusMessageAction = payload => ({
   type: SEND_WHISPER_MESSAGE,
@@ -171,27 +162,14 @@ const receivedStatusMessageAction = payload => ({
   payload,
 });
 
-const createListenerAction = subscription => ({
-  type: CREATE_LISTENER,
-  payload: subscription,
+export const statusConnectAction = (
+  statusKeypairId,
+  statusPublicKey,
+  statusUsername,
+) => ({
+  type: STATUS_CONNECTED,
+  payload: { statusKeypairId, statusPublicKey, statusUsername },
 });
 
-const createMessageFilterAction = messageFilter => ({
-  type: CREATE_MESSAGE_FILTER,
-  payload: messageFilter,
-});
 
-const setWhisperProviderAction = wsProvider => ({
-  type: SET_WHISPER_PROVIDER,
-  payload: wsProvider,
-});
 
-const setWhisperAction = shh => ({
-  type: SET_WHISPER,
-  payload: shh,
-});
-
-const getWhisperAction = whisper => ({
-  type: GET_WHISPER,
-  payload: whisper,
-});

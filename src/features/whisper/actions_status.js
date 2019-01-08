@@ -24,9 +24,9 @@ import {
 import { getWhisperInfo, shhext_post } from '../../util/whispercalls';
 
 // config variables
-const { httpProvider } = config.whisper;
+const { httpProvider, enode } = config.whisper;
 const { corsProxy } = config;
-const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
+const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
 const channel = 'test999';
 
 export const connectStatus = () => async (dispatch, getState) => {
@@ -113,7 +113,7 @@ export const createStatusListener = () => async (dispatch, getState) => {
 export const statusUseMailservers = () => async (dispatch, getState) => {
   // FIXME: Use mailservers
   const { status } = getState().whisper;
-  const enode = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
+  const enode = mailserver;
 
   try {
 

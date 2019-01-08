@@ -8,7 +8,7 @@ import logo from '../../logo.svg';
 
 const Header = props => (
 	<header className="App-header">
-		<h1>Aurora</h1>
+		<h1>Dawn</h1>
 		<span className="public-key">
 			Your Public Key: {props.whisper.statusDetails.publicKey}
 		</span>

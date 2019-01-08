@@ -9,7 +9,7 @@ import {
 } from '../../util/whispercalls';
 
 // Web3 whisper default provider
-const wsProvider = 'ws://50.2.39.116:8546';
+const wsProvider = 'ws://localhost:8546';
 const httpProvider = 'http://104.197.46.74:8545';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
@@ -20,12 +20,8 @@ class Whisper extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.doGetFilterMessages = this.doGetFilterMessages.bind(this);
     this.doRequestHistoricMessages = this.doRequestHistoricMessages.bind(this);
-    this.doGetWhisperIdentityFromPassword = this.doGetWhisperIdentityFromPassword.bind(
-      this,
-    );
   }
 
   onChange(e) {
@@ -70,14 +66,6 @@ class Whisper extends React.Component {
     // await this.props.createListener();
   }
 
-  async doGetWhisperIdentityFromPassword(e) {
-    e.preventDefault();
-    await this.props.getWhisperIdentityFromPassword(
-      '0x6fd68d061f8af918c9c7987e0ca82deed5e523316553532e52c79dcdee867269',
-    );
-    // TODO: Clear
-    await this.props.createListener();
-  }
 
   render = () => (
     <div>
@@ -85,15 +73,11 @@ class Whisper extends React.Component {
       <button onClick={this.doRequestHistoricMessages}>
         requestHistoricMessages
       </button>
-      <button onClick={this.doGetWhisperIdentityFromPassword}>
-        doGetWhisperIdentityFromPassword
-      </button>
     </div>
   );
 }
 
 Whisper.propTypes = {
-  hash: PropTypes.string,
   whisper: PropTypes.object.isRequired,
 };
 

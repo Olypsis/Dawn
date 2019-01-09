@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import UploadCard from '../upload';
 import TableContainer from '../download';
 import Header from '../../components/header/Header';
-import Navbar from '../../components/navbar/Navbar';
 
 // Metamask 
 import ConnectMetamaskContainer from '../../features/account/ConnectMetamaskContainer';

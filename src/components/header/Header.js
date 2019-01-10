@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
-import logo from '../../logo.svg';
 
 // Redux
-
 const Header = props => (
 	<header className="App-header">
 		<h1>Dawn</h1>

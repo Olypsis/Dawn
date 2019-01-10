@@ -1,19 +1,9 @@
+// Redux
 import { METAMASK_CONNECT, METAMASK_LOGIN } from '../../state/types';
-
-import node from '../../util/ipfs';
-import { decrypt } from '../../util/encrypt';
-import fileDownload from 'js-file-download';
-
-// store
 import store from '../../state/store';
-
 // Web3
 import Web3 from 'web3';
-
-// Whisper functions
-import { updateWhisperIdentityAction } from '../whisper/actions';
-
-// Status functions
+// Status Actions and helper functions
 import { loginWithStatus, statusConnectAction} from '../whisper/actions_status';
 
 export const signMetamaskLogin = () => async (dispatch, getState) => {
@@ -22,30 +12,29 @@ export const signMetamaskLogin = () => async (dispatch, getState) => {
 
 	const msg =
 		'Logging into DAWN with Metamask.';
-	const accounts = await web3.eth.getAccounts();
-	const from = accounts[0];
 
-	// Prompt Metmask connect if access is not granted (privacy mode)
+	const from = await web3.eth.getAccounts().then(accounts => accounts[0]);
+
+	// Prompt for Metamask connect if access not yet granted (privacy mode enabled)
 	if (!from) return connectMetamask();
 
 	try {
 		const hash = await web3.eth.sign(msg, from);
-
 		console.log(`LOGIN SIGNED: ${hash}`);
 
+		// Slice into 64char hexstring prefixed with "0x"
 		const loginHash = hash.slice(0, 66);
 		dispatch(signLoginMetamaskAction(loginHash));
 
-		// Login With Status
+		// Log into status using hexstring as PK
 		const { keyId, publicKey, userName } = await loginWithStatus(status, undefined, loginHash);
 		return dispatch(statusConnectAction(keyId, publicKey, userName));
-
 	} catch (err) {
-		console.log(err.message);
+		console.log(err);
 	}
 };
 
-// Tries downloading and Decrypting the file given payload
+// Checks for injected Metamask 
 export const connectMetamask = async () => {
 	if (typeof window.ethereum !== 'undefined') {
 		try {

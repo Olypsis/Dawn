@@ -6,6 +6,12 @@ import Web3 from 'web3';
 // Status Actions and helper functions
 import { loginWithStatus, statusConnectAction} from '../whisper/actions_status';
 
+/*
+******************
+Thunks
+******************
+ */
+
 export const signMetamaskLogin = () => async (dispatch, getState) => {
 	const web3 = getState().web3.web3Instance;
 	const { status } = getState().whisper;
@@ -46,8 +52,12 @@ export const connectMetamask = async () => {
 	}
 };
 
-//////////////////
-// Action Creators
+/*
+******************
+Action Creators 
+******************
+ */
+ 
 const connectMetamaskAction = () => ({
 	type: METAMASK_CONNECT,
 });

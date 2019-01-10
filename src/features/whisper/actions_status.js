@@ -1,13 +1,9 @@
 import Web3 from 'web3';
 import util from 'ethjs-util';
-
 import StatusJS from 'status-js-api';
-
 import isEmpty from '../../util/is-empty';
-
 // config
 import config from '../../config';
-
 import {
   NEW_STATUS_INSTANCE,
   STATUS_CONNECTED,
@@ -23,6 +19,12 @@ const { httpProvider } = config.whisper;
 const { corsProxy } = config;
 const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
 const channel = 'test999';
+
+/*
+******************
+Thunks
+******************
+ */
 
 export const connectStatus = () => async (dispatch, getState) => {
   const status = new StatusJS();
@@ -44,33 +46,6 @@ export const connectStatus = () => async (dispatch, getState) => {
   }
 };
 
-/*
-  Status Helper Function - not a thunk 
-  Can be used with any auth methods to generate your status keypair 
-  Accepts status instance as a parameter such that it can 
-  If no privatekey is input, a whisper keypair is randomly generated
-*/
-export const loginWithStatus = (
-  status,
-  provider = httpProvider,
-  privateKey = null,
-) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      await status.connect(
-        corsProxy + provider,
-        privateKey,
-      );
-      const keyId = await status.getKeyId();
-      const publicKey = await status.getPublicKey();
-      const userName = await status.getUserName();
-      resolve({ keyId, publicKey, userName });
-    } catch (err) {
-      console.log(new Error(err));
-      reject(err);
-    }
-  });
-
 // Send message to a Whisper publicKey over Status
 export const sendStatusMessage = (payload, publicKey) => async (
   dispatch,
@@ -83,6 +58,8 @@ export const sendStatusMessage = (payload, publicKey) => async (
     dispatch(sendStatusMessageAction(payload));
   });
 };
+
+
 
 // Create listeners for public and private chat channels
 // Should be called after new keypair / status account login
@@ -109,6 +86,7 @@ export const createStatusListener = () => async (dispatch, getState) => {
     }
   });
 };
+
 
 export const statusUseMailservers = () => async (dispatch, getState) => {
   const { status } = getState().whisper;
@@ -145,7 +123,42 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
   }
 };
 
-// Action Creators
+
+/*
+******************
+Helper functions
+******************
+ */
+
+// Helper fn - Call methods on status-js to create / log into a keypair with status
+export const loginWithStatus = (
+  status,
+  provider = httpProvider,
+  privateKey = null,
+) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await status.connect(
+        corsProxy + provider,
+        privateKey,
+      );
+      const keyId = await status.getKeyId();
+      const publicKey = await status.getPublicKey();
+      const userName = await status.getUserName();
+      resolve({ keyId, publicKey, userName });
+    } catch (err) {
+      console.log(new Error(err));
+      reject(err);
+    }
+  });
+
+
+/*
+******************
+Action Creators
+******************
+ */
+
 const newStatusInstanceAction = statusInstance => ({
   type: NEW_STATUS_INSTANCE,
   payload: statusInstance,

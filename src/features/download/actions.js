@@ -1,11 +1,13 @@
 import { IPFS_GET_FILE, DECRYPT_FILE, DOWNLOAD_FILE } from '../../state/types';
-
 import node from '../../util/ipfs';
 import { decrypt } from '../../util/encrypt';
 import fileDownload from 'js-file-download';
 
-//////////////////
-// API Function calls
+/*
+******************
+Thunks
+******************
+ */
 
 // Tries downloading and Decrypting the file given payload
 export const downloadAndDecryptFile = (
@@ -15,9 +17,8 @@ export const downloadAndDecryptFile = (
   iv = '9De0DgMTCDFGNokdEEial',
 ) => async dispatch => {
   try {
-    // console.log('HASH:', hash);
-    const res = await getFile(hash);
-    const file = res[0].content;
+    // Get file from IPFS using hash
+    const file = await getFile(hash).then(res => res[0].content);
     dispatch(ipfsGetFileAction(file));
 
     // Decrypt File
@@ -27,39 +28,54 @@ export const downloadAndDecryptFile = (
     // Trigger file download
     downloadFile(decryptedBuffer, fileName);
     dispatch(downloadFileAction());
+
   } catch (err) {
     console.log(err.message);
   }
 };
 
-// Decrypts File
+// Decrypt File using DEK (iv)
 export const decryptFile = async (encryptedBuffer, iv) => {
-  console.log('Decrypting..');
+  console.log('decryptFile: Decrypting...');
   const decryptedBuffer = decrypt(encryptedBuffer, iv);
-  console.log('Decrypted: ', decryptedBuffer);
+  console.log('decryptFile: Decrypted!', decryptedBuffer);
   return decryptedBuffer;
 };
 
-// Get File form IPFS
+/*
+******************
+Helper Functions
+******************
+ */
+
+// Helper fn - Get File from IPFS
 const getFile = async hash => {
-  console.log('GETTING FILES, HASH:', hash);
-  const files = await node.files.get(hash);
+  console.log('getFile: Getting file from IPFS. Hash:', hash);
 
-  const res = files.map(file => {
-    const { content, name, path } = file;
-    return { content, name, path };
-  });
-
-  return res;
+  try {
+    const files = await node.files.get(hash);
+    const res = files.map(file => {
+      const { content, name, path } = file;
+      return { content, name, path };
+    });
+    // Returns an array of length 1 containing an object with file details
+    return res;
+  } catch (err) {
+    console.log('getFile:', err);
+  }
 };
 
-// Encrypt File
+// Helper fn - Download File from client to local machine
 const downloadFile = (decryptedBuffer, fileName) => {
   return fileDownload(decryptedBuffer, fileName);
 };
 
-//////////////////
-// Action Creators
+/*
+******************
+Action Creators
+******************
+ */
+
 const decryptFileAction = (decryptedBuffer, fileName) => ({
   type: DECRYPT_FILE,
   payload: {

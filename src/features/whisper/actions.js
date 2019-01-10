@@ -1,10 +1,10 @@
 /*
-
+****************************************************
 UNUSED after migrating to status-js.
 
-Functions interacting with status-js can be found in
+Actions rewritten using status-js can be found in
 "/src/features/whisper/actions_status.js"
-
+****************************************************
 */
 
 import Web3 from 'web3';

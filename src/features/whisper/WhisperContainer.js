@@ -13,7 +13,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      // Status
       connectStatus,
       createStatusListener,
     },

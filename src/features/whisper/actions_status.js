@@ -1,8 +1,4 @@
-import Web3 from 'web3';
-import util from 'ethjs-util';
 import StatusJS from 'status-js-api';
-import isEmpty from '../../util/is-empty';
-// config
 import config from '../../config';
 import {
   NEW_STATUS_INSTANCE,
@@ -11,13 +7,12 @@ import {
   RECEIVED_MESSAGE
 } from '../../state/types';
 
-// Whisper calls
-import { getWhisperInfo, shhext_post } from '../../util/whispercalls';
-
-// config variables
+// Config variables
 const { httpProvider } = config.whisper;
-const { corsProxy } = config;
 const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
+const { corsProxy } = config;
+
+// Status public channel
 const channel = 'test999';
 
 /*
@@ -26,6 +21,7 @@ Thunks
 ******************
  */
 
+// Instantiates a new status instance and creates an anonymous keypair on page load
 export const connectStatus = () => async (dispatch, getState) => {
   const status = new StatusJS();
   console.log('NEW STATUS', status);
@@ -46,7 +42,7 @@ export const connectStatus = () => async (dispatch, getState) => {
   }
 };
 
-// Send message to a Whisper publicKey over Status
+// Sends message to any whisper publicKey through Status
 export const sendStatusMessage = (payload, publicKey) => async (
   dispatch,
   getState,
@@ -60,8 +56,7 @@ export const sendStatusMessage = (payload, publicKey) => async (
 };
 
 
-
-// Create listeners for public and private chat channels
+// Creates listeners for public and private chat channels
 // Should be called after new keypair / status account login
 export const createStatusListener = () => async (dispatch, getState) => {
   const { status } = getState().whisper;

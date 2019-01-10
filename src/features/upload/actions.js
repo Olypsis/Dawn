@@ -2,7 +2,6 @@ import { IPFS_ADD_FILE, ENCRYPT_FILE, FILE_UPLOADED } from '../../state/types';
 import node from '../../util/ipfs';
 import { encrypt } from '../../util/encrypt';
 
-
 /*
 ******************
 Thunks

@@ -1,8 +1,6 @@
 // Redux
-import { METAMASK_CONNECT, METAMASK_LOGIN } from '../../state/types';
 import store from '../../state/store';
-// Web3
-import Web3 from 'web3';
+import { METAMASK_CONNECT, METAMASK_LOGIN } from '../../state/types';
 // Status Actions and helper functions
 import { loginWithStatus, statusConnectAction} from '../whisper/actions_status';
 
@@ -57,7 +55,7 @@ export const connectMetamask = async () => {
 Action Creators 
 ******************
  */
- 
+
 const connectMetamaskAction = () => ({
 	type: METAMASK_CONNECT,
 });

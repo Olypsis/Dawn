@@ -18,7 +18,6 @@ export const onFileUploaded = (
   dispatch(fileUploadedAction(fileName, mimeType, filePreview, fileBuffer));
 };
 
-
 export const encryptAndAddFile = (fileBuffer, fileName) => async dispatch => {
   try {
     // Encrypt file, then push buffer to store
@@ -33,14 +32,13 @@ export const encryptAndAddFile = (fileBuffer, fileName) => async dispatch => {
   }
 };
 
-
 /*
 ******************
  Helper Functions
 ******************
  */
 
-// Helper fn - Add file to IPFS 
+// Helper fn - Add file to IPFS
 const ipfsAddFile = async (buffer, fileName) => {
   const filesAdded = await node.files.add({
     content: buffer,
@@ -52,7 +50,7 @@ const ipfsAddFile = async (buffer, fileName) => {
   // dispatch(ipfsAddFileAction(filesAdded[0].path, filesAdded[0].hash));
 };
 
-// Helper fn - Encrypt File 
+// Helper fn - Encrypt File
 const encryptFile = async fileBuffer => {
   const encryptedPayload = encrypt(fileBuffer);
   const { encryptedBuffer, iv } = encryptedPayload;

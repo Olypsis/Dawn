@@ -23,7 +23,9 @@ class Whisper extends React.Component {
 }
 
 Whisper.propTypes = {
-  whisper: PropTypes.object.isRequired,
+  connectStatus: PropTypes.object.isRequired,
+  createStatusListener: PropTypes.object.isRequired,
+
 };
 
 export default Whisper;

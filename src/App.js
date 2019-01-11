@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store from './state/store';
 
 // Routes
-import Routes from './routes'
+import Routes from './routes';
 
 // Web3
 import getWeb3 from './features/web3/getWeb3';
@@ -22,9 +22,9 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-          <div className="App">
-            <Routes/>
-          </div>
+        <div className="App">
+          <Routes />
+        </div>
       </Provider>
     );
   }

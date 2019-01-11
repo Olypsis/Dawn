@@ -33,4 +33,9 @@ class ConnectMetamask extends React.Component {
 	}
 }
 
+ConnectMetamask.propTypes = {
+	signMetamaskLogin: PropTypes.func.isRequired,
+	createStatusListener: PropTypes.func.isRequired,
+	statusUseMailservers: PropTypes.func.isRequired,
+};
 export default ConnectMetamask;

@@ -10,17 +10,17 @@ test_site:
   image: node:10.13.0
   stage: test
   before_script:
-  - npm install
+  - yarn
   script:
-  - npm test
+  - yarn test
 
 build_site:
   image: node:10.13.0
   stage: build
   before_script:
-  - npm install
+  - yarn
   script:
-  - CI=false npm run build
+  - yarn build
   artifacts:
     paths:
     - build

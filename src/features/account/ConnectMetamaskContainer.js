@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 
 // Actions
 import { connectMetamask, signMetamaskLogin } from './actions';
-import { createListener } from '../whisper/actions';
 import { createStatusListener, statusUseMailservers } from '../whisper/actions_status';
 
 

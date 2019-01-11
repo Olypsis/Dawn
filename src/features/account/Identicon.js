@@ -1,1 +1,1 @@
-Identicon.js
+Identicon.js;

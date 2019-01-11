@@ -24,7 +24,7 @@ export const encryptAndAddFile = (fileBuffer, fileName) => async dispatch => {
     const { encryptedBuffer, iv } = await encryptFile(fileBuffer);
     dispatch(encryptFileAction(encryptedBuffer, iv, fileName));
 
-    //Upload File to IPFS, push hash & filename to store
+    // Upload File to IPFS, push hash & filename to store
     const { path, hash } = await ipfsAddFile(encryptedBuffer, fileName);
     dispatch(ipfsAddFileAction(path, hash));
   } catch (err) {

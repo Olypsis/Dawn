@@ -31,6 +31,7 @@ const decrypt = (encryptedBuffer, iv) => {
 };
 
 const _generateIv = () => CryptoJS.lib.WordArray.random(128 / 8);
+const _generateKey = () => CryptoJS.lib.WordArray.random(128 / 8);
 
 
 export { encrypt, decrypt };

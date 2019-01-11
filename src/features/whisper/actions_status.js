@@ -4,7 +4,7 @@ import {
   NEW_STATUS_INSTANCE,
   STATUS_CONNECTED,
   SEND_WHISPER_MESSAGE,
-  RECEIVED_MESSAGE
+  RECEIVED_MESSAGE,
 } from '../../state/types';
 
 // Config variables
@@ -55,13 +55,12 @@ export const sendStatusMessage = (payload, publicKey) => async (
   });
 };
 
-
 // Creates listeners for public and private chat channels
 // Should be called after new keypair / status account login
 export const createStatusListener = () => async (dispatch, getState) => {
   const { status } = getState().whisper;
 
-  // Join public chat 
+  // Join public chat
   await status.joinChat(channel);
 
   // Public message listener
@@ -69,32 +68,29 @@ export const createStatusListener = () => async (dispatch, getState) => {
     if (data) console.log('Channel Message:', data.payload);
   });
 
-  // Private message listener 
+  // Private message listener
   // payload[1][0] extrapolates the original JSON from the recieved data
   status.onMessage((err, data) => {
     if (data) {
       const payload = JSON.parse(data.payload);
-      console.log(
-        `Payload Received! Payload: ${JSON.stringify(payload)}`,
-      );
+      console.log(`Payload Received! Payload: ${JSON.stringify(payload)}`);
       dispatch(receivedStatusMessageAction(payload[1][0]));
     }
   });
 };
-
 
 export const statusUseMailservers = () => async (dispatch, getState) => {
   const { status } = getState().whisper;
   const enode = mailserver;
 
   try {
-    // 
+    //
     status.mailservers.useMailserver(enode, (err, res) => {
       console.log('statusUseMailservers: Using mailserver enode:', enode, res);
 
       // 24hr time window from current timestamp
-      let from = parseInt(new Date().getTime() / 1000 - 86400, 10);
-      let to = parseInt(new Date().getTime() / 1000, 10);
+      const from = parseInt(new Date().getTime() / 1000 - 86400, 10);
+      const to = parseInt(new Date().getTime() / 1000, 10);
 
       // Request public channel messages from mailservers
       status.mailservers.requestChannelMessages(
@@ -111,13 +107,11 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
         if (err) console.log(err);
         console.log('requestUserMessages: res:', res);
       });
-      
     });
   } catch (err) {
     console.log(new Error(err));
   }
 };
-
 
 /*
 ******************
@@ -147,7 +141,6 @@ export const loginWithStatus = (
     }
   });
 
-
 /*
 ******************
 Action Creators
@@ -158,7 +151,6 @@ const newStatusInstanceAction = statusInstance => ({
   type: NEW_STATUS_INSTANCE,
   payload: statusInstance,
 });
-
 
 const sendStatusMessageAction = payload => ({
   type: SEND_WHISPER_MESSAGE,
@@ -178,6 +170,3 @@ export const statusConnectAction = (
   type: STATUS_CONNECTED,
   payload: { statusKeypairId, statusPublicKey, statusUsername },
 });
-
-
-

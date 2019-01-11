@@ -8,10 +8,8 @@ import Whisper from '../../features/whisper';
 // Components
 import Header from '../../components/header/Header';
 
-// Metamask 
+// Metamask
 import ConnectMetamaskContainer from '../../features/account/ConnectMetamaskContainer';
-
-
 
 class Homepage extends React.Component {
   render() {

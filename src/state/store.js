@@ -18,7 +18,6 @@ const rootReducer = combineReducers({
   events: eventsReducer,
 });
 
-
 const initialState = {};
 const middleware = [thunk];
 

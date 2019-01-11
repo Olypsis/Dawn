@@ -9,7 +9,6 @@ import {
   encryptAndAddFile,
 } from './actions';
 
-
 // Core Component
 import UploadCard from './UploadCardComponent';
 
@@ -21,7 +20,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      sendStatusMessage
+      sendStatusMessage,
     },
     dispatch,
   );

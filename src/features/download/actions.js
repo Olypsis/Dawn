@@ -1,7 +1,7 @@
+import fileDownload from 'js-file-download';
 import { IPFS_GET_FILE, DECRYPT_FILE, DOWNLOAD_FILE } from '../../state/types';
 import node from '../../util/ipfs';
 import { decrypt } from '../../util/encrypt';
-import fileDownload from 'js-file-download';
 
 /*
 ******************
@@ -28,7 +28,6 @@ export const downloadAndDecryptFile = (
     // Trigger file download
     downloadFile(decryptedBuffer, fileName);
     dispatch(downloadFileAction());
-
   } catch (err) {
     console.log(err.message);
   }
@@ -36,7 +35,7 @@ export const downloadAndDecryptFile = (
 
 // Decrypt File using DEK (iv)
 export const decryptFile = async (encryptedBuffer, iv) => {
-  console.log('decryptFile: Decrypting...');
+  console.log('decryptFile: Decrypting...', iv);
   const decryptedBuffer = decrypt(encryptedBuffer, iv);
   console.log('decryptFile: Decrypted!', decryptedBuffer);
   return decryptedBuffer;
@@ -66,9 +65,8 @@ const getFile = async hash => {
 };
 
 // Helper fn - Download File from client to local machine
-const downloadFile = (decryptedBuffer, fileName) => {
-  return fileDownload(decryptedBuffer, fileName);
-};
+const downloadFile = (decryptedBuffer, fileName) =>
+  fileDownload(decryptedBuffer, fileName);
 
 /*
 ******************

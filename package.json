@@ -29,7 +29,7 @@
         "build": "react-scripts build",
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject",
-        "lint": "./node_modules/.bin/eslint **/*.{js,jsx} --fix --quiet --ignore-path .gitignore",
+        "lint": "./node_modules/.bin/eslint '**/*.{js,jsx}' --fix --quiet --ignore-path .gitignore",
         "prettify": "./node_modules/.bin/prettier --write **/*.{js,jsx} "
     },
     "devDependencies": {

@@ -1,4 +1,8 @@
-import { SEND_WHISPER_MESSAGE, RECEIVED_MESSAGE , CLEAR_EVENTS} from '../../state/types';
+import {
+  SEND_WHISPER_MESSAGE,
+  RECEIVED_MESSAGE,
+  CLEAR_EVENTS,
+} from '../../state/types';
 // import isEmpty from '../utils/is-empty';
 
 const initialState = {

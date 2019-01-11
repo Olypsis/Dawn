@@ -1,6 +1,6 @@
 // Redux
 import store from '../../state/store';
-import { METAMASK_CONNECT, METAMASK_LOGIN } from '../../state/types';
+import { METAMASK_CONNECT, METAMASK_LOGIN, CLEAR_EVENTS } from '../../state/types';
 // Status Actions and helper functions
 import { loginWithStatus, statusConnectAction} from '../whisper/actions_status';
 
@@ -32,6 +32,7 @@ export const signMetamaskLogin = () => async (dispatch, getState) => {
 
 		// Log into status using hexstring as PK
 		const { keyId, publicKey, userName } = await loginWithStatus(status, undefined, loginHash);
+		dispatch(clearEventsAction())
 		return dispatch(statusConnectAction(keyId, publicKey, userName));
 	} catch (err) {
 		console.log(err);
@@ -58,6 +59,10 @@ Action Creators
 
 const connectMetamaskAction = () => ({
 	type: METAMASK_CONNECT,
+});
+
+const clearEventsAction = () => ({
+	type: CLEAR_EVENTS,
 });
 
 const signLoginMetamaskAction = loginHash => ({

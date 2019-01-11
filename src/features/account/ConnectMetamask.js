@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Web3Provider } from 'react-web3';
 
 class ConnectMetamask extends React.Component {
 	constructor(props) {

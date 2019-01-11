@@ -1,15 +1,9 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-
 
 class Whisper extends React.Component {
   constructor(props) {
     super(props);
-    this.onChange = this.onChange.bind(this);
-  }
-
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
   }
 
   async componentDidMount() {
@@ -17,15 +11,12 @@ class Whisper extends React.Component {
     await this.props.createStatusListener();
   }
 
-  render = () => (
-    <Fragment />
-  );
+  render = () => <Fragment />;
 }
 
 Whisper.propTypes = {
   connectStatus: PropTypes.object.isRequired,
   createStatusListener: PropTypes.object.isRequired,
-
 };
 
 export default Whisper;

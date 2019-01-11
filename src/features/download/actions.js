@@ -21,7 +21,7 @@ export const downloadAndDecryptFile = (
     const file = await getFile(hash).then(res => res[0].content);
     dispatch(ipfsGetFileAction(file));
 
-    console.log("downloadAndDecryptFile: Key/IV:", key, iv)
+    console.log('downloadAndDecryptFile: Key/IV:', key, iv);
 
     // Decrypt File
     const decryptedBuffer = await decryptFile(file, key, iv);
@@ -30,9 +30,8 @@ export const downloadAndDecryptFile = (
     // Trigger file download
     downloadFile(decryptedBuffer, fileName);
     dispatch(downloadFileAction());
-
   } catch (err) {
-    console.log("downloadAndDecryptFile:", new Error(err.message));
+    console.log('downloadAndDecryptFile:', new Error(err.message));
   }
 };
 

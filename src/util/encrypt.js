@@ -1,13 +1,17 @@
 const CryptoJS = require('crypto-js');
 
+const generateIv = () => CryptoJS.lib.WordArray.random(128 / 8);
+const generateKey = () =>
+  CryptoJS.enc.Base64.stringify(CryptoJS.lib.WordArray.random(128 / 8));
+
 // Input : Data Buffer
 // Output: Encrypted Buffer, iv
 const encrypt = dataBuffer =>
   new Promise((resolve, reject) => {
     try {
       const dataBase64 = dataBuffer.toString('base64');
-      const iv = _generateIv();
-      const key = _generateKey();
+      const iv = generateIv();
+      const key = generateKey();
       console.log('encrypt: Key/IV', key, iv);
       const encryptFile = CryptoJS.AES.encrypt(dataBase64, key);
       const encryptedBuffer = new Buffer(encryptFile.toString(), 'base64');
@@ -36,9 +40,5 @@ const decrypt = (encryptedBuffer, key, iv) =>
       reject(err);
     }
   });
-
-const _generateIv = () => CryptoJS.lib.WordArray.random(128 / 8);
-const _generateKey = () =>
-  CryptoJS.enc.Base64.stringify(CryptoJS.lib.WordArray.random(128 / 8));
 
 export { encrypt, decrypt };

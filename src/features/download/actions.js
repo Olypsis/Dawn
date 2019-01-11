@@ -13,30 +13,33 @@ Thunks
 export const downloadAndDecryptFile = (
   hash,
   fileName,
-  key = 'SECRET_KEY',
-  iv = '9De0DgMTCDFGNokdEEial',
+  key = null,
+  iv = null,
 ) => async dispatch => {
   try {
     // Get file from IPFS using hash
     const file = await getFile(hash).then(res => res[0].content);
     dispatch(ipfsGetFileAction(file));
 
+    console.log("downloadAndDecryptFile: Key/IV:", key, iv)
+
     // Decrypt File
-    const decryptedBuffer = await decryptFile(file, iv);
+    const decryptedBuffer = await decryptFile(file, key, iv);
     dispatch(decryptFileAction(decryptedBuffer, fileName));
 
     // Trigger file download
     downloadFile(decryptedBuffer, fileName);
     dispatch(downloadFileAction());
+
   } catch (err) {
-    console.log(err.message);
+    console.log("downloadAndDecryptFile:", new Error(err.message));
   }
 };
 
 // Decrypt File using DEK (iv)
-export const decryptFile = async (encryptedBuffer, iv) => {
-  console.log('decryptFile: Decrypting...', iv);
-  const decryptedBuffer = decrypt(encryptedBuffer, iv);
+export const decryptFile = async (encryptedBuffer, key, iv) => {
+  console.log('decryptFile: Decrypting... Key/IV:', key, iv);
+  const decryptedBuffer = await decrypt(encryptedBuffer, key, iv);
   console.log('decryptFile: Decrypted!', decryptedBuffer);
   return decryptedBuffer;
 };

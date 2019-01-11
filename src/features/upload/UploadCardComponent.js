@@ -37,11 +37,12 @@ class UploadCard extends Component {
     e.preventDefault();
     const { ipfsAddedFile, encryptedFile } = this.props.upload;
 
-    // Construct payload
+    // Construct payload from IPFS and encrypted file data redux store
     const payload = {
       hash: ipfsAddedFile.fileHash,
       path: ipfsAddedFile.filePath,
-      iv: encryptedFile.decryptionKey,
+      key: encryptedFile.decryptionKey,
+      iv: encryptedFile.decryptionIv,
       note: this.state.form.message ? this.state.form.message : '',
     };
 

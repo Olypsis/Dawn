@@ -8,6 +8,7 @@ const initialState = {
   encryptedFile: {
     encryptedBuffer: [],
     decryptionKey: '',
+    decryptionIv: '',
     fileName: '',
   },
   uploadedFile: {

@@ -21,8 +21,9 @@ export const onFileUploaded = (
 export const encryptAndAddFile = (fileBuffer, fileName) => async dispatch => {
   try {
     // Encrypt file, then push buffer to store
-    const { encryptedBuffer, iv } = await encryptFile(fileBuffer);
-    dispatch(encryptFileAction(encryptedBuffer, iv, fileName));
+    const { encryptedBuffer, key, iv } = await encryptFile(fileBuffer);
+    console.log("encryptAndAddFile: key/iv:", key, iv)
+    dispatch(encryptFileAction(encryptedBuffer, key, null, fileName));
 
     // Upload File to IPFS, push hash & filename to store
     const { path, hash } = await ipfsAddFile(encryptedBuffer, fileName);
@@ -52,12 +53,12 @@ const ipfsAddFile = async (buffer, fileName) => {
 
 // Helper fn - Encrypt File
 const encryptFile = async fileBuffer => {
-  const encryptedPayload = encrypt(fileBuffer);
-  const { encryptedBuffer, iv } = encryptedPayload;
-  console.log('File Buffer: ', fileBuffer);
-  console.log('Encrypted Buffer:', encryptedBuffer);
-  console.log('Decryption Key (IV):', iv);
-  return { encryptedBuffer, iv };
+  const encryptedPayload = await encrypt(fileBuffer);
+  const { encryptedBuffer, iv, key } = encryptedPayload;
+  console.log('encryptFile: File Buffer: ', fileBuffer);
+  console.log('encryptFile: Encrypted Buffer:', encryptedBuffer);
+  console.log('encryptFile: Key/IV:', iv);
+  return { encryptedBuffer, iv, key };
 };
 
 /*
@@ -75,11 +76,12 @@ const fileUploadedAction = (fileName, mimeType, filePreview, fileBuffer) => ({
   },
 });
 
-const encryptFileAction = (encryptedBuffer, decryptionKey, fileName) => ({
+const encryptFileAction = (encryptedBuffer, decryptionKey, decryptionIv, fileName) => ({
   type: ENCRYPT_FILE,
   payload: {
     encryptedBuffer,
     decryptionKey,
+    decryptionIv,
     fileName,
   },
 });

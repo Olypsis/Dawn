@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 
 // // DropZone Config
-// Max File Upload Size
-const fileMaxSize = 9 * 1000000;
+// Max File Upload Size: 100
+const fileMaxSize = 100 * 1000000;
 
 // Dropzone Styles
 const style = {
@@ -24,39 +24,58 @@ const activeStyle = {
 class UploadCardHeader extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      fileError: '',
+    };
   }
 
-  handleOnDrop = (accepted, rejected, links) => {
+  handleOnDrop = async (accepted, rejected, links) => {
     // Handle file rejection
     if (rejected.length !== 0) {
-      const { errors } = this.state;
-      errors.file = 'File Rejected: ' + rejected[0].name;
-      return this.setState({ errors });
+      const fileError = 'File Rejected: ' + rejected[0].name;
+      console.log(new Error(fileError));
+      return this.setState({ fileError });
     }
 
     // Handle file acceptance
     const file = accepted[0];
 
-    // Create FileReader and read file
-    const reader = new FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onloadend = async () => {
-      // Convert file from blob to buffer
-      const fileBuffer = Buffer.from(reader.result);
-
-      // Log Upload File Success
-      await this.props.onFileUploaded(
-        file.name,
-        file.type,
-        file.preview,
-        fileBuffer,
-      );
-
-      await this.props.encryptAndAddFile(fileBuffer, file.name);
-
-      this.setState({ errors: { file: '' } });
-    };
+    try {
+      await this.readFile(file);
+      this.setState({ fileError: '' });
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  readFile = async file =>
+    new Promise((resolve, reject) => {
+      try {
+        // Create FileReader and read file
+        const reader = new FileReader();
+        console.log('readFile: about to read file...');
+        reader.readAsArrayBuffer(file);
+        reader.onloadend = async () => {
+          // Convert file from blob to buffer
+          const fileBuffer = Buffer.from(reader.result);
+          console.log('readFile: file read!');
+
+          // Log Upload File Success
+          await this.props.onFileUploaded(
+            file.name,
+            file.type,
+            file.preview,
+            fileBuffer,
+          );
+
+          await this.props.encryptAndAddFile(fileBuffer, file.name);
+
+          resolve(true);
+        };
+      } catch (err) {
+        reject('readFile:', new Error(err));
+      }
+    });
 
   render() {
     // Get latest addedFile from props

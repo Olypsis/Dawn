@@ -13,8 +13,8 @@ class Table extends React.Component {
 
   // Click Handler for Download button for every payload received
   _handleDownloadClick = async msg => {
-    const { hash, path, key, iv, note } = msg;
-    await this.props.downloadAndDecryptFile(hash, path, key, iv );
+    const { hash, path, key, iv } = msg;
+    await this.props.downloadAndDecryptFile(hash, path, key, iv);
   };
 
   render() {
@@ -34,7 +34,8 @@ class Table extends React.Component {
         accessor: 'payload',
         Cell: row => {
           console.log('ROW', row);
-          return (            <span>
+          return (
+            <span>
               <button
                 className="download-button"
                 onClick={() => this._handleDownloadClick(row.value)}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import _ from 'lodash';
-import util from 'ethjs-util';
 
 // SubComponents
 import UploadCardHeader from './UploadCardHeaderContainer';
@@ -73,8 +72,8 @@ class UploadCard extends Component {
 
   render() {
     const { form, errors } = this.state;
-    const { files } = form;
-    const { upload } = this.props;
+    // const { files } = form;
+    // const { upload } = this.props;
 
     return (
       <div className={'app-card'}>

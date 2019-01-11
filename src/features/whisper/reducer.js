@@ -49,7 +49,7 @@ export default function(state = initialState, action) {
           keyPairId: action.payload.keyPairId,
           symKey: action.payload.symKey,
           symKeyId: action.payload.symKeyId,
-          publicKey: action.payload.privateKey,
+          privateKey: action.payload.privateKey,
           publicKey: action.payload.pubKey,
         },
       };

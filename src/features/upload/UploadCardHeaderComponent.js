@@ -79,7 +79,7 @@ class UploadCardHeader extends Component {
 
   render() {
     // Get latest addedFile from props
-    const { ipfsAddedFile, uploadedFile } = this.props.upload;
+    const { ipfsAddedFile } = this.props.upload;
     let renderUploadContent;
 
     // Change Display based on status of uploaded file

@@ -1,4 +1,3 @@
-const path = require('path');
 const CryptoJS = require('crypto-js');
 
 // Input : Data Buffer

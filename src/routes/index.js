@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import React from 'react';
 // import NotFoundPage from '../components/404/404Page/'
 

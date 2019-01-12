@@ -7,7 +7,8 @@ const config = {
     enode:
       'enode://015e22f6cd2b44c8a51bd7a23555e271e0759c7d7f52432719665a74966f2da456d28e154e836bee6092b4d686fe67e331655586c57b718be3997c1629d24167@35.226.21.19:30504',
     wsProvider: 'ws://localhost:8546',
-    httpProvider: 'http://104.197.46.74:8545',
+    localHttpProvider: 'http://localhost:8545',
+    httpProvider: 'http://35.188.163.32:8545',
     topic: 'topic1',
   },
   mailservers: {

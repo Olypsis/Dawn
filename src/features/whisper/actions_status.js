@@ -8,7 +8,7 @@ import {
 } from '../../state/types';
 
 // Config variables
-const { httpProvider } = config.whisper;
+const { httpProvider, wsProvider, localHttpProvider} = config.whisper;
 const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
 
@@ -122,13 +122,14 @@ Helper functions
 // Helper fn - Call methods on status-js to create / log into a keypair with status
 export const loginWithStatus = (
   status,
-  provider = httpProvider,
+  provider = corsProxy + httpProvider,
   privateKey = null,
 ) =>
   new Promise(async (resolve, reject) => {
     try {
+      console.log("loginWithStatus: about to log in in with status provider:", provider)
       await status.connect(
-        corsProxy + provider,
+        provider,
         privateKey,
       );
       const keyId = await status.getKeyId();

@@ -8,7 +8,7 @@ import {
 } from '../../state/types';
 
 // Config variables
-const { httpProvider, wsProvider, localHttpProvider} = config.whisper;
+const { httpProvider } = config.whisper;
 const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
 
@@ -127,7 +127,10 @@ export const loginWithStatus = (
 ) =>
   new Promise(async (resolve, reject) => {
     try {
-      console.log("loginWithStatus: about to log in in with status provider:", provider)
+      console.log(
+        'loginWithStatus: about to log in in with status provider:',
+        provider,
+      );
       await status.connect(
         provider,
         privateKey,

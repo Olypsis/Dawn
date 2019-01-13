@@ -1,13 +1,15 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 
 // Features
 import UploadCard from '../../features/upload';
 import TableContainer from '../../features/download';
 import Whisper from '../../features/whisper';
+
 // Components
 import Header from '../../components/header/Header';
+
 // import MaterialUIDrawer from '../../components/sidebar/MaterialUIDrawer';
-import Toggle from '../../components/reusable/ToggleRPC';
+// import Toggle from '../../components/reusable/ToggleRPC';
 
 // Metamask
 import ConnectMetamaskContainer from '../../features/account/ConnectMetamaskContainer';
@@ -18,15 +20,17 @@ class Homepage extends React.Component {
       <div className="main-container">
         <div className="flex-vertical">
           {/* Vertical Flex - for Header, Content */}
-          
+          <Header />
+          {/* 
           <Toggle>
             {({on, toggle}) => (
               <Fragment>
-                {on && <Header />}
+                {on && }
                 <button onClick={toggle}> Show/Hide </button>
               </Fragment>
             )}
           </Toggle>
+        */}
           <div className="flex-horizontal">
             {/* Horizontal Flex - for Transfer, Messages */}
 

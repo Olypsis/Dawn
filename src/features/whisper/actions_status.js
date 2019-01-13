@@ -8,7 +8,7 @@ import {
 } from '../../state/types';
 
 // Config variables
-const { httpProvider, wsProvider, localHttpProvider} = config.whisper;
+const { httpProvider} = config.whisper;
 const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
 

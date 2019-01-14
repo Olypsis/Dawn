@@ -5,7 +5,7 @@ import UploadCard from '../../features/upload';
 import TableContainer from '../../features/download';
 import Whisper from '../../features/whisper';
 
-import MaterialUIDrawer from '../../components/sidebar/MaterialUIDrawer';
+import SidebarParent from '../../components/sidebar/SidebarParent';
 // import Toggle from '../../components/reusable/ToggleRPC';
 
 // Metamask
@@ -17,7 +17,7 @@ class Homepage extends React.Component {
       <div className="main-container">
         <div className="flex-vertical">
           {/* Vertical Flex - for Header, Content */}
-          <MaterialUIDrawer />
+          <SidebarParent />
           { /*
             
           <Toggle>

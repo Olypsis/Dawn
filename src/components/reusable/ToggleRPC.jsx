@@ -9,6 +9,7 @@ export default class ToggleRPC extends Component {
 	}
 
 	toggle = () => {
+		console.log("TOGGLE!")
 		this.setState({
 			on: !this.state.on,
 		});

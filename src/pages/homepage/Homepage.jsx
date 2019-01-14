@@ -8,7 +8,7 @@ import Whisper from '../../features/whisper';
 // Components
 import Header from '../../components/header/Header';
 
-// import MaterialUIDrawer from '../../components/sidebar/MaterialUIDrawer';
+import MaterialUIDrawer from '../../components/sidebar/MaterialUIDrawer';
 // import Toggle from '../../components/reusable/ToggleRPC';
 
 // Metamask
@@ -20,17 +20,18 @@ class Homepage extends React.Component {
       <div className="main-container">
         <div className="flex-vertical">
           {/* Vertical Flex - for Header, Content */}
-          <Header />
-          {/* 
+          <MaterialUIDrawer />
+          { /*
+            
           <Toggle>
             {({on, toggle}) => (
               <Fragment>
-                {on && }
+                {on && <p> Hello </p>}
                 <button onClick={toggle}> Show/Hide </button>
               </Fragment>
             )}
           </Toggle>
-        */}
+        */ }
           <div className="flex-horizontal">
             {/* Horizontal Flex - for Transfer, Messages */}
 

@@ -19,6 +19,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
+// Custom Button Component
+import IdenticonButton from '../buttons/IdenticonButton';
+import Button from "../buttons/DefaultButton"
+
+import Header from '../header/Header';
+
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -42,6 +48,7 @@ const styles = theme => ({
   menuButton: {
     marginLeft: 12,
     marginRight: 20,
+    float: 'right',
   },
   hide: {
     display: 'none',
@@ -49,6 +56,7 @@ const styles = theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    'z-index': 10,
   },
   drawerPaper: {
     width: drawerWidth,
@@ -84,7 +92,7 @@ class PersistentDrawerRight extends React.Component {
   };
 
   handleDrawerOpen = () => {
-    this.setState({ open: true });
+    this.setState({ open: !this.state.open });
   };
 
   handleDrawerClose = () => {
@@ -98,37 +106,21 @@ class PersistentDrawerRight extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-        >
-          <Toolbar disableGutters={!open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
-              Persistent drawer
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <Header />
+        <Button onClick={this.handleDrawerOpen}> 
+          Open Drawer
+        </Button>
         <main
           className={classNames(classes.content, {
             [classes.contentShift]: open,
           })}
         >
           <div className={classes.drawerHeader} />
-          
         </main>
+
         <Drawer
           className={classes.drawer}
-          variant="persistent"
+          variant="responsive"
           anchor="right"
           open={open}
           classes={{
@@ -137,14 +129,21 @@ class PersistentDrawerRight extends React.Component {
         >
           <div className={classes.drawerHeader}>
             <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              {theme.direction === 'rtl' ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
             </IconButton>
+            <IdenticonButton onClick={this.handleDrawerOpen} />
           </div>
           <Divider />
           <List>
             {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
               <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
             ))}
@@ -153,7 +152,9 @@ class PersistentDrawerRight extends React.Component {
           <List>
             {['All mail', 'Trash', 'Spam'].map((text, index) => (
               <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
             ))}

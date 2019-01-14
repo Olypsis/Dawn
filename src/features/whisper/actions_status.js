@@ -48,7 +48,7 @@ export const sendStatusMessage = (payload, publicKey) => async (
   getState,
 ) => {
   const { status } = getState().whisper;
-
+  console.log("Trying to send message over Status.. ")
   status.sendUserMessage(publicKey, payload, (err, res) => {
     console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
     dispatch(sendStatusMessageAction(payload));

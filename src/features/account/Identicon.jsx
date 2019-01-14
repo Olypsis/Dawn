@@ -1,6 +1,9 @@
 import React, { Fragment } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
+// Redux
+import { connect } from 'react-redux';
+
 class Identicon extends React.Component {
 	constructor(props) {
 		super(props);
@@ -10,7 +13,7 @@ class Identicon extends React.Component {
 	}
 
 	render() {
-		const { publicKey } = this.props;
+		const { publicKey } = this.props.whisper.statusDetails;
 		const seed = publicKey
 			? jsNumberForAddress(publicKey)
 			: jsNumberForAddress(this.state.seed);
@@ -23,4 +26,11 @@ class Identicon extends React.Component {
 	}
 }
 
-export default Identicon;
+const mapStateToProps = state => ({
+  whisper: state.whisper,
+});
+
+export default connect(
+  mapStateToProps,
+)(Identicon);
+

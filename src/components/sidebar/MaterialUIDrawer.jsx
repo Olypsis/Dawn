@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -23,7 +20,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import IdenticonButton from '../buttons/IdenticonButton';
 import Button from "../buttons/DefaultButton"
 
-import Header from '../header/Header';
+// import Header from '../header/Header';
 
 const drawerWidth = 240;
 
@@ -106,9 +103,8 @@ class PersistentDrawerRight extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <Header />
         <Button onClick={this.handleDrawerOpen}> 
-          Open Drawer
+          <MenuIcon />
         </Button>
         <main
           className={classNames(classes.content, {
@@ -120,7 +116,7 @@ class PersistentDrawerRight extends React.Component {
 
         <Drawer
           className={classes.drawer}
-          variant="responsive"
+          variant="persistent"
           anchor="right"
           open={open}
           classes={{

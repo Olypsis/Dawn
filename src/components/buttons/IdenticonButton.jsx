@@ -4,13 +4,11 @@ import classNames from 'classnames';
 
 // Components
 import Toggle from '../reusable/ToggleRPC';
-import Identicon from '../Identicon';
+import Identicon from '../../features/account/Identicon';
 
 // Material-UI
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 
 const styles = theme => ({
   button: {

@@ -5,9 +5,6 @@ import UploadCard from '../../features/upload';
 import TableContainer from '../../features/download';
 import Whisper from '../../features/whisper';
 
-// Components
-import Header from '../../components/header/Header';
-
 import MaterialUIDrawer from '../../components/sidebar/MaterialUIDrawer';
 // import Toggle from '../../components/reusable/ToggleRPC';
 

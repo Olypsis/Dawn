@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // Identicon Account feature
-import Identicon from "../Identicon"
+import Identicon from "../../features/account/Identicon"
 
 // Redux
 const Header = ({ whisper }) => (

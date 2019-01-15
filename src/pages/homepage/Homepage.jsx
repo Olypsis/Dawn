@@ -18,20 +18,8 @@ class Homepage extends React.Component {
         <div className="flex-vertical">
           {/* Vertical Flex - for Header, Content */}
           <SidebarParent />
-          { /*
-            
-          <Toggle>
-            {({on, toggle}) => (
-              <Fragment>
-                {on && <p> Hello </p>}
-                <button onClick={toggle}> Show/Hide </button>
-              </Fragment>
-            )}
-          </Toggle>
-        */ }
           <div className="flex-horizontal">
             {/* Horizontal Flex - for Transfer, Messages */}
-
             {/* Left Half of Page */}
             <div className="container transfer">
               <UploadCard />

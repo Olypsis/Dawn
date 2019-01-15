@@ -20,7 +20,7 @@ class Identicon extends React.Component {
 		console.log('SEED', seed);
 		return (
 			<Fragment>
-				<Jazzicon diameter={25} seed={seed} />
+				<Jazzicon diameter={30} seed={seed} />
 			</Fragment>
 		);
 	}

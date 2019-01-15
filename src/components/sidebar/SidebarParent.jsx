@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// Material-UI
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -10,7 +12,7 @@ import Button from '../buttons/DefaultButton';
 // Custom Drawer Element
 import Drawer from './Drawer';
 
-const styles = (theme) => ({
+const styles = theme => ({
   root: {
     display: 'flex',
   },

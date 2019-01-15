@@ -14,7 +14,7 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
     float: 'right',
-    'z-index': 3000,
+    'z-index': 10,
     position: 'fixed-right',
     border: "2px solid white"
   },

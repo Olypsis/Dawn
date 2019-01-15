@@ -23,3 +23,16 @@ export default class ToggleRPC extends Component {
 		});
 	}
 }
+
+/*
+Used in this way:
+          <Toggle>
+            {({on, toggle}) => (
+              <Fragment>
+                {on && <p> Hello </p>}
+                <button onClick={toggle}> Show/Hide </button>
+              </Fragment>
+            )}
+          </Toggle>
+
+*/

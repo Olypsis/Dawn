@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// Custom Button Component
-import IdenticonButton from '../buttons/IdenticonButton';
-// import Button from '../buttons/DefaultButton';
-
 // SubComponents
 import DrawerHeader from "./DrawerHeader";
 import DrawerInnerMessageContainer from './DrawerInnerContainer';
 
 // Material-UI
 import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 

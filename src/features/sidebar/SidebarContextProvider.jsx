@@ -3,12 +3,12 @@ import { SidebarContext } from './SidebarContext';
 
 class SidebarContextProvider extends React.Component {
 	render() {
-		const { events, whisper } = this.props;
 		return (
 			<SidebarContext.Provider
 				value={{
 					events: this.props.events,
 					whisper: this.props.whisper,
+					downloadAndDecryptFile: this.props.downloadAndDecryptFile
 				}}
 			>
 				{this.props.children}

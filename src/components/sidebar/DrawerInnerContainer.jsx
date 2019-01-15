@@ -25,6 +25,11 @@ class DrawerInnerContainer extends Component {
 	}
 }
 
+DrawerInnerContainer.propTypes = {
+	classes: PropTypes.object.isRequired,
+	heading: PropTypes.string.isRequired
+}
+
 
 
 export default withStyles(styles)(DrawerInnerContainer);

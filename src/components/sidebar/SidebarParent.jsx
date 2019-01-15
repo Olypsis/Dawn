@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
@@ -43,7 +43,7 @@ class PersistentDrawerRight extends React.Component {
   };
 
   render() {
-    const { classes, events, whisper } = this.props;
+    const { classes } = this.props;
     const { open } = this.state;
     return (
       <SidebarContextProvider>

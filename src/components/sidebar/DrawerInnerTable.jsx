@@ -43,10 +43,6 @@ class DrawerInnerMessageTable extends Component {
 		return (
 			<SidebarContext.Consumer>
 				{context => {
-					console.log(
-						'DrawerInnerMessageTable: events:',
-						context.events,
-					);
 					const rows = context.events.events.map(event => {
 						// TODO: rename to events.all
 						// get payload from message

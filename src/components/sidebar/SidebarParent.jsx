@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
@@ -11,6 +11,9 @@ import Button from '../buttons/DefaultButton';
 
 // Custom Drawer Element
 import Drawer from './Drawer';
+
+// Context Provider for passing props throught the Sidebar
+import SidebarContextProvider from '../../features/sidebar/SidebarParentContainer';
 
 const styles = theme => ({
   root: {
@@ -40,19 +43,23 @@ class PersistentDrawerRight extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, events, whisper } = this.props;
     const { open } = this.state;
-
     return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <Button onClick={this.handleDrawerOpen} className={classes.menuButton}>
-          <MenuIcon />
-        </Button>
-        {/* Drawer */}
-        <Drawer open={open} handleDrawerOpen={this.handleDrawerOpen} />
-        {/* End Drawer */}
-      </div>
+      <SidebarContextProvider>
+        <div className={classes.root}>
+          <CssBaseline />
+          <Button
+            onClick={this.handleDrawerOpen}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </Button>
+          {/* Drawer */}
+          <Drawer open={open} handleDrawerOpen={this.handleDrawerOpen} />
+          {/* End Drawer */}
+        </div>
+      </SidebarContextProvider>
     );
   }
 }

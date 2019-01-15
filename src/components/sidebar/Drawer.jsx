@@ -6,6 +6,7 @@ import IdenticonButton from '../buttons/IdenticonButton';
 // import Button from '../buttons/DefaultButton';
 
 // SubComponents
+import DrawerHeader from "./DrawerHeader";
 import DrawerInnerMessageContainer from './DrawerInnerContainer';
 
 // Material-UI
@@ -14,6 +15,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
+
+// Context API 
 
 const drawerWidth = '65%';
 
@@ -77,14 +80,9 @@ class DrawerContainer extends Component {
 				}}
 			>
 				{/*  Header  */}
-				<div className={classes.drawerHeader}>
-					<IconButton onClick={props.handleDrawerOpen}>
-						<ChevronLeftIcon />
-					</IconButton>
-					<span> Your Files </span>
-					<IdenticonButton />
-				</div>
+				<DrawerHeader handleDrawerOpen={props.handleDrawerOpen} />
 				<Divider variant="middle"/>
+				{/*  Data Container  */}
 				<DrawerInnerMessageContainer
 					heading={this.state.innerContentHeading}
 				/>

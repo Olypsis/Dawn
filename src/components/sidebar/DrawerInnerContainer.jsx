@@ -2,10 +2,13 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 // SubComponents
-import DrawerInnerMessageTable from "./DrawerInnerTable";
+import DrawerInnerMessageTable from './DrawerInnerTable';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
+
+// Context API
+import { SidebarContext } from '../../features/sidebar/SidebarContext';
 
 const styles = theme => ({
 	drawerInnerContentHeader: {
@@ -15,21 +18,24 @@ const styles = theme => ({
 
 class DrawerInnerContainer extends Component {
 	render() {
-		const { classes, heading } = this.props;
+		const { classes } = this.props;
 		return (
-			<Fragment>
-				<h3 className={classes.drawerInnerContentHeader}>{heading}</h3>
-				<DrawerInnerMessageTable />
-			</Fragment>
+			<SidebarContext.Consumer>
+				{context => (
+					<Fragment>
+						<h3 className={classes.drawerInnerContentHeader}>
+							{context.sidebar.innerContentHeading}
+						</h3>
+						<DrawerInnerMessageTable />
+					</Fragment>
+				)}
+			</SidebarContext.Consumer>
 		);
 	}
 }
 
 DrawerInnerContainer.propTypes = {
 	classes: PropTypes.object.isRequired,
-	heading: PropTypes.string.isRequired
-}
-
-
+};
 
 export default withStyles(styles)(DrawerInnerContainer);

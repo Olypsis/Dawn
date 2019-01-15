@@ -4,16 +4,17 @@ import PropTypes from 'prop-types';
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import MenuIcon from '@material-ui/icons/Menu';
 
 // Custom Button Component
 import Button from '../buttons/DefaultButton';
+import IdenticonButton from '../buttons/IdenticonButton';
 
 // Custom Drawer Element
 import Drawer from './Drawer';
 
-// Context Provider for passing props throught the Sidebar
+// Context API
 import SidebarContextProvider from '../../features/sidebar/SidebarParentContainer';
+import { SidebarContext } from '../../features/sidebar/SidebarContext';
 
 const styles = theme => ({
   root: {
@@ -30,35 +31,56 @@ const styles = theme => ({
 });
 
 class PersistentDrawerRight extends React.Component {
-  state = {
-    open: false,
+  handleDrawerToggleClick = toggleDrawer => {
+    toggleDrawer();
   };
 
-  handleDrawerOpen = () => {
-    this.setState({ open: !this.state.open });
-  };
-
-  handleDrawerClose = () => {
-    this.setState({ open: false });
+  handleAboutClick = () => {
+    alert('About Modal');
   };
 
   render() {
     const { classes } = this.props;
-    const { open } = this.state;
     return (
       <SidebarContextProvider>
-        <div className={classes.root}>
-          <CssBaseline />
-          <Button
-            onClick={this.handleDrawerOpen}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </Button>
-          {/* Drawer */}
-          <Drawer open={open} handleDrawerOpen={this.handleDrawerOpen} />
-          {/* End Drawer */}
-        </div>
+        <SidebarContext.Consumer>
+          {context => {
+            console.log('SidebarParent: context:', context);
+            return (
+              <div className={classes.root}>
+                <CssBaseline />
+
+                {/* About Modal Button */}
+                <Button
+                  onClick={this.handleAboutClick}
+                  className={classes.menuButton}
+                >
+                  About
+                </Button>
+
+                {/* My Wallet Drawer Button */}
+                <Button
+                  onClick={(this.handleDrawerOpen, context.toggleDrawer)}
+                  className={classes.menuButton}
+                >
+                  My Wallet
+                </Button>
+
+                {/* Identicon Button */}
+                <IdenticonButton
+                  onClick={() =>
+                    this.handleDrawerToggleClick(context.toggleDrawer)
+                  }
+                />
+
+                {/* Drawer Child Component */}
+                <Drawer
+                  open={context.sidebar.open}
+                />
+              </div>
+            );
+          }}
+        </SidebarContext.Consumer>
       </SidebarContextProvider>
     );
   }

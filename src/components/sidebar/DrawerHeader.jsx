@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // Custom Component
 import IdenticonButton from '../buttons/IdenticonButton';
@@ -22,14 +23,24 @@ const styles = theme => ({
 });
 
 class DrawerHeader extends Component {
+	handleDrawerToggleClick = toggleDrawer => {
+		toggleDrawer();
+	};
+
 	render() {
-		const { classes, ...props } = this.props;
+		const { classes } = this.props;
 		return (
 			<SidebarContext.Consumer>
 				{context => {
 					return (
 						<div className={classes.drawerHeader}>
-							<IconButton onClick={props.handleDrawerOpen}>
+							<IconButton
+								onClick={() =>
+									this.handleDrawerToggleClick(
+										context.toggleDrawer,
+									)
+								}
+							>
 								<ChevronLeftIcon />
 							</IconButton>
 							<span> Your Files </span>
@@ -44,5 +55,9 @@ class DrawerHeader extends Component {
 		);
 	}
 }
+
+DrawerHeader.propTypes = {
+	classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(DrawerHeader);

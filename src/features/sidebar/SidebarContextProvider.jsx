@@ -8,6 +8,8 @@ class SidebarContextProvider extends React.Component {
 				value={{
 					events: this.props.events,
 					whisper: this.props.whisper,
+					sidebar: this.props.sidebar,
+					toggleDrawer: this.props.toggleDrawer,
 					downloadAndDecryptFile: this.props.downloadAndDecryptFile
 				}}
 			>

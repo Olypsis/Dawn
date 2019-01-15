@@ -2,7 +2,6 @@ import React from 'react';
 
 // Features
 import UploadCard from '../../features/upload';
-import TableContainer from '../../features/download';
 import Whisper from '../../features/whisper';
 
 import SidebarParent from '../../components/sidebar/SidebarParent';
@@ -28,7 +27,6 @@ class Homepage extends React.Component {
 
             {/* Right Half of Page */}
             <div className="container messages">
-              <TableContainer />
               <Whisper />
             </div>
           </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // SubComponents
-import DrawerHeader from "./DrawerHeader";
+import DrawerHeader from './DrawerHeader';
 import DrawerInnerMessageContainer from './DrawerInnerContainer';
 
 // Material-UI
@@ -10,7 +10,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 
-// Context API 
+// Context API
 
 const drawerWidth = '65%';
 
@@ -74,8 +74,9 @@ class DrawerContainer extends Component {
 				}}
 			>
 				{/*  Header  */}
-				<DrawerHeader handleDrawerOpen={props.handleDrawerOpen} />
-				<Divider variant="middle"/>
+				<DrawerHeader />
+				<Divider variant="middle" />
+
 				{/*  Data Container  */}
 				<DrawerInnerMessageContainer
 					heading={this.state.innerContentHeading}

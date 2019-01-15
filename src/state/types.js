@@ -34,3 +34,7 @@ export const METAMASK_LOGIN = 'METAMASK_LOGIN';
 // Status
 export const NEW_STATUS_INSTANCE = 'NEW_STATUS_INSTANCE';
 export const STATUS_CONNECTED = 'STATUS_CONNECT';
+
+// Sidebar
+export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';
+

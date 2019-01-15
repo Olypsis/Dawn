@@ -9,6 +9,9 @@ import web3Reducer from '../features/web3/reducer';
 import uploadReducer from '../features/upload/reducer';
 import downloadReducer from '../features/download/reducer';
 import eventsReducer from '../features/events/reducer';
+import sidebarReducer from '../features/sidebar/reducer';
+
+
 
 const rootReducer = combineReducers({
   whisper: whisperReducer,
@@ -16,6 +19,7 @@ const rootReducer = combineReducers({
   upload: uploadReducer,
   download: downloadReducer,
   events: eventsReducer,
+  sidebar: sidebarReducer
 });
 
 const initialState = {};

@@ -15,8 +15,6 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     float: 'right',
     'z-index': 10,
-    position: 'fixed-right',
-    border: "2px solid white"
   },
   input: {
     display: 'none',

@@ -63,10 +63,6 @@ class DrawerInnerMessageTable extends Component {
 									<TableRow>
 										<TableCell align="left">Name</TableCell>
 										<TableCell align="left">
-											Sender
-										</TableCell>
-										<TableCell align="left">Size</TableCell>
-										<TableCell align="left">
 											Message
 										</TableCell>
 										<TableCell align="left">
@@ -84,17 +80,14 @@ class DrawerInnerMessageTable extends Component {
 												>
 													{row.name}
 												</TableCell>
-												<TableCell align="left">
-													{row.sender}
-												</TableCell>
-												<TableCell align="left">
-													{row.size}
-												</TableCell>
+							
 												<TableCell align="left">
 													{row.message}
 												</TableCell>
 												<TableCell align="left">
-													<FileOptionsMenu payload={row.payload} />
+													<FileOptionsMenu
+														payload={row.payload}
+													/>
 												</TableCell>
 											</TableRow>
 										);

@@ -1,6 +1,8 @@
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { downloadAndDecryptFile } from '../download/actions';
+
 
 // Core Component
 import SidebarContextProvider from './SidebarContextProvider';
@@ -10,16 +12,13 @@ const mapStateToProps = state => ({
   events: state.events,
 });
 
-// const mapDispatchToProps = dispatch =>
-//   bindActionCreators(
-//     {
-//       connectMetamask,
-//       signMetamaskLogin,
-//       createStatusListener,
-//       statusUseMailservers,
-//     },
-//     dispatch,
-//   );
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      downloadAndDecryptFile,
+    },
+    dispatch,
+  );
 
 export default connect(
   mapStateToProps,

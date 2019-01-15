@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // Material-UI
 import Menu from '@material-ui/core/Menu';
@@ -6,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 
-class SimpleMenu extends React.Component {
+class FileOptionsMenu extends React.Component {
 	state = {
 		anchorEl: null,
 	};
@@ -19,9 +20,17 @@ class SimpleMenu extends React.Component {
 		this.setState({ anchorEl: null });
 	};
 
+	// Click Handler for Download button for every payload received
+	handleDownloadClick = async payload => {
+		const { hash, path, key, iv } = payload;
+		console.log("handleDownloadClick:", payload)
+		this.handleClose();
+		// await this.props.downloadAndDecryptFile(hash, path, key, iv);
+	};
+
 	render() {
 		const { anchorEl } = this.state;
-
+		const { payload, ...props } = this.props;
 		return (
 			<div>
 				<IconButton
@@ -37,13 +46,16 @@ class SimpleMenu extends React.Component {
 					open={Boolean(anchorEl)}
 					onClose={this.handleClose}
 				>
-					<MenuItem onClick={this.handleClose}>Profile</MenuItem>
-					<MenuItem onClick={this.handleClose}>My account</MenuItem>
-					<MenuItem onClick={this.handleClose}>Logout</MenuItem>
+					<MenuItem onClick={() => this.handleDownloadClick(payload)}>
+						Download
+					</MenuItem>
 				</Menu>
 			</div>
 		);
 	}
 }
 
-export default SimpleMenu;
+FileOptionsMenu.propTypes = {
+	
+}
+export default FileOptionsMenu;

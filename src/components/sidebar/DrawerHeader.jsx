@@ -27,7 +27,7 @@ class DrawerHeader extends Component {
 		return (
 			<SidebarContext.Consumer>
 				{context => {
-					console.log('DrawerHeader:', context);
+					console.log('DrawerHeader: statusDetails:', context.whisper.statusDetails);
 					return (
 						<div className={classes.drawerHeader}>
 							<IconButton onClick={props.handleDrawerOpen}>

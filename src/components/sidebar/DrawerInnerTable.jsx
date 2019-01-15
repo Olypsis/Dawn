@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // SubComponents
-import SimpleMenu from '../menus/SimpleMenu';
+import FileOptionsMenu from '../menus/FileOptionsMenu';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -12,6 +12,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+
+// Context API
+import { SidebarContext } from '../../features/sidebar/SidebarContext';
 
 const styles = theme => ({
 	drawerInnerTable: {
@@ -29,59 +32,83 @@ const styles = theme => ({
 
 let id = 0;
 
-function createData(name, calories, fat, carbs, protein) {
+function createData(name, sender, size, message, payload) {
 	id += 1;
-	return { id, name, calories, fat, carbs, protein };
+	return { id, name, sender, size, message, payload };
 }
 
-const rows = [
-	createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-	createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-	createData('Eclair', 262, 16.0, 24, 6.0),
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-	createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 class DrawerInnerMessageTable extends Component {
-	handleClick() {
-		alert('Clicked!');
-	}
-
 	render() {
 		const { classes } = this.props;
 		return (
-			<Paper className={classes.root}>
-				<Table className={classes.table}>
-					<TableHead>
-						<TableRow>
-							<TableCell align="left">Name</TableCell>
-							<TableCell align="left">Sender</TableCell>
-							<TableCell align="left">Size</TableCell>
-							<TableCell align="left">Options</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{rows.map(row => {
-							return (
-								<TableRow key={row.id}>
-									<TableCell component="th" scope="row">
-										{row.name}
-									</TableCell>
-									<TableCell align="left">
-										{row.calories}
-									</TableCell>
-									<TableCell align="left">
-										{row.fat}
-									</TableCell>
-									<TableCell align="left">
-										<SimpleMenu />
-									</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-			</Paper>
+			<SidebarContext.Consumer>
+				{context => {
+					console.log(
+						'DrawerInnerMessageTable: events:',
+						context.events,
+					);
+					const rows = context.events.events.map(event => {
+						// TODO: rename to events.all
+						// get payload from message
+						const { payload } = event;
+						return createData(
+							payload.path,
+							null,
+							null,
+							payload.note,
+							payload,
+						);
+					});
+
+					return (
+						<Paper className={classes.root}>
+							<Table className={classes.table}>
+								<TableHead>
+									<TableRow>
+										<TableCell align="left">Name</TableCell>
+										<TableCell align="left">
+											Sender
+										</TableCell>
+										<TableCell align="left">Size</TableCell>
+										<TableCell align="left">
+											Message
+										</TableCell>
+										<TableCell align="left">
+											Options
+										</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{rows.map(row => {
+										return (
+											<TableRow key={row.id}>
+												<TableCell
+													component="th"
+													scope="row"
+												>
+													{row.name}
+												</TableCell>
+												<TableCell align="left">
+													{row.sender}
+												</TableCell>
+												<TableCell align="left">
+													{row.size}
+												</TableCell>
+												<TableCell align="left">
+													{row.message}
+												</TableCell>
+												<TableCell align="left">
+													<FileOptionsMenu payload={row.payload} />
+												</TableCell>
+											</TableRow>
+										);
+									})}
+								</TableBody>
+							</Table>
+						</Paper>
+					);
+				}}
+			</SidebarContext.Consumer>
 		);
 	}
 }

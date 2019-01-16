@@ -10,7 +10,15 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 
-// Context API
+// Routes
+import SidebarRoutes from '../../routes/SidebarRoutes';
+
+{
+	/* 
+In progress. Curently hosting a browser router inside the component tree.
+Routing will be moved to the top level or routed through react-router-redux soon.
+*/
+}
 
 const drawerWidth = '65%';
 
@@ -76,11 +84,10 @@ class DrawerContainer extends Component {
 				{/*  Header  */}
 				<DrawerHeader />
 				<Divider variant="middle" />
-
 				{/*  Data Container  */}
 				<DrawerInnerMessageContainer
-					heading={this.state.innerContentHeading}
-				/>
+									heading={this.state.innerContentHeading}
+								/>
 			</Drawer>
 		);
 	}

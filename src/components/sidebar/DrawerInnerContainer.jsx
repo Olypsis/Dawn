@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 // SubComponents
 import DrawerInnerMessageTable from './DrawerInnerTable';
+import DrawerInnerAccountPage from './DrawerInnerAccountPage';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -26,7 +28,22 @@ class DrawerInnerContainer extends Component {
 						<h3 className={classes.drawerInnerContentHeader}>
 							{context.sidebar.innerContentHeading}
 						</h3>
-						<DrawerInnerMessageTable />
+						<BrowserRouter>
+							<Switch>
+								<Route
+									exact
+									path="/messages"
+									component={DrawerInnerMessageTable}
+										/>
+									)}
+								/>
+								<Route
+									exact
+									path="/account"
+									component={DrawerInnerAccountPage}
+								/>
+							</Switch>
+						</BrowserRouter>
 					</Fragment>
 				)}
 			</SidebarContext.Consumer>

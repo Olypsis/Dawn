@@ -16,7 +16,7 @@ class Homepage extends React.Component {
       <div className="main-container">
         <div className="flex-vertical">
           {/* Vertical Flex - for Header, Content */}
-          <SidebarParent />
+          <SidebarParent /> 
           <div className="flex-horizontal">
             {/* Horizontal Flex - for Transfer, Messages */}
             {/* Left Half of Page */}

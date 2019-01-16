@@ -43,10 +43,9 @@ class DrawerHeader extends Component {
 							>
 								<ChevronLeftIcon />
 							</IconButton>
-							<span> Your Files </span>
 							<IdenticonButton />
 							<span>
-								{context.whisper.statusDetails.username}
+								{context.whisper.statusDetails.publicKey}
 							</span>
 						</div>
 					);

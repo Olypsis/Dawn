@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 // SubComponents
@@ -57,6 +57,10 @@ class DrawerInnerMessageTable extends Component {
 					});
 
 					return (
+						<Fragment>
+						<h3 className={classes.drawerInnerContentHeader}>
+								Your Files
+							</h3>
 						<Paper className={classes.root}>
 							<Table className={classes.table}>
 								<TableHead>
@@ -95,6 +99,7 @@ class DrawerInnerMessageTable extends Component {
 								</TableBody>
 							</Table>
 						</Paper>
+						</Fragment>
 					);
 				}}
 			</SidebarContext.Consumer>

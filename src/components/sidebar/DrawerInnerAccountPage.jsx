@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 
 export default class DrawerInnerAccountPage extends Component {
+	componentDidMount(){
+		console.log("DrawerInnerAccountPage: componentDidMount")
+	}
 	render() {
+		console.log("DrawerInnerAccountPage: render")
+		console.log("")
 		return (
-			<div>DrawerInnerAccountPage</div>
+			<h1>DrawerInnerAccountPage</h1>
 		);
 	}
 }

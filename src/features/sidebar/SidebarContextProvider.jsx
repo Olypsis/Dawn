@@ -10,6 +10,8 @@ class SidebarContextProvider extends React.Component {
 					whisper: this.props.whisper,
 					sidebar: this.props.sidebar,
 					toggleDrawer: this.props.toggleDrawer,
+					openDrawer: this.props.openDrawer,
+					closeDrawer: this.props.closeDrawer,
 					downloadAndDecryptFile: this.props.downloadAndDecryptFile
 				}}
 			>

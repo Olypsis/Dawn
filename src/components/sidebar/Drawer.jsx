@@ -10,15 +10,12 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 
-// Routes
-import SidebarRoutes from '../../routes/SidebarRoutes';
 
-{
-	/* 
+/* 
+FIXME: 
 In progress. Curently hosting a browser router inside the component tree.
 Routing will be moved to the top level or routed through react-router-redux soon.
 */
-}
 
 const drawerWidth = '65%';
 
@@ -26,7 +23,7 @@ const styles = theme => ({
 	drawer: {
 		width: drawerWidth,
 		flexShrink: 0,
-		'z-index': 10,
+		'z-index': 1,
 	},
 	drawerPaper: {
 		width: drawerWidth,
@@ -81,6 +78,8 @@ class DrawerContainer extends Component {
 					paper: classes.drawerPaper,
 				}}
 			>
+
+
 				{/*  Header  */}
 				<DrawerHeader />
 				<Divider variant="middle" />

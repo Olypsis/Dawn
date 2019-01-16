@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { downloadAndDecryptFile } from '../download/actions';
-import { toggleDrawer } from './actions';
+import { toggleDrawer, openDrawer, closeDrawer } from './actions';
 
 
 
@@ -19,7 +19,9 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       downloadAndDecryptFile,
-      toggleDrawer
+      toggleDrawer,
+      openDrawer,
+      closeDrawer
     },
     dispatch,
   );

@@ -19,6 +19,10 @@ const styles = theme => ({
 });
 
 class DrawerInnerContainer extends Component {
+	componentDidUpdate(prevProps) {
+		console.log('DrawerInnerContainer: componentDidUpdate:', prevProps);
+	}
+
 	render() {
 		const { classes } = this.props;
 		return (
@@ -33,14 +37,13 @@ class DrawerInnerContainer extends Component {
 								<Route
 									exact
 									path="/messages"
-									component={DrawerInnerMessageTable}
-										/>
-									)}
+									render={() => <DrawerInnerMessageTable />}
 								/>
+								)} />
 								<Route
 									exact
 									path="/account"
-									component={DrawerInnerAccountPage}
+									render={() => <DrawerInnerAccountPage />}
 								/>
 							</Switch>
 						</BrowserRouter>

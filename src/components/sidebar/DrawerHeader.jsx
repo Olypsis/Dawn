@@ -23,7 +23,7 @@ const styles = theme => ({
 });
 
 class DrawerHeader extends Component {
-	handleDrawerToggleClick = toggleDrawer => {
+	handleDrawerToggleClick = (toggleDrawer, open) => {
 		toggleDrawer();
 	};
 
@@ -38,6 +38,7 @@ class DrawerHeader extends Component {
 								onClick={() =>
 									this.handleDrawerToggleClick(
 										context.toggleDrawer,
+										context.sidebar.open
 									)
 								}
 							>

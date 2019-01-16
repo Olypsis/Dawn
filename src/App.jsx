@@ -7,9 +7,6 @@ import store from './state/store';
 
 // Routes
 import Routes from './routes';
-import SidebarRoutes from './routes/SidebarRoutes';
-import SidebarParent from './components/sidebar/SidebarParent';
-
 
 
 // Web3

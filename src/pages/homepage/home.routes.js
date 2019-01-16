@@ -1,5 +1,9 @@
 import { Route } from 'react-router-dom';
-import React from 'react';
+import React, { Fragment } from 'react';
 import Homepage from './Homepage';
 
-export default () => (<Route path="/" component={Homepage} />);
+export default () => (
+	<Fragment>
+		<Route path="/" component={Homepage} />
+sss	</Fragment>
+);

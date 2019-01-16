@@ -7,8 +7,6 @@ import Whisper from '../../features/whisper';
 import SidebarParent from '../../components/sidebar/SidebarParent';
 // import Toggle from '../../components/reusable/ToggleRPC';
 
-// Metamask
-import ConnectMetamaskContainer from '../../features/account/ConnectMetamaskContainer';
 
 class Homepage extends React.Component {
   render() {
@@ -22,7 +20,6 @@ class Homepage extends React.Component {
             {/* Left Half of Page */}
             <div className="container transfer">
               <UploadCard />
-              <ConnectMetamaskContainer />
             </div>
 
             {/* Right Half of Page */}

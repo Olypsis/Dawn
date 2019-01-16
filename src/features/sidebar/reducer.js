@@ -2,7 +2,7 @@ import { TOGGLE_DRAWER, OPEN_DRAWER, CLOSE_DRAWER } from '../../state/types';
 
 const initialState = {
   open: false,
-  innerContentHeading: 'Messages',
+  innerContentHeading: '',
 };
 
 export default function(state = initialState, action) {

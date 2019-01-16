@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// Custom Component
-import IdenticonButton from '../buttons/IdenticonButton';
 
 // Material-UI
 import IconButton from '@material-ui/core/IconButton';
@@ -44,9 +42,8 @@ class DrawerHeader extends Component {
 							>
 								<ChevronLeftIcon />
 							</IconButton>
-							<IdenticonButton />
 							<span>
-								{context.whisper.statusDetails.publicKey}
+								Dawn
 							</span>
 						</div>
 					);

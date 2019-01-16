@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Custom Metamask Button
+import MetamaskButton from "../../components/buttons/MetamaskButton"
+
 class ConnectMetamask extends React.Component {
   constructor(props) {
     super(props);
@@ -22,8 +25,7 @@ class ConnectMetamask extends React.Component {
   render() {
     return (
       <div className="flex-vertical">
-        <h3>Login with Metamask</h3>
-        <button onClick={this.onClickSignButton}>Login With Metamask</button>
+        <MetamaskButton onClick={this.onClickSignButton} />
       </div>
     );
   }

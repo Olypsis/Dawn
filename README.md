@@ -1,4 +1,5 @@
 # Dawn Transfer
+[![Join the chat at https://gitter.im/Olypsis/Dawn-Transfer](https://badges.gitter.im/Olypsis/Dawn-Transfer.svg)](https://gitter.im/Olypsis/Dawn-Transfer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 ## Install 

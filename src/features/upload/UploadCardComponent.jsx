@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import _ from 'lodash';
-import util from 'ethjs-util';
 
 // SubComponents
 import UploadCardHeader from './UploadCardHeaderContainer';
@@ -37,11 +36,12 @@ class UploadCard extends Component {
     e.preventDefault();
     const { ipfsAddedFile, encryptedFile } = this.props.upload;
 
-    // Construct payload
+    // Construct payload from IPFS and encrypted file data redux store
     const payload = {
       hash: ipfsAddedFile.fileHash,
       path: ipfsAddedFile.filePath,
-      iv: encryptedFile.decryptionKey,
+      key: encryptedFile.decryptionKey,
+      iv: encryptedFile.decryptionIv,
       note: this.state.form.message ? this.state.form.message : '',
     };
 
@@ -66,15 +66,12 @@ class UploadCard extends Component {
   async componentWillReceiveProps(nextProps) {
     // Set default values for component
     const { form } = this.state;
-    // form.publicKey = nextProps.whisper.details.publicKey;
     form.topic = '1234';
     this.setState({ form });
   }
 
   render() {
     const { form, errors } = this.state;
-    const { files } = form;
-    const { upload } = this.props;
 
     return (
       <div className={'app-card'}>
@@ -125,9 +122,8 @@ class UploadCard extends Component {
 }
 
 UploadCard.propTypes = {
-  sendMessage: PropTypes.func.isRequired,
+  sendStatusMessage: PropTypes.func.isRequired,
   upload: PropTypes.object.isRequired,
-  whisper: PropTypes.object.isRequired,
 };
 
 export default UploadCard;

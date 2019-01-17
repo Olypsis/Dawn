@@ -1,34 +1,27 @@
-import Web3 from 'web3';
-import util from 'ethjs-util';
-
 import StatusJS from 'status-js-api';
-
-import isEmpty from '../../util/is-empty';
-
-// config
 import config from '../../config';
-
 import {
-  GET_WHISPER,
-  SEND_WHISPER_MESSAGE,
-  CREATE_LISTENER,
-  RECEIVED_MESSAGE,
-  SET_WHISPER_PROVIDER,
-  SET_WHISPER,
-  CREATE_MESSAGE_FILTER,
   NEW_STATUS_INSTANCE,
   STATUS_CONNECTED,
+  SEND_WHISPER_MESSAGE,
+  RECEIVED_MESSAGE,
 } from '../../state/types';
 
-// Whisper calls
-import { getWhisperInfo, shhext_post } from '../../util/whispercalls';
-
-// config variables
-const { httpProvider } = config.whisper;
+// Config variables
+const { httpProvider} = config.whisper;
+const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
-const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
+
+// Status public channel
 const channel = 'test999';
 
+/*
+******************
+Thunks
+******************
+ */
+
+// Instantiates a new status instance and creates an anonymous keypair on page load
 export const connectStatus = () => async (dispatch, getState) => {
   const status = new StatusJS();
   console.log('NEW STATUS', status);
@@ -49,17 +42,94 @@ export const connectStatus = () => async (dispatch, getState) => {
   }
 };
 
-// Status Helper Function
-// Can be used with any auth methods to generate your status keypair
+// Sends message to any whisper publicKey through Status
+export const sendStatusMessage = (payload, publicKey) => async (
+  dispatch,
+  getState,
+) => {
+  const { status } = getState().whisper;
+
+  status.sendUserMessage(publicKey, payload, (err, res) => {
+    console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
+    dispatch(sendStatusMessageAction(payload));
+  });
+};
+
+// Creates listeners for public and private chat channels
+// Should be called after new keypair / status account login
+export const createStatusListener = () => async (dispatch, getState) => {
+  const { status } = getState().whisper;
+
+  // Join public chat
+  await status.joinChat(channel);
+
+  // Public message listener
+  status.onMessage(channel, (err, data) => {
+    if (data) console.log('Channel Message:', data.payload);
+  });
+
+  // Private message listener
+  // payload[1][0] extrapolates the original JSON from the recieved data
+  status.onMessage((err, data) => {
+    if (data) {
+      const payload = JSON.parse(data.payload);
+      console.log(`Payload Received! Payload: ${JSON.stringify(payload)}`);
+      dispatch(receivedStatusMessageAction(payload[1][0]));
+    }
+  });
+};
+
+export const statusUseMailservers = () => async (dispatch, getState) => {
+  const { status } = getState().whisper;
+  const enode = mailserver;
+
+  try {
+    //
+    status.mailservers.useMailserver(enode, (err, res) => {
+      console.log('statusUseMailservers: Using mailserver enode:', enode, res);
+
+      // 24hr time window from current timestamp
+      const from = parseInt(new Date().getTime() / 1000 - 86400, 10);
+      const to = parseInt(new Date().getTime() / 1000, 10);
+
+      // Request public channel messages from mailservers
+      status.mailservers.requestChannelMessages(
+        channel,
+        { from, to },
+        (err, res) => {
+          if (err) console.log(err);
+          console.log('requestChannelMessages: res:', res);
+        },
+      );
+
+      // Request user / private messages from mailservers
+      status.mailservers.requestUserMessages({ from, to }, (err, res) => {
+        if (err) console.log(err);
+        console.log('requestUserMessages: res:', res);
+      });
+    });
+  } catch (err) {
+    console.log(new Error(err));
+  }
+};
+
+/*
+******************
+Helper functions
+******************
+ */
+
+// Helper fn - Call methods on status-js to create / log into a keypair with status
 export const loginWithStatus = (
   status,
-  provider = httpProvider,
+  provider = corsProxy + httpProvider,
   privateKey = null,
 ) =>
   new Promise(async (resolve, reject) => {
     try {
+      console.log("loginWithStatus: about to log in in with status provider:", provider)
       await status.connect(
-        corsProxy + provider,
+        provider,
         privateKey,
       );
       const keyId = await status.getKeyId();
@@ -72,93 +142,15 @@ export const loginWithStatus = (
     }
   });
 
-export const sendStatusMessage = (payload, publicKey) => async (
-  dispatch,
-  getState,
-) => {
-  const { status } = getState().whisper;
-  console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
-
-  status.sendUserMessage(publicKey, payload, (err, res) => {
-    console.log(res);
-    dispatch(sendStatusMessageAction(payload));
-  });
-};
-
-export const createStatusListener = () => async (dispatch, getState) => {
-  const { status } = getState().whisper;
-
-  // join public chat #FIXME: remove
-  await status.joinChat(channel);
-
-  // public message handler
-  status.onMessage(channel, (err, data) => {
-    if (data) console.log('Channel Message:', data.payload);
-  });
-
-  // private message handler
-  status.onMessage((err, data) => {
-    if (data) {
-      const payload = JSON.parse(data.payload);
-      // Dispatch Recieved Message Action
-      // Payload [1][0] extrapolates the original JSON from the recieved status payload
-      console.log(
-        `Payload Received! Payload: ${JSON.stringify(payload[1][0])}`,
-      );
-      dispatch(receivedStatusMessageAction(payload[1][0]));
-    }
-  });
-};
-
-export const statusUseMailservers = () => async (dispatch, getState) => {
-  // FIXME: Use mailservers
-  const { status } = getState().whisper;
-  const enode = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
-
-  try {
-
-    status.mailservers.useMailserver(enode, (err, res) => {
-      console.log('statusUseMailservers: Using mailserver enode:', enode, res);
-
-      // time window
-      let from = parseInt(new Date().getTime() / 1000 - 86400, 10);
-      let to = parseInt(new Date().getTime() / 1000, 10);
-
-      status.mailservers.requestChannelMessages(
-        channel,
-        { from, to },
-        (err, res) => {
-          if (err) console.log(err);
-          console.log('requestChannelMessages: res:', res);
-        },
-      );
-
-      // User messages
-      status.mailservers.requestUserMessages({ from, to }, (err, res) => {
-        if (err) console.log(err);
-        console.log('requestUserMessages: res:', res);
-      });
-      
-    });
-  } catch (err) {
-    console.log(new Error(err));
-  }
-};
-
-// Action Creators
+/*
+******************
+Action Creators
+******************
+ */
 
 const newStatusInstanceAction = statusInstance => ({
   type: NEW_STATUS_INSTANCE,
   payload: statusInstance,
-});
-
-export const statusConnectAction = (
-  statusKeypairId,
-  statusPublicKey,
-  statusUsername,
-) => ({
-  type: STATUS_CONNECTED,
-  payload: { statusKeypairId, statusPublicKey, statusUsername },
 });
 
 const sendStatusMessageAction = payload => ({
@@ -171,27 +163,11 @@ const receivedStatusMessageAction = payload => ({
   payload,
 });
 
-const createListenerAction = subscription => ({
-  type: CREATE_LISTENER,
-  payload: subscription,
-});
-
-const createMessageFilterAction = messageFilter => ({
-  type: CREATE_MESSAGE_FILTER,
-  payload: messageFilter,
-});
-
-const setWhisperProviderAction = wsProvider => ({
-  type: SET_WHISPER_PROVIDER,
-  payload: wsProvider,
-});
-
-const setWhisperAction = shh => ({
-  type: SET_WHISPER,
-  payload: shh,
-});
-
-const getWhisperAction = whisper => ({
-  type: GET_WHISPER,
-  payload: whisper,
+export const statusConnectAction = (
+  statusKeypairId,
+  statusPublicKey,
+  statusUsername,
+) => ({
+  type: STATUS_CONNECTED,
+  payload: { statusKeypairId, statusPublicKey, statusUsername },
 });

@@ -1,8 +1,7 @@
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { decryptFile, getFile, downloadAndDecryptFile } from './actions';
-import { sendMessage } from '../whisper/actions';
+import { downloadAndDecryptFile } from './actions';
 
 // Core Component
 import Table from './TableComponent';

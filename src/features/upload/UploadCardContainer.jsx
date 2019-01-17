@@ -1,15 +1,7 @@
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  ipfsAddFile,
-  encryptFile,
-  onFileUploaded,
-  encryptAndAddFile,
-} from './actions';
-import { sendMessage } from '../whisper/actions';
 import { sendStatusMessage } from '../whisper/actions_status';
-
 
 // Core Component
 import UploadCard from './UploadCardComponent';
@@ -22,8 +14,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      sendMessage,
-      sendStatusMessage
+      sendStatusMessage,
     },
     dispatch,
   );

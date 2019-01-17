@@ -1,4 +1,8 @@
-import { SEND_WHISPER_MESSAGE, RECEIVED_MESSAGE } from '../../state/types';
+import {
+  SEND_WHISPER_MESSAGE,
+  RECEIVED_MESSAGE,
+  CLEAR_EVENTS,
+} from '../../state/types';
 // import isEmpty from '../utils/is-empty';
 
 const initialState = {
@@ -24,6 +28,8 @@ export default function(state = initialState, action) {
           { type: 'RECEIVED', payload: action.payload },
         ],
       };
+    case CLEAR_EVENTS:
+      return initialState;
     default:
       return state;
   }

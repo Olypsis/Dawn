@@ -1,16 +1,6 @@
 // redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  getWhisper,
-  sendMessage,
-  createListener,
-  setWhisper,
-  getFilterMessages,
-  requestHistoricMessages,
-  getWhisperIdentityFromPassword,
-  markTrustedEnode,
-} from './actions';
 import { connectStatus, createStatusListener } from './actions_status';
 
 // Core Component
@@ -23,15 +13,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getWhisper,
-      setWhisper,
-      sendMessage,
-      createListener,
-      getFilterMessages,
-      requestHistoricMessages,
-      getWhisperIdentityFromPassword,
-      markTrustedEnode,
-      // Status
       connectStatus,
       createStatusListener,
     },

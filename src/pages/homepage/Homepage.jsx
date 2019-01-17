@@ -1,19 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
+// Features
+import UploadCard from '../../features/upload';
+import TableContainer from '../../features/download';
+import Whisper from '../../features/whisper';
 // Components
-import UploadCard from '../upload';
-import TableContainer from '../download';
 import Header from '../../components/header/Header';
-import Navbar from '../../components/navbar/Navbar';
 
-// Metamask 
+// Metamask
 import ConnectMetamaskContainer from '../../features/account/ConnectMetamaskContainer';
 
-// Whisper
-import Whisper from '../whisper';
-
-class HomepageContainer extends React.Component {
+class Homepage extends React.Component {
   render() {
     return (
       <div className="main-container">
@@ -41,4 +38,4 @@ class HomepageContainer extends React.Component {
   }
 }
 
-export default HomepageContainer;
+export default Homepage;

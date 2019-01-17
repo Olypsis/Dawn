@@ -1,3 +1,6 @@
+// Events
+export const CLEAR_EVENTS = 'CLEAR_EVENTS';
+
 // Whisper
 export const GET_WHISPER = 'GET_WHISPER';
 export const SEND_WHISPER_MESSAGE = 'SEND_WHISPER_MESSAGE';
@@ -8,8 +11,6 @@ export const SET_WHISPER = 'SET_WHISPER';
 export const CREATE_MESSAGE_FILTER = 'CREATE_MESSAGE_FILTER';
 
 export const UPDATE_WHISPER_IDENTITY = 'UPDATE_WHISPER_IDENTITY';
-
-
 
 // Upload
 export const FILE_UPLOADED = 'FILE_UPLOADED';
@@ -26,12 +27,10 @@ export const ENCRYPT_FILE = 'ENCRYPT_FILE';
 // Decryption
 export const DECRYPT_FILE = 'DECRYPT_FILE';
 
-
 // Metamask
 export const METAMASK_CONNECT = 'METAMASK_CONNECT';
 export const METAMASK_LOGIN = 'METAMASK_LOGIN';
 
-
 // Status
-export const NEW_STATUS_INSTANCE = "NEW_STATUS_INSTANCE"
-export const STATUS_CONNECTED = "STATUS_CONNECT"
+export const NEW_STATUS_INSTANCE = 'NEW_STATUS_INSTANCE';
+export const STATUS_CONNECTED = 'STATUS_CONNECT';

@@ -1,65 +1,81 @@
+import fileDownload from 'js-file-download';
 import { IPFS_GET_FILE, DECRYPT_FILE, DOWNLOAD_FILE } from '../../state/types';
-
 import node from '../../util/ipfs';
 import { decrypt } from '../../util/encrypt';
-import fileDownload from 'js-file-download';
 
-//////////////////
-// API Function calls
+/*
+******************
+Thunks
+******************
+ */
 
 // Tries downloading and Decrypting the file given payload
 export const downloadAndDecryptFile = (
   hash,
   fileName,
-  key = 'SECRET_KEY',
-  iv = '9De0DgMTCDFGNokdEEial',
+  key = null,
+  iv = null,
 ) => async dispatch => {
   try {
-    // console.log('HASH:', hash);
-    const res = await getFile(hash);
-    const file = res[0].content;
+    // Get file from IPFS using hash
+    const file = await getFile(hash).then(res => res[0].content);
     dispatch(ipfsGetFileAction(file));
 
+    console.log('downloadAndDecryptFile: Key/IV:', key, iv);
+
     // Decrypt File
-    const decryptedBuffer = await decryptFile(file, iv);
+    const decryptedBuffer = await decryptFile(file, key, iv);
     dispatch(decryptFileAction(decryptedBuffer, fileName));
 
     // Trigger file download
     downloadFile(decryptedBuffer, fileName);
     dispatch(downloadFileAction());
   } catch (err) {
-    console.log(err.message);
+    console.log('downloadAndDecryptFile:', new Error(err.message));
   }
 };
 
-// Decrypts File
-export const decryptFile = async (encryptedBuffer, iv) => {
-  console.log('Decrypting..');
-  const decryptedBuffer = decrypt(encryptedBuffer, iv);
-  console.log('Decrypted: ', decryptedBuffer);
+// Decrypt File using DEK (iv)
+export const decryptFile = async (encryptedBuffer, key, iv) => {
+  console.log('decryptFile: Decrypting... Key/IV:', key, iv);
+  const decryptedBuffer = await decrypt(encryptedBuffer, key, iv);
+  console.log('decryptFile: Decrypted!', decryptedBuffer);
   return decryptedBuffer;
 };
 
-// Get File form IPFS
+/*
+******************
+Helper Functions
+******************
+ */
+
+// Helper fn - Get File from IPFS
 const getFile = async hash => {
-  console.log('GETTING FILES, HASH:', hash);
-  const files = await node.files.get(hash);
+  console.log('getFile: Getting file from IPFS. Hash:', hash);
 
-  const res = files.map(file => {
-    const { content, name, path } = file;
-    return { content, name, path };
-  });
-
-  return res;
+  try {
+    const files = await node.files.get(hash);
+    const res = files.map(file => {
+      const { content, name, path } = file;
+      return { content, name, path };
+    });
+    // Returns an array of length 1 containing an object with file details
+    return res;
+  } catch (err) {
+    console.log('getFile:', err);
+  }
 };
 
-// Encrypt File
-const downloadFile = (decryptedBuffer, fileName) => {
-  return fileDownload(decryptedBuffer, fileName);
-};
+// Helper fn - Download File from client to local machine
+const downloadFile = (decryptedBuffer, fileName) =>
+  fileDownload(decryptedBuffer, fileName);
 
-//////////////////
-// Action Creators
+/*
+******************
+Action Creators
+******************
+ */
+
 const decryptFileAction = (decryptedBuffer, fileName) => ({
   type: DECRYPT_FILE,
   payload: {

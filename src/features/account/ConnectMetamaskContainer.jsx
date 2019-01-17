@@ -4,29 +4,30 @@ import { bindActionCreators } from 'redux';
 
 // Actions
 import { connectMetamask, signMetamaskLogin } from './actions';
-import { createListener } from '../whisper/actions';
-import { createStatusListener, statusUseMailservers } from '../whisper/actions_status';
-
+import {
+  createStatusListener,
+  statusUseMailservers,
+} from '../whisper/actions_status';
 
 // Core Component
 import ConnectMetamask from './ConnectMetamask';
 
 const mapStateToProps = state => ({
-	events: state.events,
+  events: state.events,
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators(
-		{
-			connectMetamask,
-			signMetamaskLogin,
-			createStatusListener,
-			statusUseMailservers
-		},
-		dispatch,
-	);
+  bindActionCreators(
+    {
+      connectMetamask,
+      signMetamaskLogin,
+      createStatusListener,
+      statusUseMailservers,
+    },
+    dispatch,
+  );
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(ConnectMetamask);

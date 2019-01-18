@@ -7,6 +7,8 @@ import {
   RECEIVED_MESSAGE,
 } from '../../state/types';
 
+import { _pushNotificationToQueue } from "../notifications/actions"
+
 // Config variables
 const { httpProvider } = config.whisper;
 const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
@@ -52,6 +54,7 @@ export const sendStatusMessage = (payload, publicKey) => async (
   status.sendUserMessage(publicKey, payload, (err, res) => {
     console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
     dispatch(sendStatusMessageAction(payload));
+    _pushNotificationToQueue(`Message sent!`);;
   });
 };
 
@@ -75,6 +78,8 @@ export const createStatusListener = () => async (dispatch, getState) => {
       const payload = JSON.parse(data.payload);
       console.log(`Payload Received! Payload: ${JSON.stringify(payload)}`);
       dispatch(receivedStatusMessageAction(payload[1][0]));
+      _pushNotificationToQueue(`Message(s) recieved!`);
+
     }
   });
 };

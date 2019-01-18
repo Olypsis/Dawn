@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -10,7 +10,7 @@ const styles = theme => ({
 	close: {
 		padding: theme.spacing.unit / 2,
 	},
-	container: {
+	testContainer: {
 		"background-color": "red"
 	}
 });
@@ -22,11 +22,6 @@ class ConsecutiveSnackbars extends React.Component {
 	};
 
 	handleClose = (event, reason) => {
-
-		// if (reason === 'clickaway') {
-		// 	console.log("ConsecutiveSnackbars: handleClose:", "err: reason: clickaway")
-		// 	return;
-		// }
 		console.log("ConsecutiveSnackbars: handleClose:", "closing")
 		this.props.closeNotification();
 	};
@@ -40,13 +35,7 @@ class ConsecutiveSnackbars extends React.Component {
 		const { messageInfo, open } = notifications;
 
 		return (
-			<div className={classes.container}>
-				<Button onClick={this.handleClick('message a')}>
-					Show message A
-				</Button>
-				<Button onClick={this.handleClick('message b')}>
-					Show message B
-				</Button>
+			<Fragment>
 				<Snackbar
 					key={messageInfo.key}
 					anchorOrigin={{
@@ -81,7 +70,7 @@ class ConsecutiveSnackbars extends React.Component {
 						</IconButton>,
 					]}
 				/>
-			</div>
+			</Fragment>
 		);
 	}
 }

@@ -1,30 +1,34 @@
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { downloadAndDecryptFile } from '../download/actions';
-import { toggleDrawer, openDrawer, closeDrawer } from './actions';
+import {
+  processQueue,
+  openNotification,
+  closeNotification,
+  pushNotificationToQueue,
+} from './actions';
 
 // Core Component
-import SidebarContextProvider from './SidebarContextProvider';
+import MultipleNotificationsComponent from './MultipleNotificationsComponent';
 
 const mapStateToProps = state => ({
-  whisper: state.whisper,
+  notifications: state.notifications,
   events: state.events,
-  sidebar: state.sidebar
+  sidebar: state.sidebar,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      downloadAndDecryptFile,
-      toggleDrawer,
-      openDrawer,
-      closeDrawer
+      processQueue,
+      openNotification,
+      closeNotification,
+      pushNotificationToQueue,
     },
     dispatch,
   );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(SidebarContextProvider);
+  mapDispatchToProps,
+)(MultipleNotificationsComponent);

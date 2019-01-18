@@ -3,10 +3,13 @@ import React from 'react';
 // Features
 import UploadCard from '../../features/upload';
 import Whisper from '../../features/whisper';
+import NotificationsContainer from '../../features/notifications/NotificationsContainer';
+
 
 // SubComponents
 import SidebarParent from '../../components/sidebar/SidebarParent';
 import CustomSnackBars from '../../components/snackbars/MultipleSnackBars';
+
 
 // import Toggle from '../../components/reusable/ToggleRPC';
 
@@ -43,7 +46,7 @@ class Homepage extends React.Component {
 
             {/* Right Half of Page */}
             <div className="container messages">
-              <CustomSnackBars />
+              <NotificationsContainer />
               <Whisper />
             </div>
           </div>

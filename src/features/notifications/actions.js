@@ -1,34 +1,77 @@
-	export const processQueue = () => (dispatch, getState) => {
-		const { queue } = getState().notifications;
-		if (queue.length > 0) {
-			this.setState({
-				messageInfo: this.queue.shift(),
-				open: true,
-			});
-		}
-	};
+import {
+	PROCESS_NOTIFICATIONS_QUEUE,
+	OPEN_NOTIFICATION,
+	CLOSE_NOTIFICATION,
+	PUSH_NOTIFICATION,
+} from '../../state/types';
 
-	export const openNotification = () => dispatch => {
-		this.setState({ open: true });
-	};
+import store from '../../state/store';
 
+/*
+******************
+Thunks
+******************
+ */
 
-	export const closeNotification = (event, reason) => dispatch => {
-		this.setState({ open: false });
-	};
+export const openNotification = () => dispatch => {
+	dispatch(openNotificationAction());
+};
 
+export const processQueue = () => dispatch => {
+	_processQueue();
+};
 
-	handleClick = message => () => {
-			this.queue.push({
-				message,
-				key: new Date().getTime(),
-			});
+export const closeNotification = () => dispatch => {
+	dispatch(closeNotificationAction());
+};
 
-			if (this.state.open) {
-				// immediately begin dismissing current message
-				// to start showing new one
-				this.props.closeNotification();
-			} else {
-				this.processQueue();
-			}
-		};
+export const pushNotificationToQueue = message => (dispatch, getState) => {
+	const { open } = getState().notifications;
+	dispatch(pushNotificationAction(message));
+	if (open) {
+		// immediately begin dismissing current message
+		// to start showing new one
+		dispatch(closeNotificationAction());
+	} else {
+		_processQueue();
+	}
+};
+
+/*
+******************
+Non-Thunk Helper Functions
+******************
+ */
+
+export const _processQueue = () => {
+	const { queue } = store.getState().notifications;
+	if (queue.length > 0) {
+		store.dispatch(processNotificiationsQueueAction());
+	}
+};
+
+/*
+******************
+Action Creators
+******************
+ */
+
+const processNotificiationsQueueAction = () => ({
+	type: PROCESS_NOTIFICATIONS_QUEUE,
+});
+
+const openNotificationAction = () => ({
+	type: OPEN_NOTIFICATION,
+});
+
+const closeNotificationAction = () => ({
+	type: CLOSE_NOTIFICATION,
+});
+
+const pushNotificationAction = message => ({
+	type: PUSH_NOTIFICATION,
+	payload: {
+		message,
+		key: new Date().getTime(),
+	},
+});

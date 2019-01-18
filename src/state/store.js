@@ -10,6 +10,8 @@ import uploadReducer from '../features/upload/reducer';
 import downloadReducer from '../features/download/reducer';
 import eventsReducer from '../features/events/reducer';
 import sidebarReducer from '../features/sidebar/reducer';
+import notificationsReducer from '../features/notifications/reducer';
+
 
 
 
@@ -19,7 +21,8 @@ const rootReducer = combineReducers({
   upload: uploadReducer,
   download: downloadReducer,
   events: eventsReducer,
-  sidebar: sidebarReducer
+  sidebar: sidebarReducer,
+  notifications: notificationsReducer
 });
 
 const initialState = {};

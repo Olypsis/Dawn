@@ -1,4 +1,4 @@
-import { ADD_NOTIFICATION, REMOVE_NOTIFICATION, PROCESS_NOTIFICATION_QUEUE } from '../../state/types';
+import { PROCESS_NOTIFICATIONS_QUEUE, OPEN_NOTIFICATION, CLOSE_NOTIFICATION, PUSH_NOTIFICATION} from '../../state/types';
 
 const initialState = {
   open: false,
@@ -8,21 +8,31 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case TOGGLE_DRAWER:
+    case PUSH_NOTIFICATION:
       return {
         ...state,
-        open: !state.open,
+        queue: [...state.queue, {
+          message: action.payload.message, 
+          key: action.payload.key
+        }]
       };
-    case OPEN_DRAWER:
+    case OPEN_NOTIFICATION:
       return {
         ...state,
         open: true,
       };
-    case CLOSE_DRAWER:
+    case CLOSE_NOTIFICATION:
       return {
         ...state,
         open: false,
       };
+
+    case PROCESS_NOTIFICATIONS_QUEUE:
+      return {
+        ...state,
+        messageInfo: state.queue.shift(),
+        open: true
+      }
 
     default:
       return state;

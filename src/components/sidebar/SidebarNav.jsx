@@ -47,7 +47,7 @@ class SidebarNav extends Component {
 		to,
 	) => {
 		// Drawer is closed
-		console.log('SidebarNav:', open);
+		// console.log('SidebarNav:', open);
 		if (!open) {
 			console.log('SidebarNav:', open);
 			openDrawer();

@@ -10,44 +10,24 @@ const styles = theme => ({
 	close: {
 		padding: theme.spacing.unit / 2,
 	},
+	container: {
+		"background-color": "red"
+	}
 });
 
 class ConsecutiveSnackbars extends React.Component {
-	queue = [];
-
-	state = {
-		open: false,
-		messageInfo: {},
-	};
 
 	handleClick = message => () => {
-		this.queue.push({
-			message,
-			key: new Date().getTime(),
-		});
-
-		if (this.state.open) {
-			// immediately begin dismissing current message
-			// to start showing new one
-			this.props.closeNotification();
-		} else {
-			this.processQueue();
-		}
-	};
-
-	processQueue = () => {
-		if (this.queue.length > 0) {
-			this.setState({
-				messageInfo: this.queue.shift(),
-				open: true,
-			});
-		}
+		this.props.pushNotificationToQueue(message);
 	};
 
 	handleClose = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
+
+		// if (reason === 'clickaway') {
+		// 	console.log("ConsecutiveSnackbars: handleClose:", "err: reason: clickaway")
+		// 	return;
+		// }
+		console.log("ConsecutiveSnackbars: handleClose:", "closing")
 		this.props.closeNotification();
 	};
 
@@ -56,11 +36,11 @@ class ConsecutiveSnackbars extends React.Component {
 	};
 
 	render() {
-		const { classes } = this.props;
-		const { messageInfo } = this.state;
+		const { classes, notifications } = this.props;
+		const { messageInfo, open } = notifications;
 
 		return (
-			<div>
+			<div className={classes.container}>
 				<Button onClick={this.handleClick('message a')}>
 					Show message A
 				</Button>
@@ -73,7 +53,7 @@ class ConsecutiveSnackbars extends React.Component {
 						vertical: 'bottom',
 						horizontal: 'left',
 					}}
-					open={this.state.open}
+					open={open}
 					autoHideDuration={6000}
 					onClose={this.handleClose}
 					onExited={this.handleExited}
@@ -108,6 +88,10 @@ class ConsecutiveSnackbars extends React.Component {
 
 ConsecutiveSnackbars.propTypes = {
 	classes: PropTypes.object.isRequired,
+	processQueue: PropTypes.func.isRequired,
+	openNotification: PropTypes.func.isRequired,
+	closeNotification: PropTypes.func.isRequired,
+	pushNotificationToQueue: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ConsecutiveSnackbars);

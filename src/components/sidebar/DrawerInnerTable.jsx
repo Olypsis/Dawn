@@ -17,6 +17,9 @@ import Paper from '@material-ui/core/Paper';
 import { SidebarContext } from '../../features/sidebar/SidebarContext';
 
 const styles = theme => ({
+	drawerInnerContentHeader: {
+		paddingLeft: theme.spacing.unit * 2,
+	},
 	drawerInnerTable: {
 		paddingLeft: theme.spacing.unit * 2,
 	},

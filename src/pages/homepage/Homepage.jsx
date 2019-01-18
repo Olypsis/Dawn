@@ -4,7 +4,10 @@ import React from 'react';
 import UploadCard from '../../features/upload';
 import Whisper from '../../features/whisper';
 
+// SubComponents
 import SidebarParent from '../../components/sidebar/SidebarParent';
+import CustomSnackBars from '../../components/snackbars/CustomSnackBars';
+
 // import Toggle from '../../components/reusable/ToggleRPC';
 
 // Material-UI
@@ -40,6 +43,7 @@ class Homepage extends React.Component {
 
             {/* Right Half of Page */}
             <div className="container messages">
+              <CustomSnackBars />
               <Whisper />
             </div>
           </div>

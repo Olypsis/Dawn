@@ -10,7 +10,6 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 
-
 /* 
 FIXME: 
 In progress. Curently hosting a browser router inside the component tree.
@@ -78,15 +77,13 @@ class DrawerContainer extends Component {
 					paper: classes.drawerPaper,
 				}}
 			>
-
-
 				{/*  Header  */}
 				<DrawerHeader />
 				<Divider variant="middle" />
 				{/*  Data Container  */}
 				<DrawerInnerMessageContainer
-									heading={this.state.innerContentHeading}
-								/>
+					heading={this.state.innerContentHeading}
+				/>
 			</Drawer>
 		);
 	}

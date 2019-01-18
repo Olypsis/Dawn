@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-
 // Material-UI
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -36,15 +35,13 @@ class DrawerHeader extends Component {
 								onClick={() =>
 									this.handleDrawerToggleClick(
 										context.toggleDrawer,
-										context.sidebar.open
+										context.sidebar.open,
 									)
 								}
 							>
 								<ChevronLeftIcon />
 							</IconButton>
-							<span>
-								Dawn
-							</span>
+							<span>Dawn</span>
 						</div>
 					);
 				}}

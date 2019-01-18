@@ -16,11 +16,15 @@ const styles = theme => ({
 		...theme.mixins.gutters(),
 		paddingTop: theme.spacing.unit * 2,
 		paddingBottom: theme.spacing.unit * 2,
+		width: '100%',
+		'overflow-wrap': 'word-break',
 	},
 	drawerInnerContentHeader: {
 		paddingLeft: theme.spacing.unit * 2,
 	},
-
+	innerText: {
+		'overflow-wrap': 'word-break',
+	},
 });
 
 class DrawerInnerAccountPage extends Component {
@@ -47,10 +51,17 @@ class DrawerInnerAccountPage extends Component {
 								</Typography>
 							</Paper>
 							<Paper className={classes.root} elevation={1}>
-								<Typography variant="h5" component="h3">
+								<Typography
+									variant="h5"
+									component="h3"
+									classes={classes.root}
+								>
 									Your Public Key
 								</Typography>
-								<Typography component="p">
+								<Typography
+									component="p"
+									classes={classes.root}
+								>
 									{context.whisper.statusDetails.publicKey}
 								</Typography>
 							</Paper>

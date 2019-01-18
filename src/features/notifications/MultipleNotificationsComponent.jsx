@@ -17,6 +17,14 @@ const styles = theme => ({
 
 class ConsecutiveSnackbars extends React.Component {
 
+	componentWillMount() {
+		console.log("ConsecutiveSnackbars: componentWillMount");
+	}
+
+	componentDidMount() {
+		console.log("ConsecutiveSnackbars: componentDidMount");
+	}
+
 	handleClick = message => () => {
 		this.props.pushNotificationToQueue(message);
 	};

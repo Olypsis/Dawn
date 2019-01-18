@@ -143,6 +143,7 @@ export const loginWithStatus = (
       const keyId = await status.getKeyId();
       const publicKey = await status.getPublicKey();
       const userName = await status.getUserName();
+      _pushNotificationToQueue(`Logged In as ${userName}!`)
       resolve({ keyId, publicKey, userName });
     } catch (err) {
       console.log(new Error(err));

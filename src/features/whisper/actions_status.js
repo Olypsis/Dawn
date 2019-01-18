@@ -92,15 +92,15 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
       const from = parseInt(new Date().getTime() / 1000 - 86400, 10);
       const to = parseInt(new Date().getTime() / 1000, 10);
 
-      // Request public channel messages from mailservers
-      status.mailservers.requestChannelMessages(
-        channel,
-        { from, to },
-        (err, res) => {
-          if (err) console.log(err);
-          console.log('requestChannelMessages: res:', res);
-        },
-      );
+      // // Request public channel messages from mailservers
+      // status.mailservers.requestChannelMessages(
+      //   channel,
+      //   { from, to },
+      //   (err, res) => {
+      //     if (err) console.log(err);
+      //     console.log('requestChannelMessages: res:', res);
+      //   },
+      // );
 
       // Request user / private messages from mailservers
       status.mailservers.requestUserMessages({ from, to }, (err, res) => {

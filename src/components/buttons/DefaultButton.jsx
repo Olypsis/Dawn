@@ -13,9 +13,9 @@ const styles = theme => ({
   },
 });
 
-function ContainedButtons(props) {
+function DefaultButton(props) {
   const { classes, onClick, children, component } = props;
-  console.log('ContainedButtons: component:', component);
+  // console.log('DefaultButton: component:', component);
   return (
     <div>
       <Button variant="contained" className={classes.button} onClick={onClick} component={component}>
@@ -25,8 +25,8 @@ function ContainedButtons(props) {
   );
 }
 
-ContainedButtons.propTypes = {
+DefaultButton.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ContainedButtons);
+export default withStyles(styles)(DefaultButton);

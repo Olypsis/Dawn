@@ -6,10 +6,6 @@ import DrawerInnerMessageTable from './DrawerInnerTable';
 import DrawerInnerAccountPage from './DrawerInnerAccountPage';
 
 class DrawerInnerContainer extends Component {
-	componentDidUpdate(prevProps) {
-		console.log('DrawerInnerContainer: componentDidUpdate:', prevProps);
-	}
-
 	render() {
 		return (
 			<BrowserRouter>

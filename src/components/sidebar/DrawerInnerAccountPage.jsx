@@ -29,10 +29,10 @@ const styles = theme => ({
 
 class DrawerInnerAccountPage extends Component {
 	componentDidMount() {
-		console.log('DrawerInnerAccountPage: componentDidMount');
+		// console.log('DrawerInnerAccountPage: componentDidMount');
 	}
 	render() {
-		console.log('DrawerInnerAccountPage: render');
+		// console.log('DrawerInnerAccountPage: render');
 		const { classes } = this.props;
 		return (
 			<SidebarContext.Consumer>
@@ -51,17 +51,10 @@ class DrawerInnerAccountPage extends Component {
 								</Typography>
 							</Paper>
 							<Paper className={classes.root} elevation={1}>
-								<Typography
-									variant="h5"
-									component="h3"
-									classes={classes.root}
-								>
+								<Typography variant="h5" component="h3">
 									Your Public Key
 								</Typography>
-								<Typography
-									component="p"
-									classes={classes.root}
-								>
+								<Typography component="p">
 									{context.whisper.statusDetails.publicKey}
 								</Typography>
 							</Paper>

@@ -21,7 +21,7 @@ const styles = theme => ({
   },
 });
 
-function ContainedButton(props) {
+function IdenticonButton(props) {
   const { classes, onClick } = props;
   return (
     <div>
@@ -43,8 +43,8 @@ function ContainedButton(props) {
   );
 }
 
-ContainedButton.propTypes = {
+IdenticonButton.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ContainedButton);
+export default withStyles(styles)(IdenticonButton);

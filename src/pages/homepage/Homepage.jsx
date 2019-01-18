@@ -6,7 +6,7 @@ import Whisper from '../../features/whisper';
 
 // SubComponents
 import SidebarParent from '../../components/sidebar/SidebarParent';
-import CustomSnackBars from '../../components/snackbars/CustomSnackBars';
+import CustomSnackBars from '../../components/snackbars/MultipleSnackBars';
 
 // import Toggle from '../../components/reusable/ToggleRPC';
 

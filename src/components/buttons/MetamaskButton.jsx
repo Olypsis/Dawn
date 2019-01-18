@@ -26,7 +26,7 @@ const styles = theme => ({
 	},
 });
 
-function ContainedButtons({ classes, onClick, children }) {
+function MetamaskButton({ classes, onClick, children }) {
 	return (
 		<Fragment>
 			<Button
@@ -42,9 +42,9 @@ function ContainedButtons({ classes, onClick, children }) {
 	);
 }
 
-ContainedButtons.propTypes = {
+MetamaskButton.propTypes = {
 	classes: PropTypes.object.isRequired,
 	onClick: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(ContainedButtons);
+export default withStyles(styles)(MetamaskButton);

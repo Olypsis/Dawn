@@ -11,7 +11,7 @@ import { _pushNotificationToQueue } from "../notifications/actions"
 
 // Config variables
 const { httpProvider } = config.whisper;
-const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
+const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
 
 // Status public channel
@@ -109,7 +109,7 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
 
       // Request user / private messages from mailservers
       status.mailservers.requestUserMessages({ from, to }, (err, res) => {
-        if (err) console.log(err);
+        if (err) console.log('requestUserMessages: err:',err);
         console.log('requestUserMessages: res:', res);
       });
     });

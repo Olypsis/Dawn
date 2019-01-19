@@ -10,7 +10,8 @@ class UploadCard extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+
+    this.initialState = {
       form: {
         files: [],
         uploadedFile: {},
@@ -26,6 +27,9 @@ class UploadCard extends Component {
         file: '',
       },
     };
+    this.state = this.initialState;
+
+
 
     this._onTextChange = this._onTextChange.bind(this);
     this.sendMessage = this.sendMessage.bind(this);

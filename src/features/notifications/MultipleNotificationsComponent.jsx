@@ -18,11 +18,11 @@ const styles = theme => ({
 class ConsecutiveSnackbars extends React.Component {
 
 	componentWillMount() {
-		console.log("ConsecutiveSnackbars: componentWillMount");
+		// console.log("ConsecutiveSnackbars: componentWillMount");
 	}
 
 	componentDidMount() {
-		console.log("ConsecutiveSnackbars: componentDidMount");
+		// console.log("ConsecutiveSnackbars: componentDidMount");
 	}
 
 	handleClick = message => () => {
@@ -30,7 +30,7 @@ class ConsecutiveSnackbars extends React.Component {
 	};
 
 	handleClose = (event, reason) => {
-		console.log("ConsecutiveSnackbars: handleClose:", "closing")
+		// console.log("ConsecutiveSnackbars: handleClose:", "closing")
 		this.props.closeNotification();
 	};
 

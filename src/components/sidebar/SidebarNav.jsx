@@ -43,7 +43,7 @@ class SidebarNav extends Component {
 		openDrawer,
 		closeDrawer,
 		open,
-		pathname,
+		hashname,
 		to,
 	) => {
 		// Drawer is closed
@@ -52,19 +52,24 @@ class SidebarNav extends Component {
 			// console.log('SidebarNav:', open);
 			openDrawer();
 		} else {
-			toggleDrawer();
-			// if (pathname === to) {
-			// 	return console.log('ROUTE ALREADY OPEN');
-			// }
-			// else {
-			// 	toggleDrawer();
-			// }
-			// // closeDrawer();
+			// Drawer is open but link is already open - toggle drawer
+			if (hashname === to) {
+				console.log('ROUTE ALREADY OPEN');
+				return toggleDrawer();
+			} else {
+				console.log(`CATCHALL: hashname: ${hashname} - to: ${to}`);
+				return;
+			}
 		}
 	};
 
 	handleAboutClick = () => {
 		alert('About Modal');
+	};
+
+	validateLocation = (location, to) => {
+		if (location.hash === to) return { to: '/' };
+		return to;
 	};
 
 	render() {
@@ -88,7 +93,12 @@ class SidebarNav extends Component {
 									About
 								</Button>
 
-								<Link to="/messages">
+								<Link
+									to={this.validateLocation(
+										location,
+										'#/messages',
+									)}
+								>
 									<Button
 										onClick={e =>
 											this.handleDrawerToggleClick(
@@ -97,8 +107,8 @@ class SidebarNav extends Component {
 												openDrawer,
 												closeDrawer,
 												sidebar.open,
-												location.pathname,
-												'/messages',
+												location.hash,
+												'#/messages',
 											)
 										}
 										className={classes.menuButton}
@@ -107,7 +117,12 @@ class SidebarNav extends Component {
 									</Button>
 								</Link>
 
-								<Link to="/account">
+								<Link
+									to={this.validateLocation(
+										location,
+										'#/account',
+									)}
+								>
 									<IdenticonButton
 										onClick={e =>
 											this.handleDrawerToggleClick(
@@ -116,8 +131,8 @@ class SidebarNav extends Component {
 												openDrawer,
 												closeDrawer,
 												sidebar.open,
-												location.pathname,
-												'/account',
+												location.hash,
+												'#/account',
 											)
 										}
 										className={classes.menuButton}

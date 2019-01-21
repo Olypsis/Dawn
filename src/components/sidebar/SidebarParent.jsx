@@ -7,11 +7,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 // Child Components
 import Drawer from './Drawer';
-import SidebarNav from "./SidebarNav";
+import SidebarNav from './SidebarNav';
 
 // Context API
 import SidebarContextProvider from '../../features/sidebar/SidebarParentContainer';
 import { SidebarContext } from '../../features/sidebar/SidebarContext';
+
+// Router
 
 const styles = theme => ({
   root: {
@@ -35,15 +37,15 @@ class PersistentDrawerRight extends React.Component {
         <SidebarContext.Consumer>
           {context => {
             return (
-              <div className={classes.root}>
-                <CssBaseline />
+                <div className={classes.root}>
+                  <CssBaseline />
 
-                 {/* Top Level Navigation */}
-                <SidebarNav />
+                  {/* Top Level Navigation */}
+                  <SidebarNav />
 
-                {/* Drawer Component */}
-                <Drawer open={context.sidebar.open} />
-              </div>
+                  {/* Drawer Component */}
+                  <Drawer open={context.sidebar.open} />
+                </div>
             );
           }}
         </SidebarContext.Consumer>

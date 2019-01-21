@@ -2,6 +2,7 @@ import React from 'react';
 
 // Features
 import UploadCard from '../../features/upload';
+import UploadCard2 from '../../components/cards/UploadCard';
 import Whisper from '../../features/whisper';
 import NotificationsContainer from '../../features/notifications/NotificationsContainer';
 
@@ -24,7 +25,7 @@ const styles = theme => ({
     animation: 'App-logo-spin infinite 20s linear',
     height: 100,
     margin: theme.spacing.unit * 2,
-    marginLeft: 0,
+    marginLeft: 0,  
   },
 });
 
@@ -48,6 +49,7 @@ class Homepage extends React.Component {
             <div className="container messages">
               <NotificationsContainer />
               <Whisper />
+              <UploadCard2 />
             </div>
           </div>
         </div>

@@ -54,7 +54,7 @@ class SidebarNav extends Component {
 		} else {
 			// Drawer is open but link is already open - toggle drawer
 			if (hashname === to) {
-				console.log('ROUTE ALREADY OPEN');
+				console.log('ROUTE ALREADY OPEN - TOGGLE DRAWER');
 				return toggleDrawer();
 			} else {
 				console.log(`CATCHALL: hashname: ${hashname} - to: ${to}`);
@@ -68,12 +68,13 @@ class SidebarNav extends Component {
 	};
 
 	validateLocation = (location, to) => {
-		if (location.hash === to) return { to: '/' };
+		if (location.pathname === to) return { to: '/' };
 		return to;
 	};
 
 	render() {
 		const { classes, location } = this.props;
+		console.log("SIDEBARNAV: this.location", location)
 		return (
 			<SidebarContext.Consumer>
 				{context => {
@@ -96,7 +97,7 @@ class SidebarNav extends Component {
 								<Link
 									to={this.validateLocation(
 										location,
-										'#/messages',
+										'/messages',
 									)}
 								>
 									<Button
@@ -107,8 +108,8 @@ class SidebarNav extends Component {
 												openDrawer,
 												closeDrawer,
 												sidebar.open,
-												location.hash,
-												'#/messages',
+												location.pathname,
+												'/messages',
 											)
 										}
 										className={classes.menuButton}
@@ -120,7 +121,7 @@ class SidebarNav extends Component {
 								<Link
 									to={this.validateLocation(
 										location,
-										'#/account',
+										'/account',
 									)}
 								>
 									<IdenticonButton
@@ -131,8 +132,8 @@ class SidebarNav extends Component {
 												openDrawer,
 												closeDrawer,
 												sidebar.open,
-												location.hash,
-												'#/account',
+												location.pathname,
+												'/account',
 											)
 										}
 										className={classes.menuButton}

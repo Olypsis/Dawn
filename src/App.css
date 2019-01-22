@@ -4,10 +4,7 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
+
 
 .App-header {
   background-color: #222;
@@ -29,6 +26,11 @@
   to { transform: rotate(360deg); }
 }
 */
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
 
 /* PAGE */
 
@@ -751,7 +753,8 @@ aside {
 html,
 body {
   background-color: coral;
-  background-image: url('https://images.unsplash.com/photo-1507908708918-778587c9e563?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c103c10901350e8778c41dfc521eff55&auto=format&fit=crop&w=1920&h=1080');
+  /*background-image: url('https://images.unsplash.com/photo-1507908708918-778587c9e563?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c103c10901350e8778c41dfc521eff55&auto=format&fit=crop&w=1920&h=1080');*/
+  background-image: url('https://images.unsplash.com/reserve/iFJ5qQylTD2POC68qBgh_Uluru.jpg?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80');
   background-size: cover;
   background-color: #cccccc;
   height: 100%;
@@ -786,9 +789,9 @@ body {
 }
 
 /* MESSAGE TABLE*/
-.messages {
+/*.messages {
   background-color: rgba(0, 0, 0, 0.3);
-}
+}*/
 
 .message-table {
   color: white;

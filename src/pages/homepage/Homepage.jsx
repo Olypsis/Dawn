@@ -2,33 +2,52 @@ import React from 'react';
 
 // Features
 import UploadCard from '../../features/upload';
-import TableContainer from '../../features/download';
+import UploadCard2 from '../../components/cards/UploadCard';
 import Whisper from '../../features/whisper';
-// Components
-import Header from '../../components/header/Header';
+import NotificationsContainer from '../../features/notifications/NotificationsContainer';
 
-// Metamask
-import ConnectMetamaskContainer from '../../features/account/ConnectMetamaskContainer';
+
+// SubComponents
+import SidebarParent from '../../components/sidebar/SidebarParent';
+// import CustomSnackBars from '../../components/snackbars/MultipleSnackBars';
+
+
+// import Toggle from '../../components/reusable/ToggleRPC';
+
+// Material-UI
+import { withStyles } from '@material-ui/core/styles';
+
+// Logomark
+import Logomark from '../../img/logomark.svg';
+
+const styles = theme => ({
+  Applogo: {
+    animation: 'App-logo-spin infinite 20s linear',
+    height: 100,
+    margin: theme.spacing.unit * 2,
+    marginLeft: 0,  
+  },
+});
 
 class Homepage extends React.Component {
   render() {
+    const { classes } = this.props;
     return (
       <div className="main-container">
         <div className="flex-vertical">
           {/* Vertical Flex - for Header, Content */}
-          <Header />
+          <SidebarParent />
           <div className="flex-horizontal">
             {/* Horizontal Flex - for Transfer, Messages */}
-
             {/* Left Half of Page */}
             <div className="container transfer">
+              <img src={Logomark} className={classes.Applogo} alt="logo" />
               <UploadCard />
-              <ConnectMetamaskContainer />
             </div>
 
             {/* Right Half of Page */}
             <div className="container messages">
-              <TableContainer />
+              <NotificationsContainer />
               <Whisper />
             </div>
           </div>
@@ -38,4 +57,4 @@ class Homepage extends React.Component {
   }
 }
 
-export default Homepage;
+export default withStyles(styles)(Homepage);

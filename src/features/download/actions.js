@@ -54,7 +54,7 @@ const getFile = async hash => {
   console.log('getFile: Getting file from IPFS. Hash:', hash);
 
   try {
-    const files = await node.files.get(hash);
+    const files = await node.get(hash);
     const res = files.map(file => {
       const { content, name, path } = file;
       return { content, name, path };

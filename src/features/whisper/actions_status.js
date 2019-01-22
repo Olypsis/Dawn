@@ -7,9 +7,11 @@ import {
   RECEIVED_MESSAGE,
 } from '../../state/types';
 
+import { _pushNotificationToQueue } from "../notifications/actions"
+
 // Config variables
-const { httpProvider} = config.whisper;
-const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
+const { httpProvider } = config.whisper;
+const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
 
 // Status public channel
@@ -48,10 +50,11 @@ export const sendStatusMessage = (payload, publicKey) => async (
   getState,
 ) => {
   const { status } = getState().whisper;
-
+  console.log("Trying to send message over Status.. ")
   status.sendUserMessage(publicKey, payload, (err, res) => {
     console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
     dispatch(sendStatusMessageAction(payload));
+    _pushNotificationToQueue(`Message sent!`);;
   });
 };
 
@@ -75,6 +78,8 @@ export const createStatusListener = () => async (dispatch, getState) => {
       const payload = JSON.parse(data.payload);
       console.log(`Payload Received! Payload: ${JSON.stringify(payload)}`);
       dispatch(receivedStatusMessageAction(payload[1][0]));
+      _pushNotificationToQueue(`Message(s) recieved!`);
+
     }
   });
 };
@@ -92,19 +97,19 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
       const from = parseInt(new Date().getTime() / 1000 - 86400, 10);
       const to = parseInt(new Date().getTime() / 1000, 10);
 
-      // Request public channel messages from mailservers
-      status.mailservers.requestChannelMessages(
-        channel,
-        { from, to },
-        (err, res) => {
-          if (err) console.log(err);
-          console.log('requestChannelMessages: res:', res);
-        },
-      );
+      // // Request public channel messages from mailservers
+      // status.mailservers.requestChannelMessages(
+      //   channel,
+      //   { from, to },
+      //   (err, res) => {
+      //     if (err) console.log(err);
+      //     console.log('requestChannelMessages: res:', res);
+      //   },
+      // );
 
       // Request user / private messages from mailservers
       status.mailservers.requestUserMessages({ from, to }, (err, res) => {
-        if (err) console.log(err);
+        if (err) console.log('requestUserMessages: err:',err);
         console.log('requestUserMessages: res:', res);
       });
     });
@@ -127,7 +132,10 @@ export const loginWithStatus = (
 ) =>
   new Promise(async (resolve, reject) => {
     try {
-      console.log("loginWithStatus: about to log in in with status provider:", provider)
+      console.log(
+        'loginWithStatus: about to log in in with status provider:',
+        provider,
+      );
       await status.connect(
         provider,
         privateKey,
@@ -135,6 +143,7 @@ export const loginWithStatus = (
       const keyId = await status.getKeyId();
       const publicKey = await status.getPublicKey();
       const userName = await status.getUserName();
+      _pushNotificationToQueue(`Logged In as ${userName}!`)
       resolve({ keyId, publicKey, userName });
     } catch (err) {
       console.log(new Error(err));

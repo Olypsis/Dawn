@@ -12,7 +12,7 @@ class Whisper extends React.Component {
   }
 
   async componentDidMount() {
-    const params = new URLSearchParams(this.props.location.search);
+    const params = new URLSearchParams(this.props.location);
     const pKey = params.get('pKey');
 
     const query = {
@@ -24,6 +24,7 @@ class Whisper extends React.Component {
     if (!isEmpty(pKey)) {
       // TODO
       await this.props.connectStatus(pKey);
+      await this.props.createStatusListener();
     } else {
       await this.props.connectStatus();
       await this.props.createStatusListener();

@@ -49,7 +49,6 @@ class Homepage extends React.Component {
             <div className="container messages">
               <NotificationsContainer />
               <Whisper />
-              <UploadCard2 />
             </div>
           </div>
         </div>

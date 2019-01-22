@@ -24,12 +24,12 @@ Thunks
  */
 
 // Instantiates a new status instance and creates an anonymous keypair on page load
-export const connectStatus = () => async (dispatch, getState) => {
+export const connectStatus = (pKey = null) => async (dispatch, getState) => {
   const status = new StatusJS();
   console.log('NEW STATUS', status);
   dispatch(newStatusInstanceAction(status));
   try {
-    const { keyId, publicKey, userName } = await loginWithStatus(status);
+    const { keyId, publicKey, userName } = await loginWithStatus(status, pKey);
     console.log(
       'Status KeyId:',
       keyId,

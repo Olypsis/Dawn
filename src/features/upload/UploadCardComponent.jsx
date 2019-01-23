@@ -83,7 +83,10 @@ class UploadCard extends Component {
         'privateKey',
         burnerpKey,
       );
-      // TODO Generate Link
+      // Generate Link
+      // FIXME Change to none localhost link
+      const burnerLink = 'http://localhost:3000/#/?pKey=' + burnerpKey;
+      console.log(burnerLink);
     } catch (err) {
       console.log(err);
     }

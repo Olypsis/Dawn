@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 
 import _ from 'lodash';
 
+import store from '../../state/store';
+
 // SubComponents
 import UploadCardHeader from './UploadCardHeaderContainer';
 
 class UploadCard extends Component {
   constructor(props) {
     super(props);
-
 
     this.initialState = {
       form: {
@@ -18,8 +19,6 @@ class UploadCard extends Component {
       },
     };
     this.state = this.initialState;
-
-
 
     this._onTextChange = this._onTextChange.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
@@ -61,6 +60,33 @@ class UploadCard extends Component {
     // Set default values for component
     const { form } = this.state;
     this.setState({ form });
+  }
+
+  async generateLink() {
+    const { shh } = store.getState().whisper.status;
+    try {
+      // Generate random keyPairId
+      const tempKeypairId = await shh.newKeyPair();
+      // What we send through link
+      const burnerpKey = await shh.getPrivateKey(tempKeypairId);
+      // This is keypairId we generate using privKey
+      const newKeyPairId = await shh.addPrivateKey(burnerpKey);
+      // this is pubkey we send msg to
+      const newPubKey = await shh.getPublicKey(newKeyPairId);
+
+      console.log(
+        'Burner account:',
+        'keypairId:',
+        newKeyPairId,
+        'publicKey:',
+        newPubKey,
+        'privateKey',
+        burnerpKey,
+      );
+      // TODO Generate Link
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   render() {
@@ -107,6 +133,8 @@ class UploadCard extends Component {
                 </button>
               </div>
             </form>
+            {/* TODO */}
+            <button onClick={this.generateLink}>Generate Link</button>
           </div>
         </div>
       </div>

@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+// Identicon Account feature
+import Identicon from "../../features/account/Identicon"
+
 // Redux
 const Header = ({ whisper }) => (
   <header className="App-header">
@@ -11,7 +14,7 @@ const Header = ({ whisper }) => (
     </span>
     <br />
     <span className="public-key">
-      Your Username: {whisper.statusDetails.username}
+      <Identicon publicKey={whisper.statusDetails.publicKey} /> Your Username: {whisper.statusDetails.username}
     </span>
   </header>
 );

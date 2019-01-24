@@ -41,7 +41,7 @@ export const encryptAndAddFile = (fileBuffer, fileName) => async dispatch => {
 
 // Helper fn - Add file to IPFS
 const ipfsAddFile = async (buffer, fileName) => {
-  const filesAdded = await node.files.add({
+  const filesAdded = await node.add({
     content: buffer,
     path: fileName,
   });

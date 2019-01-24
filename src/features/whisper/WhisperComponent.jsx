@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
-import isEmpty from '../../util/is-empty';
+
 
 class Whisper extends React.Component {
   constructor(props) {
@@ -14,20 +13,14 @@ class Whisper extends React.Component {
   async componentDidMount() {
     const params = new URLSearchParams(this.props.location.search);
     const pKey = params.get('pKey');
+    console.log(pKey);
 
     const query = {
       pKey,
     };
 
-    console.log('QUERY', query);
-
-    if (!isEmpty(pKey)) {
-      // TODO
-      await this.props.connectStatus(pKey);
-    } else {
-      await this.props.connectStatus();
-      await this.props.createStatusListener();
-    }
+    await this.props.connectStatus(pKey);
+    await this.props.createStatusListener(pKey);
   }
 
   render = () => <Fragment />;
@@ -38,4 +31,4 @@ Whisper.propTypes = {
   createStatusListener: PropTypes.func.isRequired,
 };
 
-export default Whisper;
+export default withRouter(Whisper);

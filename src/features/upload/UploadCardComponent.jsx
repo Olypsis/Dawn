@@ -10,22 +10,16 @@ class UploadCard extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      form: {
-        files: [],
-        uploadedFile: {},
-        publicKey: '',
-        topic: '1234',
-        message: '',
-      },
 
-      errors: {
+    this.initialState = {
+      form: {
         publicKey: '',
-        topic: '',
         message: '',
-        file: '',
       },
     };
+    this.state = this.initialState;
+
+
 
     this._onTextChange = this._onTextChange.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
@@ -66,7 +60,6 @@ class UploadCard extends Component {
   async componentWillReceiveProps(nextProps) {
     // Set default values for component
     const { form } = this.state;
-    form.topic = '1234';
     this.setState({ form });
   }
 

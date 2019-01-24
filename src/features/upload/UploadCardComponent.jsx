@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import _ from 'lodash';
 
+import store from '../../state/store';
+
 // SubComponents
-import UploadCardHeader from './UploadCardHeaderContainer';
+import UploadCardHeaderContainer from './UploadCardHeaderContainer';
 
 class UploadCard extends Component {
   constructor(props) {
     super(props);
-
-
     this.initialState = {
       form: {
         publicKey: '',
@@ -18,9 +18,6 @@ class UploadCard extends Component {
       },
     };
     this.state = this.initialState;
-
-
-
     this._onTextChange = this._onTextChange.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
   }
@@ -69,7 +66,7 @@ class UploadCard extends Component {
     return (
       <div className={'app-card'}>
         {/* Top Card Content*/}
-        <UploadCardHeader />
+        <UploadCardHeaderContainer />
 
         {/* Bottom Card Content*/}
         <div className={'app-card-content'}>

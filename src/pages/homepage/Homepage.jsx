@@ -2,7 +2,7 @@ import React from 'react';
 
 // Features
 import UploadCard from '../../features/upload';
-import UploadCard2 from '../../components/cards/UploadCard';
+import UploadCard2 from '../../features/upload/NewUploadCard';
 import Whisper from '../../features/whisper';
 import NotificationsContainer from '../../features/notifications/NotificationsContainer';
 
@@ -42,13 +42,14 @@ class Homepage extends React.Component {
             {/* Left Half of Page */}
             <div className="container transfer">
               <img src={Logomark} className={classes.Applogo} alt="logo" />
-              <UploadCard />
+              <UploadCard2 />
             </div>
 
             {/* Right Half of Page */}
             <div className="container messages">
               <NotificationsContainer />
               <Whisper />
+              <UploadCard />
             </div>
           </div>
         </div>

@@ -84,6 +84,8 @@ export const createStatusListener = () => async (dispatch, getState) => {
   });
 };
 
+
+// Queries for historic messages
 export const statusUseMailservers = () => async (dispatch, getState) => {
   const { status } = getState().whisper;
   const enode = mailserver;

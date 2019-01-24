@@ -31,7 +31,7 @@ class UploadForm extends Component {
 		super(props);
 		this.state = {
 			publicKey: '',
-			age: '',
+			message: '',
 			multiline: 'Controlled',
 			currency: 'EUR',
 		};
@@ -54,6 +54,14 @@ class UploadForm extends Component {
 					className={classes.textField}
 					value={this.state.publicKey}
 					onChange={this.handleChange('publicKey')}
+					margin="normal"
+				/>
+				<TextField
+					id="message-textfield"
+					label="Message"
+					className={classes.textField}
+					value={this.state.message}
+					onChange={this.handleChange('message')}
 					margin="normal"
 				/>
 			</form>

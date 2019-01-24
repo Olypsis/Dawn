@@ -79,26 +79,9 @@ class UploadCardHeader extends Component {
 
   render() {
     // Get latest addedFile from props
-    const { ipfsAddedFile } = this.props.upload;
     let renderUploadContent;
 
-    // Change Display based on status of uploaded file
-    if (ipfsAddedFile.filePath) {
-      renderUploadContent = (
-        <div>
-          <p className="file-added-confirmation">
-            File Added! {ipfsAddedFile.filePath}
-          </p>
-          <span> (Click to add another) </span>
-        </div>
-      );
-    } else {
-      renderUploadContent = (
-        <div>
-          <p> + Add your File </p>
-        </div>
-      );
-    }
+    
 
     return (
       <div className={'app-card-header'}>

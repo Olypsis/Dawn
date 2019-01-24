@@ -5,6 +5,22 @@ import { onFileUploaded, encryptAndAddFile } from './actions';
 
 // Core Component
 import UploadCardHeader from './UploadCardHeaderComponent';
+import NewUploadCardHeader from './NewUploadCardHeader';
+
+// Material-ui
+import { withStyles } from '@material-ui/core/styles';
+
+
+const styles = theme => ({
+  uploadCardHeader: {
+    width: '100%',
+    padding: '10px 20px',
+    'text-align': 'center',
+    display: 'block',
+    backgroundColor: 'transparent',
+  },
+});
+
 
 const mapStateToProps = state => ({
   upload: state.upload,
@@ -19,7 +35,9 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   );
 
-export default connect(
+  console.log("NewUploadCardHeader:", NewUploadCardHeader)
+
+export default withStyles(styles)(connect(
   mapStateToProps,
   mapDispatchToProps,
-)(UploadCardHeader);
+)(NewUploadCardHeader));

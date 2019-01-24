@@ -4,11 +4,9 @@ import Dropzone from 'react-dropzone';
 
 // Material-ui
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
 
 // // DropZone Config
-// Max File Upload Size: 100
-const fileMaxSize = 100 * 1000000;
+import config from "../../config"
 
 // Dropzone Styles
 const dropzoneStyle = {
@@ -20,21 +18,6 @@ const dropzoneActiveStyle = {
 	borderColor: '#D8DEE9',
 	backgroundColor: '#8AC0CF',
 };
-
-const styles = theme => ({
-	uploadCardHeader: {
-		width: '100%',
-		padding: '10px 20px',
-		'text-align': 'center',
-		display: 'block',
-		backgroundColor: '#f3f7ff',
-		color: '#ffffff',
-		'z-index': -1000,
-	},
-	uploadCardHeaderDisplayText: {
-		'z-index': 1000,
-	},
-});
 
 class UploadCardHeader extends Component {
 	constructor(props) {
@@ -92,9 +75,8 @@ class UploadCardHeader extends Component {
 			}
 		});
 
-
 	onMouseOver() {
-		alert("mouse over")
+		console.log('mouse over');
 	}
 
 	render() {
@@ -123,10 +105,13 @@ class UploadCardHeader extends Component {
 		}
 
 		return (
-			<CardContent className={classes.uploadCardHeader} onMouseOver={this.onMouseOver}>
+			<CardContent
+				className={classes.uploadCardHeader}
+				onMouseOver={this.onMouseOver}
+			>
 				<Dropzone
 					onDrop={this.handleOnDrop}
-					maxSize={fileMaxSize}
+					maxSize={config.upload.fileMaxSize}
 					multiple={false}
 					style={dropzoneStyle}
 					activeStyle={dropzoneActiveStyle}

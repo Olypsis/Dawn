@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { onFileUploaded, encryptAndAddFile } from './actions';
 
 // Core Component
-import UploadCardHeader from './UploadCardHeaderComponent';
 import NewUploadCardHeader from './NewUploadCardHeader';
 
 // Material-ui
@@ -18,7 +17,11 @@ const styles = theme => ({
     'text-align': 'center',
     display: 'block',
     backgroundColor: 'transparent',
+    "text-color": "black"
   },
+  uploadCardHeaderDisplayText: {
+    "text-color": "black"
+  }
 });
 
 

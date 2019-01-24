@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-
 import PropTypes from 'prop-types';
 
-import classNames from 'classnames';
-
+// Material UI
 import { withStyles } from '@material-ui/core/styles';
-
 import TextField from '@material-ui/core/TextField';
+import Divider from '@material-ui/core/Divider';
+
 
 const styles = theme => ({
 	container: {
@@ -44,10 +43,10 @@ class UploadForm extends Component {
 	};
 
 	render() {
-		const { classes } = this.props;
+		const { classes, children, onSubmit } = this.props;
 
 		return (
-			<form className={classes.container} noValidate autoComplete="off">
+			<form className={classes.container} onSubmit={onSubmit} noValidate autoComplete="off">
 				<TextField
 					id="public-key-textfield"
 					label="Public Key"
@@ -56,6 +55,7 @@ class UploadForm extends Component {
 					onChange={this.handleChange('publicKey')}
 					margin="normal"
 				/>
+				<Divider />	
 				<TextField
 					id="message-textfield"
 					label="Message"
@@ -64,6 +64,7 @@ class UploadForm extends Component {
 					onChange={this.handleChange('message')}
 					margin="normal"
 				/>
+				{children}
 			</form>
 		);
 	}

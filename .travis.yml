@@ -8,3 +8,4 @@ cache:
     - .npm
 script:
   - yarn test
+  - yarn build

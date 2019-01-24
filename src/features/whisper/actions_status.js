@@ -53,6 +53,7 @@ export const sendStatusMessage = (payload, publicKey) => async (
   console.log("Trying to send message over Status.. ")
   status.sendUserMessage(publicKey, payload, (err, res) => {
     console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
+    console.log('sendStatusMessage: publicKey:', publicKey);
     dispatch(sendStatusMessageAction(payload));
     _pushNotificationToQueue(`Message sent!`);;
   });

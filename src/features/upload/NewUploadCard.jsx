@@ -24,30 +24,8 @@ class UploadCard extends React.Component {
 		this.setState(state => ({ expanded: !state.expanded }));
 	};
 
-	// Send a message
-	sendMessage = e => {
-		e.preventDefault();
-		const { ipfsAddedFile, encryptedFile } = this.props.upload;
-
-		// Construct payload from IPFS and encrypted file data redux store
-		const payload = {
-			hash: ipfsAddedFile.fileHash,
-			path: ipfsAddedFile.filePath,
-			key: encryptedFile.decryptionKey,
-			iv: encryptedFile.decryptionIv,
-			note: this.state.message ? this.state.message : '',
-		};
-
-		if (payload.hash === '' || payload.path === '' || payload.iv === '') {
-			return alert('Upload a file before sending through whisper!');
-		}
-
-		// this.props.sendMessage(payload, this.state.form.publicKey);
-		this.props.sendStatusMessage(payload, this.state.publicKey);
-	};
-
 	render() {
-		const { classes } = this.props;
+		const { classes, sendStatusMessage, upload } = this.props;
 		console.log("props", this.props)
 
 		return (
@@ -57,8 +35,8 @@ class UploadCard extends React.Component {
 				<Divider />
 				{/*  Upload Form  */}
 				<CardContent>
-					<UploadForm onSubmit={this.sendMessage}>
-						{/* Expand Button + Options - passed in as children*/}
+					<UploadForm upload={upload} sendStatusMessage={sendStatusMessage}>
+						{/* Expand Button + Collapse - passed into form as children */}
 						<CardActions className={classes.actions} disableActionSpacing>
 							<div className={'app-form-actions'}>
 								<button type={'submit'} className={'app-button primary'}>

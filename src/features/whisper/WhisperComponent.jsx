@@ -17,7 +17,7 @@ class Whisper extends React.Component {
 
     await this.props.connectStatus(pKey);
     await this.props.createStatusListener();
-    // await this.props.statusUseMailservers();
+    await this.props.statusUseMailservers();
   }
 
   render = () => <Fragment />;

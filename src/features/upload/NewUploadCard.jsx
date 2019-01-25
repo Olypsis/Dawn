@@ -15,68 +15,72 @@ import RadioButtonForm from '../../components/forms/RadioButtonForm';
 import UploadCardHeaderContainer from './UploadCardHeaderContainer';
 
 class UploadCard extends React.Component {
-	constructor(props) {
-		super(props);
-	}
+  constructor(props) {
+    super(props);
     this.state = { expanded: false, message: '', publicKey: '', formType: '' };
+  }
 
-	handleExpandClick = () => {
-		this.setState(state => ({ expanded: !state.expanded }));
-	};
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }));
+  };
 
-	render() {
-		const { classes, sendStatusMessage, upload } = this.props;
-		console.log("props", this.props)
   changeForm = formType => {
     this.setState({ formType });
     console.log(formType);
   };
 
-		return (
-			<Card className={classes.card}>
-				{/*  Upload Header  */}
-				<UploadCardHeaderContainer />
-				<Divider />
-				{/*  Upload Form  */}
-				<CardContent>
-					<UploadForm upload={upload} sendStatusMessage={sendStatusMessage}>
-						{/* Expand Button + Collapse - passed into form as children */}
-						<CardActions className={classes.actions} disableActionSpacing>
-							<div className={'app-form-actions'}>
-								<button type={'submit'} className={'app-button primary'}>
-									Send to Peer
-								</button>
-							</div>
-							<IconButton
-								className={classnames(classes.expand, {
-									[classes.expandOpen]: this.state.expanded,
-								})}
-								onClick={this.handleExpandClick}
-								aria-expanded={this.state.expanded}
-								aria-label="Show more"
-							>
-								<ExpandMoreIcon />
-							</IconButton>
-						</CardActions>
-						<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-							<CardContent>
-								<Divider />
-								<Divider variant="middle" />
-							</CardContent>
-						</Collapse>
-					</UploadForm>
-				</CardContent>
-			</Card>
-		);
-	}
+  render() {
+    const { classes, sendStatusMessage, upload } = this.props;
+    console.log('props', this.props);
+
+    return (
+      <Card className={classes.card}>
+        {/*  Upload Header  */}
+        <UploadCardHeaderContainer />
+        <Divider />
+        {/*  Upload Form  */}
+        <CardContent>
+          <UploadForm
+            upload={upload}
+            sendStatusMessage={sendStatusMessage}
             formtype={this.state.formType}
+          >
+            {/* Expand Button + Collapse - passed into form as children */}
+            <CardActions className={classes.actions} disableActionSpacing>
+              <div className={'app-form-actions'}>
+                <button type={'submit'} className={'app-button primary'}>
+                  Send to Peer
+                </button>
+              </div>
+              <IconButton
+                className={classnames(classes.expand, {
+                  [classes.expandOpen]: this.state.expanded,
+                })}
+                onClick={this.handleExpandClick}
+                aria-expanded={this.state.expanded}
+                aria-label="Show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+          </UploadForm>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Divider />
               <RadioButtonForm changeForm={this.changeForm} />
+              <Divider variant="middle" />
+            </CardContent>
+          </Collapse>
+        </CardContent>
+      </Card>
+    );
+  }
 }
 
 UploadCard.propTypes = {
-	classes: PropTypes.object.isRequired,
-	sendStatusMessage: PropTypes.func.isRequired,
-	upload: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
+  sendStatusMessage: PropTypes.func.isRequired,
+  upload: PropTypes.object.isRequired,
 };
 
 export default UploadCard;

@@ -16,11 +16,11 @@ const styles = theme => ({
   },
   group: {
     margin: theme.spacing.unit,
-    "flex-direction": "row"
+    'flex-direction': 'row',
   },
   expandSectionHeader: {
     marginTop: theme.spacing.unit * 1,
-  }
+  },
 });
 
 class RadioButtonsGroup extends React.Component {

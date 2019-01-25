@@ -1,9 +1,6 @@
 import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import queryString from 'query-string';
-import isEmpty from '../../util/is-empty';
 
 class Whisper extends React.Component {
   constructor(props) {

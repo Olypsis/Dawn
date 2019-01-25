@@ -15,7 +15,6 @@ class Whisper extends React.Component {
 
   async componentDidMount() {
     const params = new URLSearchParams(this.props.location.search);
-ateStatusListener(pKey);
     const pKey = params.get('pkey');
     console.log(pKey);
 

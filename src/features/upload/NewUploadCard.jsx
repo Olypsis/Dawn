@@ -17,8 +17,8 @@ import UploadCardHeaderContainer from './UploadCardHeaderContainer';
 class UploadCard extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { expanded: false, message: '', publicKey: '' };
 	}
+    this.state = { expanded: false, message: '', publicKey: '', formType: '' };
 
 	handleExpandClick = () => {
 		this.setState(state => ({ expanded: !state.expanded }));
@@ -27,6 +27,10 @@ class UploadCard extends React.Component {
 	render() {
 		const { classes, sendStatusMessage, upload } = this.props;
 		console.log("props", this.props)
+  changeForm = formType => {
+    this.setState({ formType });
+    console.log(formType);
+  };
 
 		return (
 			<Card className={classes.card}>
@@ -57,7 +61,6 @@ class UploadCard extends React.Component {
 						<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
 							<CardContent>
 								<Divider />
-								<RadioButtonForm />
 								<Divider variant="middle" />
 							</CardContent>
 						</Collapse>
@@ -66,6 +69,8 @@ class UploadCard extends React.Component {
 			</Card>
 		);
 	}
+            formtype={this.state.formType}
+              <RadioButtonForm changeForm={this.changeForm} />
 }
 
 UploadCard.propTypes = {

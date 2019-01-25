@@ -38,7 +38,7 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   );
 
-  console.log("NewUploadCardHeader:", NewUploadCardHeader)
+  // console.log("NewUploadCardHeader:", NewUploadCardHeader)
 
 export default withStyles(styles)(connect(
   mapStateToProps,

@@ -26,7 +26,7 @@ class UploadCard extends React.Component {
 
 	render() {
 		const { classes, sendStatusMessage, upload } = this.props;
-		console.log("props", this.props)
+		// console.log("props", this.props)
 
 		return (
 			<Card className={classes.card}>

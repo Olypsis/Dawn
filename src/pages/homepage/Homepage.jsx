@@ -2,15 +2,12 @@ import React from 'react';
 
 // Features
 import UploadCard from '../../features/upload';
-import UploadCard2 from '../../components/cards/UploadCard';
 import Whisper from '../../features/whisper';
 import NotificationsContainer from '../../features/notifications/NotificationsContainer';
-
 
 // SubComponents
 import SidebarParent from '../../components/sidebar/SidebarParent';
 // import CustomSnackBars from '../../components/snackbars/MultipleSnackBars';
-
 
 // import Toggle from '../../components/reusable/ToggleRPC';
 
@@ -25,7 +22,7 @@ const styles = theme => ({
     animation: 'App-logo-spin infinite 20s linear',
     height: 100,
     margin: theme.spacing.unit * 2,
-    marginLeft: 0,  
+    marginLeft: 0,
   },
 });
 

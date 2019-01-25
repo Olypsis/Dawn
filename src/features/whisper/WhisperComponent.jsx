@@ -1,11 +1,23 @@
 import React, { Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Whisper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pKey: '',
+    };
+  }
 
   async componentDidMount() {
-    await this.props.connectStatus();
+    const params = new URLSearchParams(this.props.location.search);
+    const pKey = params.get('pkey');
+    console.log(pKey);
+
+    await this.props.connectStatus(pKey);
     await this.props.createStatusListener();
+    await this.props.statusUseMailservers();
   }
 
   render = () => <Fragment />;
@@ -16,4 +28,4 @@ Whisper.propTypes = {
   createStatusListener: PropTypes.func.isRequired,
 };
 
-export default Whisper;
+export default withRouter(Whisper);

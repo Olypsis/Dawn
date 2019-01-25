@@ -24,12 +24,16 @@ Thunks
  */
 
 // Instantiates a new status instance and creates an anonymous keypair on page load
-export const connectStatus = () => async (dispatch, getState) => {
+export const connectStatus = (pKey = undefined) => async (
+  dispatch,
+  getState,
+) => {
   const status = new StatusJS();
   console.log('NEW STATUS', status);
+  console.log(pKey);
   dispatch(newStatusInstanceAction(status));
   try {
-    const { keyId, publicKey, userName } = await loginWithStatus(status);
+    const { keyId, publicKey, userName } = await loginWithStatus(status, pKey);
     console.log(
       'Status KeyId:',
       keyId,
@@ -79,7 +83,6 @@ export const createStatusListener = () => async (dispatch, getState) => {
       console.log(`Payload Received! Payload: ${JSON.stringify(payload)}`);
       dispatch(receivedStatusMessageAction(payload[1][0]));
       _pushNotificationToQueue(`Message(s) recieved!`);
-
     }
   });
 };
@@ -127,8 +130,8 @@ Helper functions
 // Helper fn - Call methods on status-js to create / log into a keypair with status
 export const loginWithStatus = (
   status,
-  provider = corsProxy + httpProvider,
   privateKey = null,
+  provider = corsProxy + httpProvider,
 ) =>
   new Promise(async (resolve, reject) => {
     try {

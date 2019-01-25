@@ -1,7 +1,7 @@
 // redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { connectStatus, createStatusListener } from './actions_status';
+import { connectStatus, createStatusListener, statusUseMailservers } from './actions_status';
 
 // Core Component
 import Whisper from './WhisperComponent';
@@ -15,6 +15,7 @@ const mapDispatchToProps = dispatch =>
     {
       connectStatus,
       createStatusListener,
+      statusUseMailservers
     },
     dispatch,
   );

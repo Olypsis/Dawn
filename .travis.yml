@@ -1,10 +1,10 @@
 language: node_js
 node_js:
   - 10
-  - node
 cache:
   yarn: true
   directories:
     - .npm
 script:
   - yarn test
+  - yarn build

@@ -11,6 +11,9 @@ const config = {
     httpProvider: 'http://35.188.163.32:8545',
     topic: 'topic1',
   },
+  upload: {
+    fileMaxSize: 100 * 1000000,
+  },
   mailservers: {
     'mail-01.ac-cn-hongkong-c.eth.beta':
       'enode://da61e9eff86a56633b635f887d8b91e0ff5236bbc05b8169834292e92afb92929dcf6efdbf373a37903da8fe0384d5a0a8247e83f1ce211aa429200b6d28c548@47.91.156.93:30504',

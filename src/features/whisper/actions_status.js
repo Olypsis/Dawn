@@ -57,6 +57,7 @@ export const sendStatusMessage = (payload, publicKey) => async (
   console.log("Trying to send message over Status.. ")
   status.sendUserMessage(publicKey, payload, (err, res) => {
     console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
+    console.log('sendStatusMessage: publicKey:', publicKey);
     dispatch(sendStatusMessageAction(payload));
     _pushNotificationToQueue(`Message sent!`);;
   });
@@ -87,6 +88,8 @@ export const createStatusListener = () => async (dispatch, getState) => {
   });
 };
 
+
+// Queries for historic messages
 export const statusUseMailservers = () => async (dispatch, getState) => {
   const { status } = getState().whisper;
   const enode = mailserver;

@@ -63,6 +63,27 @@ class UploadForm extends Component {
     return await sendStatusMessage(payload, this.state.publicKey);
   };
 
+  formChanged = formType => {
+    if (formType === 'link') {
+      // 1. Create burner account
+      const {
+        newKeyPairId,
+        newPubKey,
+        burnerpKey,
+        burnerLink,
+      } = this.props.generateLink();
+      // 2. Set Public key to form
+      console.log('pubkey', newPubKey);
+      this.setState({ publicKey: newPubKey });
+    } else {
+      console.log('fuck', formType);
+    }
+  };
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    this.formChanged(nextProps.formType);
+  }
   render() {
     const { classes, children, upload, sendStatusMessage } = this.props;
 

@@ -8,6 +8,7 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
+import store from '../../state/store';
 
 // SubComponents
 import UploadForm from './NewUploadForm';
@@ -46,6 +47,7 @@ class UploadCard extends React.Component {
       const burnerLink =
         'https://shrouded-caverns-47686.herokuapp.com/#/?pkey=' + burnerpKey;
       console.log(burnerLink);
+      return { newKeyPairId, newPubKey, burnerpKey, burnerLink };
     } catch (err) {
       console.log(err);
     }
@@ -55,6 +57,8 @@ class UploadCard extends React.Component {
     this.setState(state => ({ expanded: !state.expanded }));
   };
 
+  // 2b. Disable form
+  // 3. On send display link
   changeForm = formType => {
     this.setState({ formType });
     console.log(formType);
@@ -74,7 +78,8 @@ class UploadCard extends React.Component {
           <UploadForm
             upload={upload}
             sendStatusMessage={sendStatusMessage}
-            formtype={this.state.formType}
+            formType={this.state.formType}
+            generateLink={this.generateLink}
           >
             {/* Expand Button + Collapse - passed into form as children */}
             <CardActions className={classes.actions} disableActionSpacing>

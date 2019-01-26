@@ -20,6 +20,37 @@ class UploadCard extends React.Component {
     this.state = { expanded: false, message: '', publicKey: '', formType: '' };
   }
 
+  async generateLink() {
+    const { shh } = store.getState().whisper.status;
+    try {
+      // Generate random keyPairId
+      const tempKeypairId = await shh.newKeyPair();
+      // What we send through link
+      const burnerpKey = await shh.getPrivateKey(tempKeypairId);
+      // This is keypairId we generate using privKey
+      const newKeyPairId = await shh.addPrivateKey(burnerpKey);
+      // this is pubkey we send msg to
+      const newPubKey = await shh.getPublicKey(newKeyPairId);
+
+      console.log(
+        'Burner account:',
+        'keypairId:',
+        newKeyPairId,
+        'publicKey:',
+        newPubKey,
+        'privateKey',
+        burnerpKey,
+      );
+      // Generate Link
+      // FIXME Change to none localhost link
+      const burnerLink =
+        'https://shrouded-caverns-47686.herokuapp.com/#/?pkey=' + burnerpKey;
+      console.log(burnerLink);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
   };

@@ -30,8 +30,8 @@ class UploadForm extends Component {
     this.state = {
       publicKey: '',
       message: '',
-      multiline: 'Controlled',
-      currency: 'EUR',
+      formType: '',
+      randomPublicKey: '',
     };
   }
 
@@ -63,20 +63,20 @@ class UploadForm extends Component {
     return await sendStatusMessage(payload, this.state.publicKey);
   };
 
-  formChanged = formType => {
+  formChanged = async formType => {
     if (formType === 'link') {
       // 1. Create burner account
       const {
-        newKeyPairId,
+        // newKeyPairId,
         newPubKey,
-        burnerpKey,
-        burnerLink,
-      } = this.props.generateLink();
+        // burnerpKey,
+        // burnerLink,
+      } = await this.props.generateLink();
       // 2. Set Public key to form
-      console.log('pubkey', newPubKey);
-      this.setState({ publicKey: newPubKey });
+      console.log('Burner pubkey', newPubKey);
+      this.setState({ publicKey: newPubKey, formType: 'link' });
     } else {
-      console.log('fuck', formType);
+      console.log('Form is link', formType);
     }
   };
 
@@ -87,13 +87,20 @@ class UploadForm extends Component {
   render() {
     const { classes, children, upload, sendStatusMessage } = this.props;
 
-    return (
-      <form
-        className={classes.container}
-        onSubmit={e => this.sendMessage(upload, sendStatusMessage)(e)}
-        noValidate
-        autoComplete="off"
-      >
+    let renderFormLink;
+    if (this.state.formType === 'link') {
+      renderFormLink = (
+        <TextField
+          disabled
+          id="public-key-textfield"
+          label="Public Key"
+          className={classes.textField}
+          value={this.state.publicKey}
+          margin="normal"
+        />
+      );
+    } else {
+      renderFormLink = (
         <TextField
           id="public-key-textfield"
           label="Public Key"
@@ -102,6 +109,16 @@ class UploadForm extends Component {
           onChange={this.handleChange('publicKey')}
           margin="normal"
         />
+      );
+    }
+    return (
+      <form
+        className={classes.container}
+        onSubmit={e => this.sendMessage(upload, sendStatusMessage)(e)}
+        noValidate
+        autoComplete="off"
+      >
+        {renderFormLink}
         <Divider />
         <TextField
           id="message-textfield"

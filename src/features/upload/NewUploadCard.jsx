@@ -18,7 +18,12 @@ import UploadCardHeaderContainer from './UploadCardHeaderContainer';
 class UploadCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { expanded: false, message: '', publicKey: '', formType: '' };
+    this.state = {
+      expanded: false,
+      message: '',
+      publicKey: '',
+      formType: 'whisper',
+    };
   }
 
   async generateLink() {

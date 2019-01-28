@@ -76,7 +76,8 @@ class UploadForm extends Component {
       console.log('Burner pubkey', newPubKey);
       this.setState({ publicKey: newPubKey, formType: 'link' });
     } else {
-      console.log('Form is link', formType);
+      console.log('Form is ', formType);
+      this.setState({ publicKey: '', formType: 'whisper' });
     }
   };
 

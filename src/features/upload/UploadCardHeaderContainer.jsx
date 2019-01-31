@@ -1,7 +1,7 @@
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { onFileUploaded, encryptAndAddFile } from './actions';
+import { onFileUploaded, encryptAndAddFile, pushFileToQueue, clearFileQueue } from './actions';
 
 // Core Component
 import NewUploadCardHeader from './NewUploadCardHeader';
@@ -34,6 +34,8 @@ const mapDispatchToProps = dispatch =>
     {
       encryptAndAddFile,
       onFileUploaded,
+      pushFileToQueue,
+      clearFileQueue
     },
     dispatch,
   );

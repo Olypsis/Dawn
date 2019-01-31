@@ -1,4 +1,4 @@
-import { IPFS_ADD_FILE, ENCRYPT_FILE, FILE_UPLOADED } from '../../state/types';
+import { IPFS_ADD_FILE, ENCRYPT_FILE, FILE_UPLOADED, PUSH_FILE_TO_QUEUE, CLEAR_FILE_QUEUE } from '../../state/types';
 import node from '../../util/ipfs';
 import { encrypt } from '../../util/encrypt';
 
@@ -33,6 +33,15 @@ export const encryptAndAddFile = (fileBuffer, fileName) => async dispatch => {
   }
 };
 
+export const pushFileToQueue = (file) => dispatch => {
+    dispatch(pushFileToQueueAction(file));
+    console.log("pushFileToQueue: pushed file to queue: ", file.name);
+}
+
+export const clearFileQueue = () => dispatch => {
+  dispatch(clearFileQueueAction());
+}
+
 /*
 ******************
  Helper Functions
@@ -61,6 +70,35 @@ const encryptFile = async fileBuffer => {
   return { encryptedBuffer, iv, key };
 };
 
+export const readFile = async file =>
+  new Promise((resolve, reject) => {
+    try {
+      // Create FileReader and read file
+      const reader = new FileReader();
+      console.log('readFile: about to read file...');
+      reader.readAsArrayBuffer(file);
+      reader.onloadend = async () => {
+        // Convert file from blob to buffer
+        const fileBuffer = Buffer.from(reader.result);
+        console.log('readFile: file read!');
+
+        // Log Upload File Success
+        await this.props.onFileUploaded(
+          file.name,
+          file.type,
+          file.preview,
+          fileBuffer,
+        );
+
+        await this.props.encryptAndAddFile(fileBuffer, file.name);
+
+        resolve(true);
+      };
+    } catch (err) {
+      reject('readFile:', new Error(err));
+    }
+  });
+
 /*
 ******************
  Action Creators
@@ -75,6 +113,15 @@ const fileUploadedAction = (fileName, mimeType, filePreview, fileBuffer) => ({
     fileBuffer,
   },
 });
+
+const pushFileToQueueAction = (file) => ({
+  type: PUSH_FILE_TO_QUEUE,
+  payload: file
+})
+
+const clearFileQueueAction = () => ({
+  type: CLEAR_FILE_QUEUE,
+})
 
 const encryptFileAction = (
   encryptedBuffer,

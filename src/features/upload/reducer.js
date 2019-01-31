@@ -1,4 +1,10 @@
-import { IPFS_ADD_FILE, ENCRYPT_FILE, FILE_UPLOADED } from '../../state/types';
+import {
+  IPFS_ADD_FILE,
+  ENCRYPT_FILE,
+  FILE_UPLOADED,
+  PUSH_FILE_TO_QUEUE,
+  CLEAR_FILE_QUEUE
+} from '../../state/types';
 
 const initialState = {
   ipfsAddedFile: {
@@ -17,6 +23,7 @@ const initialState = {
     filePreview: '',
     fileBuffer: [],
   },
+  fileQueue: [],
 };
 
 export default function(state = initialState, action) {
@@ -35,6 +42,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         uploadedFile: action.payload,
+      };
+    case PUSH_FILE_TO_QUEUE:
+      return {
+        ...state,
+        fileQueue: [...state.fileQueue, action.payload],
+      };
+    case CLEAR_FILE_QUEUE:
+      return {
+        ...state,
+        fileQueue: [],
       };
     default:
       return state;

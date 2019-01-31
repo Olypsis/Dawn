@@ -15,6 +15,8 @@ export const UPDATE_WHISPER_IDENTITY = 'UPDATE_WHISPER_IDENTITY';
 // Upload
 export const FILE_UPLOADED = 'FILE_UPLOADED';
 export const IPFS_ADD_FILE = 'IPFS_ADD_FILE';
+export const PUSH_FILE_TO_QUEUE = 'PUSH_FILE_TO_QUEUE';
+export const CLEAR_FILE_QUEUE = 'CLEAR_FILE_QUEUE';
 
 // Download
 export const DOWNLOAD_FILE = 'DOWNLOAD_FILE';

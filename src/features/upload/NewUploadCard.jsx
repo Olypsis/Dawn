@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import UploadForm from './NewUploadForm';
 import RadioButtonForm from '../../components/forms/RadioButtonForm';
 import UploadCardHeaderContainer from './UploadCardHeaderContainer';
+import IndeterminateSpinner from '../../components/spinners/IndeterminateSpinner';
 
 class UploadCard extends React.Component {
 	constructor(props) {
@@ -25,17 +26,28 @@ class UploadCard extends React.Component {
 	};
 
 	render() {
-		const { classes, sendStatusMessage, upload } = this.props;
+		const {
+			classes,
+			sendStatusMessage,
+			encryptAndAddFile,
+			upload,
+		} = this.props;
 		// console.log("props", this.props)
 
-		return (
-			<Card className={classes.card}>
+		const renderedCardContent = upload.uploading ? (
+			<IndeterminateSpinner />
+		) : (
+			<Fragment>
 				{/*  Upload Header  */}
 				<UploadCardHeaderContainer />
 				<Divider />
 				{/*  Upload Form  */}
 				<CardContent>
-					<UploadForm upload={upload} sendStatusMessage={sendStatusMessage}>
+					<UploadForm
+						upload={upload}
+						sendStatusMessage={sendStatusMessage}
+						encryptAndAddFile={encryptAndAddFile}
+					>
 						{/* Expand Button + Collapse - passed into form as children */}
 						<CardActions className={classes.actions} disableActionSpacing>
 							<div className={'app-form-actions'}>
@@ -63,8 +75,10 @@ class UploadCard extends React.Component {
 						</Collapse>
 					</UploadForm>
 				</CardContent>
-			</Card>
+			</Fragment>
 		);
+
+		return <Card className={classes.card}>{renderedCardContent}</Card>;
 	}
 }
 

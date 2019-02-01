@@ -1,9 +1,11 @@
 import {
   IPFS_ADD_FILE,
   ENCRYPT_FILE,
-  FILE_UPLOADED,
+  FILE_READ,
   PUSH_FILE_TO_QUEUE,
-  CLEAR_FILE_QUEUE
+  CLEAR_FILE_QUEUE,
+  UPLOAD_START,
+  UPLOAD_FINISHED,
 } from '../../state/types';
 
 const initialState = {
@@ -17,13 +19,14 @@ const initialState = {
     decryptionIv: '',
     fileName: '',
   },
-  uploadedFile: {
+  rawFile: {
     fileName: '',
     mimeType: '',
     filePreview: '',
     fileBuffer: [],
   },
   fileQueue: [],
+  uploading: false,
 };
 
 export default function(state = initialState, action) {
@@ -38,10 +41,10 @@ export default function(state = initialState, action) {
         ...state,
         encryptedFile: action.payload,
       };
-    case FILE_UPLOADED:
+    case FILE_READ:
       return {
         ...state,
-        uploadedFile: action.payload,
+        rawFile: action.payload,
       };
     case PUSH_FILE_TO_QUEUE:
       return {
@@ -52,6 +55,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         fileQueue: [],
+      };
+    case UPLOAD_START:
+      return {
+        ...state,
+        uploading: true,
+      };
+    case UPLOAD_FINISHED:
+      return {
+        ...state,
+        uploading: false,
       };
     default:
       return state;

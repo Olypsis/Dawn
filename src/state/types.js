@@ -14,11 +14,14 @@ export const UPDATE_WHISPER_IDENTITY = 'UPDATE_WHISPER_IDENTITY';
 
 // Upload
 export const FILE_READ = 'FILE_READ';
-export const IPFS_ADD_FILE = 'IPFS_ADD_FILE';
 export const PUSH_FILE_TO_QUEUE = 'PUSH_FILE_TO_QUEUE';
 export const CLEAR_FILE_QUEUE = 'CLEAR_FILE_QUEUE';
 export const UPLOAD_START = 'UPLOAD_START';
 export const UPLOAD_FINISHED = 'UPLOAD_FINISHED';
+
+// IPFS
+export const START_IPFS_ADD_FILE = 'START_IPFS_ADD_FILE';
+export const FINISH_IPFS_ADD_FILE = 'FINISH_IPFS_ADD_FILE';
 
 
 // Download
@@ -27,7 +30,8 @@ export const IPFS_GET_FILE = 'IPFS_GET_FILE';
 
 // Encryption
 export const GENERATE_ENCRYPTION_KEY = 'GENERATE_ENCRYPTION_KEY';
-export const ENCRYPT_FILE = 'ENCRYPT_FILE';
+export const START_ENCRYPT_FILE = 'START_ENCRYPT_FILE';
+export const FINISH_ENCRYPT_FILE = 'FINISH_ENCRYPT_FILE';
 
 // Decryption
 export const DECRYPT_FILE = 'DECRYPT_FILE';

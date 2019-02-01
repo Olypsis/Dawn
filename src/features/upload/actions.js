@@ -1,11 +1,13 @@
 import {
-  IPFS_ADD_FILE,
-  ENCRYPT_FILE,
+  UPLOAD_START,
+  UPLOAD_FINISHED,
+  START_IPFS_ADD_FILE,
+  FINISH_IPFS_ADD_FILE,
+  START_ENCRYPT_FILE,
+  FINISH_ENCRYPT_FILE,
   FILE_READ,
   PUSH_FILE_TO_QUEUE,
   CLEAR_FILE_QUEUE,
-  UPLOAD_START,
-  UPLOAD_FINISHED,
 } from '../../state/types';
 import node from '../../util/ipfs';
 import { encrypt } from '../../util/encrypt';
@@ -38,15 +40,16 @@ export const encryptAndAddFile = () => async (dispatch, getState) => {
     dispatch(fileReadAction(file.name, file.type, file.preview, fileBuffer));
 
     // Encrypt file, then push buffer to store
+    dispatch(startEncryptFileAction());
     const { encryptedBuffer, key, iv } = await encryptFile(fileBuffer);
     console.log('encryptAndAddFile: key/iv:', key, iv);
-    dispatch(encryptFileAction(encryptedBuffer, key, null, file.name));
+    dispatch(finishEncryptFileAction(encryptedBuffer, key, null, file.name));
 
     // Upload File to IPFS, push hash & filename to store
+    dispatch(startIpfsAddFileAction());
     const { path, hash } = await ipfsAddFile(encryptedBuffer, file.name);
-    dispatch(ipfsAddFileAction(path, hash));
+    dispatch(finishIpfsAddFileAction(path, hash));
     dispatch(uploadFinishedAction());
-
   } catch (err) {
     console.log(err.message);
   }
@@ -143,13 +146,17 @@ const clearFileQueueAction = () => ({
   type: CLEAR_FILE_QUEUE,
 });
 
-const encryptFileAction = (
+const startEncryptFileAction = () => ({
+  type: START_ENCRYPT_FILE,
+});
+
+const finishEncryptFileAction = (
   encryptedBuffer,
   decryptionKey,
   decryptionIv,
   fileName,
 ) => ({
-  type: ENCRYPT_FILE,
+  type: FINISH_ENCRYPT_FILE,
   payload: {
     encryptedBuffer,
     decryptionKey,
@@ -158,8 +165,12 @@ const encryptFileAction = (
   },
 });
 
-const ipfsAddFileAction = (filePath, fileHash) => ({
-  type: IPFS_ADD_FILE,
+const startIpfsAddFileAction = () => ({
+  type: START_IPFS_ADD_FILE,
+});
+
+const finishIpfsAddFileAction = (filePath, fileHash) => ({
+  type: FINISH_IPFS_ADD_FILE,
   payload: { filePath, fileHash },
 });
 

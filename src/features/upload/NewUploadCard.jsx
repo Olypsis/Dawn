@@ -33,51 +33,71 @@ class UploadCard extends React.Component {
 			upload,
 		} = this.props;
 		// console.log("props", this.props)
+		const {
+			transferStatus: { isUploading, isEncrypting, isAddingToIPFS, isFinished },
+		} = upload;
 
-		const renderedCardContent = upload.uploading ? (
-			<IndeterminateSpinner />
-		) : (
-			<Fragment>
-				{/*  Upload Header  */}
-				<UploadCardHeaderContainer />
-				<Divider />
-				{/*  Upload Form  */}
-				<CardContent>
-					<UploadForm
-						upload={upload}
-						sendStatusMessage={sendStatusMessage}
-						encryptAndAddFile={encryptAndAddFile}
-					>
-						{/* Expand Button + Collapse - passed into form as children */}
-						<CardActions className={classes.actions} disableActionSpacing>
-							<div className={'app-form-actions'}>
-								<button type={'submit'} className={'app-button primary'}>
-									Send to Peer
-								</button>
-							</div>
-							<IconButton
-								className={classnames(classes.expand, {
-									[classes.expandOpen]: this.state.expanded,
-								})}
-								onClick={this.handleExpandClick}
-								aria-expanded={this.state.expanded}
-								aria-label="Show more"
-							>
-								<ExpandMoreIcon />
-							</IconButton>
-						</CardActions>
-						<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-							<CardContent>
-								<Divider />
-								<RadioButtonForm />
-								<Divider variant="middle" />
-							</CardContent>
-						</Collapse>
-					</UploadForm>
-				</CardContent>
-			</Fragment>
-		);
+		let renderedCardContent, transferStatusMessage;
+		if (isUploading) transferStatusMessage = 'Uploading...';
+		if (isEncrypting) transferStatusMessage = 'Encrypting...';
+		if (isAddingToIPFS) transferStatusMessage = 'Adding to IPFS...';
 
+		if (isUploading || isEncrypting || isAddingToIPFS) {
+			renderedCardContent = (
+				<Fragment>
+					<IndeterminateSpinner />
+					<p> {transferStatusMessage} </p>
+				</Fragment>
+			);
+		} else if (isFinished) {
+			renderedCardContent = (
+				<Fragment>
+					<h1> Finished! </h1>
+				</Fragment>
+			);
+		} else {
+			renderedCardContent = (
+				<Fragment>
+					{/*  Upload Header  */}
+					<UploadCardHeaderContainer />
+					<Divider />
+					{/*  Upload Form  */}
+					<CardContent>
+						<UploadForm
+							upload={upload}
+							sendStatusMessage={sendStatusMessage}
+							encryptAndAddFile={encryptAndAddFile}
+						>
+							{/* Expand Button + Collapse - passed into form as children */}
+							<CardActions className={classes.actions} disableActionSpacing>
+								<div className={'app-form-actions'}>
+									<button type={'submit'} className={'app-button primary'}>
+										Send to Peer
+									</button>
+								</div>
+								<IconButton
+									className={classnames(classes.expand, {
+										[classes.expandOpen]: this.state.expanded,
+									})}
+									onClick={this.handleExpandClick}
+									aria-expanded={this.state.expanded}
+									aria-label="Show more"
+								>
+									<ExpandMoreIcon />
+								</IconButton>
+							</CardActions>
+							<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+								<CardContent>
+									<Divider />
+									<RadioButtonForm />
+									<Divider variant="middle" />
+								</CardContent>
+							</Collapse>
+						</UploadForm>
+					</CardContent>
+				</Fragment>
+			);
+		}
 		return <Card className={classes.card}>{renderedCardContent}</Card>;
 	}
 }

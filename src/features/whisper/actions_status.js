@@ -12,7 +12,8 @@ import { _pushNotificationToQueue } from "../notifications/actions"
 // Config variables
 const { httpProvider } = config.whisper;
 const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
-const { corsProxy } = config;
+// const { corsProxy } = config;
+
 
 // Status public channel
 const channel = 'test999';
@@ -134,7 +135,7 @@ Helper functions
 export const loginWithStatus = (
   status,
   privateKey = null,
-  provider = corsProxy + httpProvider,
+  provider = httpProvider,
 ) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -152,7 +153,8 @@ export const loginWithStatus = (
       _pushNotificationToQueue(`Logged In as ${userName}!`)
       resolve({ keyId, publicKey, userName });
     } catch (err) {
-      console.log(new Error(err));
+      console.log('loginWithStatus:', err);
+      _pushNotificationToQueue(`Failed to login to Status. Check Console`)
       reject(err);
     }
   });

@@ -135,7 +135,7 @@ Helper functions
 export const loginWithStatus = (
   status,
   privateKey = null,
-  provider = httpProvider,
+  provider =  httpProvider,
 ) =>
   new Promise(async (resolve, reject) => {
     try {

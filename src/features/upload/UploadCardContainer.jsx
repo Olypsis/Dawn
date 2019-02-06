@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { sendStatusMessage } from '../whisper/actions_status';
-import { encryptAndAddFile } from './actions';
+import { encryptAndAddFile, restartUploadForm} from './actions';
 
 // Core Component
 import NewUploadCard from './NewUploadCard';
@@ -14,7 +14,12 @@ import { withStyles } from '@material-ui/core/styles';
 // Styles for NewUploadCard defined here, so they can be passed in
 const styles = theme => ({
   card: {
-    maxWidth: 400,
+    height: 350,
+    maxHeight: 350,
+    width: 300,
+    maxWidth: 300,
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   media: {
     height: 0,
@@ -63,6 +68,7 @@ const mapDispatchToProps = dispatch =>
     {
       sendStatusMessage,
       encryptAndAddFile,
+      restartUploadForm,
     },
     dispatch,
   );

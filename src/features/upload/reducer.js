@@ -8,6 +8,7 @@ import {
   FILE_READ,
   PUSH_FILE_TO_QUEUE,
   CLEAR_FILE_QUEUE,
+  CLEAR_UPLOAD_STATE
 } from '../../state/types';
 
 const initialState = {
@@ -91,6 +92,8 @@ export default function(state = initialState, action) {
         ...state,
         transferStatus: { ...state.transferStatus, isFinished: true },
       };
+    case CLEAR_UPLOAD_STATE:
+      return initialState;
     default:
       return state;
   }

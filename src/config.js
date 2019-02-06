@@ -9,6 +9,7 @@ const config = {
     wsProvider: 'ws://localhost:8546',
     localHttpProvider: 'http://localhost:8545',
     httpProvider: 'http://35.188.163.32:8545',
+    httpsProvider: 'https://35.188.163.32:8545',
     topic: 'topic1',
   },
   upload: {

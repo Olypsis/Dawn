@@ -14,6 +14,7 @@ const { httpProvider } = config.whisper;
 const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
 
+
 // Status public channel
 const channel = 'test999';
 
@@ -134,7 +135,7 @@ Helper functions
 export const loginWithStatus = (
   status,
   privateKey = null,
-  provider = corsProxy + httpProvider,
+  provider = corsProxy + httpProvider
 ) =>
   new Promise(async (resolve, reject) => {
     try {

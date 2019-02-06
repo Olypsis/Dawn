@@ -25,6 +25,10 @@ class UploadCard extends React.Component {
 		this.setState(state => ({ expanded: !state.expanded }));
 	};
 
+	handleClickNewUpload = () => {
+		this.props.restartUploadForm();
+	}
+
 	render() {
 		const {
 			classes,
@@ -43,16 +47,24 @@ class UploadCard extends React.Component {
 		if (isAddingToIPFS) transferStatusMessage = 'Adding to IPFS...';
 
 		if (isUploading || isEncrypting || isAddingToIPFS) {
+		// Transfer Progress Indicator
 			renderedCardContent = (
-				<Fragment>
+				<CardContent>
 					<IndeterminateSpinner />
 					<p> {transferStatusMessage} </p>
-				</Fragment>
+				</CardContent>
 			);
 		} else if (isFinished) {
+			// Transfer Finished 
 			renderedCardContent = (
 				<Fragment>
-					<h1> Finished! </h1>
+				<CardContent>
+					<h1>You're Finished!</h1>
+				</CardContent>
+				<Divider />
+				<CardContent>
+					<button onClick={this.handleClickNewUpload} className={'app-button primary'}> Upload a New File </button>
+				</CardContent>
 				</Fragment>
 			);
 		} else {

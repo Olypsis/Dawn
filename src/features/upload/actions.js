@@ -8,6 +8,7 @@ import {
   FILE_READ,
   PUSH_FILE_TO_QUEUE,
   CLEAR_FILE_QUEUE,
+  CLEAR_UPLOAD_STATE
 } from '../../state/types';
 import node from '../../util/ipfs';
 import { encrypt } from '../../util/encrypt';
@@ -45,6 +46,8 @@ export const encryptAndAddFile = () => async (dispatch, getState) => {
     console.log('encryptAndAddFile: key/iv:', key, iv);
     dispatch(finishEncryptFileAction(encryptedBuffer, key, null, file.name));
 
+    console.log("encryptAndAddFile: adding to IPFS");
+
     // Upload File to IPFS, push hash & filename to store
     dispatch(startIpfsAddFileAction());
     const { path, hash } = await ipfsAddFile(encryptedBuffer, file.name);
@@ -63,6 +66,10 @@ export const pushFileToQueue = file => dispatch => {
 export const clearFileQueue = () => dispatch => {
   dispatch(clearFileQueueAction());
 };
+
+export const restartUploadForm = () => dispatch => {
+  dispatch(clearUploadStateAction())
+}
 
 /*
 ******************
@@ -181,3 +188,7 @@ const uploadStartingAction = () => ({
 const uploadFinishedAction = () => ({
   type: UPLOAD_FINISHED,
 });
+
+const clearUploadStateAction = () => ({
+  type: CLEAR_UPLOAD_STATE
+})

@@ -14,8 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 // Styles for NewUploadCard defined here, so they can be passed in
 const styles = theme => ({
   card: {
-    height: 350,
-    maxHeight: 350,
+    minHeight: 350,
     width: 300,
     maxWidth: 300,
     marginLeft: "auto",

@@ -46,7 +46,7 @@ export const encryptAndAddFile = (publicKey, message) => async (dispatch, getSta
     dispatch(uploadStartingAction());
     const file = fileQueue[0];
     const fileBuffer = await readFile(file);
-    dispatch(fileReadAction(file.name, file.type, file.preview, fileBuffer));
+    dispatch(fileReadAction(file.name, file.type, file.preview, null));
     dispatch(uploadFinishedAction());
 
 
@@ -54,7 +54,7 @@ export const encryptAndAddFile = (publicKey, message) => async (dispatch, getSta
     dispatch(startEncryptFileAction());
     const { encryptedBuffer, key, iv } = await encryptFile(fileBuffer);
     console.log('encryptAndAddFile: key/iv:', key, iv);
-    dispatch(finishEncryptFileAction(encryptedBuffer, key, null, file.name));
+    dispatch(finishEncryptFileAction(null, key, null, file.name));
 
     console.log("encryptAndAddFile: adding to IPFS");
 

@@ -8,6 +8,7 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 // SubComponents
 import UploadForm from './NewUploadForm';
@@ -74,6 +75,7 @@ class UploadCard extends React.Component {
 			renderedCardContent = (
 				<Fragment>
 				<CardContent>
+					<CheckCircleIcon />
 					<h1>You're Finished!</h1>
 					<p> Sent to Public Key: </p>
 					<p> {finishedTransfer.publicKey} </p>

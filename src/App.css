@@ -4,28 +4,12 @@
   text-align: center;
 }
 
-
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 */
+
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -117,9 +101,9 @@ ul li:not(:last-child) {
 }
 
 /* Style the image inside the centered container, if needed */
-.centered p {
+/*.centered p {
   color: #d8dee9;
-}
+}*/
 
 /* Style the image inside the centered container, if needed */
 .centered .errors {
@@ -304,94 +288,6 @@ aside {
     width: 350px;
   }
 }
-.app-card .app-card-header {
-  background: #f3f7ff;
-}
-.app-card .app-card-header .app-card-header-inner {
-  padding: 10px 20px;
-}
-.app-card .app-card-content .app-card-content-inner {
-  padding: 20px;
-}
-.app-card.app-card-uploading .app-card-content .app-card-content-inner,
-.app-card.app-card-upload-sent .app-card-content .app-card-content-inner {
-  padding: 40px;
-}
-
-.app-file-select-zone {
-  width: 100%;
-  display: block;
-  text-align: center;
-  padding: 10px 0 0 0;
-}
-.app-file-select-zone label {
-  display: block;
-  width: 100%;
-}
-.app-file-select-zone label input {
-  position: fixed;
-  top: -9999px;
-}
-.app-file-select-zone .app-upload-description {
-  font-size: 12px;
-  display: block;
-}
-.app-file-select-zone .app-upload-icon {
-  display: inline-block;
-  margin-bottom: 10px;
-  width: 60px;
-  height: 30px;
-  border: 1px dashed #96a3bb;
-  position: relative;
-}
-.app-file-select-zone .app-upload-icon i {
-  position: absolute;
-  left: 10px;
-  top: -10px;
-  background: #f3f7ff;
-  font-size: 28px;
-}
-.app-file-select-zone.error .app-upload-icon {
-  border-color: #d0152e;
-}
-
-.app-form-item {
-  margin: 0 0 15px 0;
-}
-.app-form-item label {
-  text-transform: uppercase;
-  display: block;
-  font-weight: 400;
-  margin: 0 0 8px 0;
-}
-.app-form-item input[type='text'],
-.app-form-item input[type='email'],
-.app-form-item input[type='password'],
-.app-form-item textarea {
-  width: 100%;
-  border: 1px solid #e0e0e0;
-  outline: 0 none;
-  padding: 8px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-.app-form-item input[type='text']:focus,
-.app-form-item input[type='text'] :active,
-.app-form-item input[type='email']:focus,
-.app-form-item input[type='email'] :active,
-.app-form-item input[type='password']:focus,
-.app-form-item input[type='password'] :active,
-.app-form-item textarea:focus,
-.app-form-item textarea :active {
-  outline: 0 none;
-}
-.app-form-item textarea {
-  min-height: 50px;
-}
-.app-form-item.error input {
-  color: #d0152e;
-}
 
 .app-form-actions .app-button {
   width: 100%;
@@ -442,297 +338,10 @@ aside {
   background: none;
 }
 
-.text-uppercase {
-  text-transform: uppercase;
-}
-
 .error {
   color: #d0152e;
 }
 
-.app-home-uploading-icon {
-  display: block;
-  text-align: center;
-}
-.app-home-uploading-icon i {
-  font-size: 60px;
-  display: inline-block;
-  border: 1px solid #96a3bb;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  line-height: 100px;
-}
-.app-home-uploading-icon h2 {
-  margin: 20px 0 0 0;
-  padding: 0;
-  font-size: 17px;
-}
-
-.app-home-upload-sent-icon {
-  display: block;
-  text-align: center;
-}
-.app-home-upload-sent-icon i {
-  font-size: 50px;
-  display: inline-block;
-  border: 1px solid #96a3bb;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  line-height: 100px;
-}
-
-.app-upload-files-total {
-  margin-top: 20px;
-}
-
-.app-upload-stats {
-  display: flex;
-  flex-direction: row;
-}
-.app-upload-stats .app-upload-stats-left {
-  flex-grow: 1;
-}
-
-.app-progress {
-  background: #f1f8fe;
-  border: 1px solid #b2d8f8;
-  height: 15px;
-  line-height: 15px;
-  width: 100%;
-  border-radius: 10px;
-  margin: 10px 0 10px 0;
-  position: relative;
-  overflow: hidden;
-}
-.app-progress .app-progress-bar {
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 0px;
-  height: 15px;
-  line-height: 15px;
-  background: #1b65f6;
-}
-
-.app-upload-cancel-button {
-  margin-top: 50px;
-}
-
-.app-text-center {
-  text-align: center;
-}
-
-.app-upload-sent-message h2 {
-  font-size: 25px;
-  font-weight: 400;
-  padding: 0;
-  margin: 20px 0;
-}
-.app-upload-sent-message p {
-  line-height: 1.5em;
-}
-
-.app-upload-sent-actions {
-  margin: 20px 0;
-}
-.app-upload-sent-actions button {
-  margin: 10px 0;
-}
-
-.app-page-download .app-card {
-  margin: 0 auto;
-}
-@media (min-width: 768px) {
-  .app-page-download .app-card {
-    width: 400px;
-  }
-}
-
-.app-top-header {
-  text-align: center;
-  color: #ffffff;
-  margin-bottom: 20px;
-}
-.app-top-header h1 {
-  margin: 0;
-  padding: 0;
-  font-size: 50px;
-  font-weight: 800;
-}
-
-.app-download-icon {
-  text-align: center;
-}
-.app-download-icon i {
-  font-size: 50px;
-  color: #96a3bb;
-  display: inline-block;
-  border: 1px solid #96a3bb;
-  width: 100px;
-  height: 100px;
-  line-height: 100px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  border-radius: 50%;
-}
-
-.app-download-message {
-  margin-top: 30px;
-}
-.app-download-message h2 {
-  font-size: 20px;
-  margin: 20px 0;
-}
-.app-download-message ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.app-download-message ul li {
-  padding: 0 0 0 10px;
-  margin: 0 10px 0 0;
-  display: inline-block;
-  position: relative;
-}
-.app-download-message ul li:before {
-  position: absolute;
-  top: 5px;
-  left: 0;
-  display: block;
-  content: ' ';
-  width: 4px;
-  height: 4px;
-  background: #96a3bb;
-  border-radius: 50%;
-}
-.app-download-message ul li:first-child {
-  padding: 0;
-}
-.app-download-message ul li:first-child:before {
-  display: none;
-}
-
-.app-download-file-list {
-  margin: 30px 0;
-}
-.app-download-file-list .app-download-file-list-item {
-  border-bottom: 1px solid #e3eaf8;
-  padding: 10px 5px;
-  display: flex;
-}
-.app-download-file-list .app-download-file-list-item .filename {
-  flex-grow: 1;
-}
-.app-download-file-list .app-download-file-list-item .download-action a {
-  color: #1b65f6;
-  text-decoration: none;
-}
-
-.app-download-actions button {
-  margin: 10px 0;
-}
-
-.app-top-header h1 {
-  cursor: pointer;
-}
-
-.app-top-bar {
-  color: #ffffff;
-  height: 50px;
-  position: fixed;
-  width: 100%;
-  left: 0;
-  top: 0;
-  z-index: 1000;
-}
-.app-top-bar .app-top-bar-inner {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: flex;
-}
-.app-top-bar .app-top-bar-inner .app-top-bar-left {
-  flex-grow: 1;
-}
-.app-top-bar .app-top-bar-inner .app-top-bar-right {
-  text-align: right;
-}
-.app-top-bar .app-top-bar-inner .app-top-bar-right .app-top-bar-right-inner {
-  display: flex;
-}
-.app-top-bar .site-name {
-  font-size: 30px;
-  cursor: pointer;
-  line-height: 50px;
-}
-.app-top-bar .user-profile-picture {
-  padding-top: 10px;
-}
-.app-top-bar .user-profile-picture img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-}
-.app-top-bar .user-profile-menu {
-  margin: 0;
-  padding: 0;
-  font-weight: 600;
-  list-style: none;
-}
-.app-top-bar .user-profile-menu li {
-  padding: 0 10px;
-  line-height: 50px;
-}
-
-.app-login-form {
-  background: #ffffff;
-  position: fixed;
-  right: 0;
-  top: 0;
-  min-width: 300px;
-  bottom: 0;
-  z-index: 1001;
-}
-.app-login-form .form-title {
-  padding: 20px 0;
-  font-size: 25px;
-  font-weight: 600;
-  text-align: center;
-  display: block;
-}
-.app-login-form .app-login-form-inner {
-  position: relative;
-  padding: 40px;
-}
-.app-login-form .app-form-actions button {
-  margin: 10px 0;
-}
-.app-login-form .app-form-description {
-  text-align: center;
-}
-.app-login-form .app-dismiss-button {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  z-index: 1002;
-}
-
-.user-signin-button {
-  cursor: pointer;
-}
-
-.app-message p {
-  padding: 10px;
-  border: 1px solid #1b65f6;
-  border-radius: 5px;
-  margin: 10px 0;
-  color: #1b65f6;
-}
-.app-message p.error {
-  border-color: #d0152e;
-  color: #d0152e;
-}
 
 /* Upload Card Header */
 .app-card-header p {
@@ -744,8 +353,12 @@ aside {
   font-size: 10px;
 }
 
-.app-card-header:hover {
-  background-color: rgb(0, 0, 0, 0.1);
+.upload-card-header:hover {
+  background-color: rgb(0, 0, 0, 0.05);
+}
+
+.file-add-text {
+  color: black;
 }
 
 /* MAIN CONTAINER */

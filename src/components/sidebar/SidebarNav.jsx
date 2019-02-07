@@ -84,7 +84,7 @@ class SidebarNav extends Component {
 						openDrawer,
 						closeDrawer,
 						sidebar,
-						events
+						// events
 					} = context;
 
 					// const numReceivedMessages = events.recieved_messages ? events.recieved_messages : 0;

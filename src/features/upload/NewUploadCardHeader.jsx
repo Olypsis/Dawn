@@ -6,10 +6,14 @@ import Dropzone from 'react-dropzone';
 import CardContent from '@material-ui/core/CardContent';
 
 // // DropZone Config
-import config from "../../config"
+import config from '../../config';
 
 // is-empty
-import isEmpty from "../../util/is-empty";
+import isEmpty from '../../util/is-empty';
+
+// SVG icons
+import PlusIcon from "../../img/plus.svg"
+import PlusSVG from "../../img/wetransferplus.svg"
 
 // Dropzone Styles
 const dropzoneStyle = {
@@ -90,7 +94,6 @@ class UploadCardHeader extends Component {
 		// Get latest addedFile from props
 		let renderUploadContent;
 
-
 		// Change Display based on status of uploaded file
 		if (!isEmpty(fileQueue)) {
 			renderUploadContent = (
@@ -103,36 +106,36 @@ class UploadCardHeader extends Component {
 			);
 		} else {
 			renderUploadContent = (
-				<div>
-					<p> + Add your File </p>
-				</div>
+					<p className="file-add-text"> + Add your File </p>
 			);
 		}
 
 		return (
-			<CardContent
-				className={classes.uploadCardHeader}
-				onMouseOver={this.onMouseOver}
-			>
-				<Dropzone
-					onDrop={this.handleOnDrop}
-					maxSize={config.upload.fileMaxSize}
-					multiple={false}
-					style={dropzoneStyle}
-					activeStyle={dropzoneActiveStyle}
+			<div className="upload-card-header">
+				<CardContent
+					className={classes.uploadCardHeader}
+					onMouseOver={this.onMouseOver}
 				>
-					<div className="centered">
-						{/* TODO: Errors
+					<Dropzone
+						onDrop={this.handleOnDrop}
+						maxSize={config.upload.fileMaxSize}
+						multiple={false}
+						style={dropzoneStyle}
+						activeStyle={dropzoneActiveStyle}
+					>
+						<div className="centered">
+							{/* TODO: Errors
             <p className="errors">
               {this.state.errors.file
                 ? this.state.errors.file
                 : null}
             </p>	
           */}
-						<div className="upload-card-header">{renderUploadContent}</div>
-					</div>
-				</Dropzone>
-			</CardContent>
+							<div className="file-add-text">{renderUploadContent}</div>
+						</div>
+					</Dropzone>
+				</CardContent>
+			</div>
 		);
 	}
 }

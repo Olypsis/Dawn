@@ -1,7 +1,6 @@
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { sendStatusMessage } from '../whisper/actions_status';
 import { encryptAndAddFile, restartUploadForm} from './actions';
 
 // Core Component
@@ -65,7 +64,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      sendStatusMessage,
       encryptAndAddFile,
       restartUploadForm,
     },

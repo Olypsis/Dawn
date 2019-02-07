@@ -20,6 +20,10 @@ import { encrypt } from '../../util/encrypt';
 // Whisper
 import { sendMessage } from "../whisper/actions_status"
 
+
+// notifications
+import { _pushNotificationToQueue } from "../notifications/actions"
+
 /*
 ******************
 Thunks
@@ -80,7 +84,9 @@ export const encryptAndAddFile = (publicKey, message) => async (dispatch, getSta
     dispatch(transferFinishedAction(publicKey));
 
   } catch (err) {
-    console.log(err.message);
+    console.log("Error During Transfer:", err.message);
+    _pushNotificationToQueue("Error During Transfer:", err.message);
+    dispatch(clearUploadStateAction());
   }
 };
 
@@ -94,7 +100,7 @@ export const clearFileQueue = () => dispatch => {
 };
 
 export const restartUploadForm = () => dispatch => {
-  dispatch(clearUploadStateAction())
+  dispatch(clearUploadStateAction());
 }
 
 /*

@@ -16,6 +16,7 @@ export default class TransferProgressCardContent extends Component {
 		if (isUploading) {
 			console.log("isUploading");
 			transferStatusMessage = 'Uploading...';
+
 		}
 		if (isEncrypting) {
 			console.log("isEncrypting");

@@ -34,7 +34,6 @@ class UploadCard extends React.Component {
 	render() {
 		const {
 			classes,
-			sendStatusMessage,
 			encryptAndAddFile,
 			upload,
 		} = this.props;
@@ -109,7 +108,6 @@ class UploadCard extends React.Component {
 
 UploadCard.propTypes = {
 	classes: PropTypes.object.isRequired,
-	sendStatusMessage: PropTypes.func.isRequired,
 	upload: PropTypes.object.isRequired,
 };
 

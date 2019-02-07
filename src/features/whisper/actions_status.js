@@ -1,5 +1,7 @@
 import StatusJS from 'status-js-api';
 import config from '../../config';
+
+import store from '../../state/store';
 import {
   NEW_STATUS_INSTANCE,
   STATUS_CONNECTED,
@@ -12,7 +14,8 @@ import { _pushNotificationToQueue } from "../notifications/actions"
 // Config variables
 const { httpProvider } = config.whisper;
 const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
-// const { corsProxy } = config;
+const { corsProxy } = config;
+
 
 
 // Status public channel
@@ -54,14 +57,7 @@ export const sendStatusMessage = (payload, publicKey) => async (
   dispatch,
   getState,
 ) => {
-  const { status } = getState().whisper;
-  console.log("Trying to send message over Status.. ")
-  status.sendUserMessage(publicKey, payload, (err, res) => {
-    console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload);
-    console.log('sendStatusMessage: publicKey:', publicKey);
-    dispatch(sendStatusMessageAction(payload));
-    _pushNotificationToQueue(`Message sent!`);;
-  });
+  await sendMessage(payload, publicKey);
 };
 
 // Creates listeners for public and private chat channels
@@ -135,7 +131,7 @@ Helper functions
 export const loginWithStatus = (
   status,
   privateKey = null,
-  provider =  httpProvider,
+  provider = corsProxy + httpProvider
 ) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -158,6 +154,22 @@ export const loginWithStatus = (
       reject(err);
     }
   });
+
+export const sendMessage = (payload, publicKey) => new Promise((resolve, reject) => {
+    const { status } = store.getState().whisper;
+  console.log("Trying to send message over Status.. ")
+  status.sendUserMessage(publicKey, payload, (err, res) => {
+    if (err) {
+      _pushNotificationToQueue(`Error Sending Message.`);
+      return reject(err);
+    }
+    console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload, "SENT TO PUBLICKEY:",publicKey );
+    store.dispatch(sendStatusMessageAction(payload));
+    _pushNotificationToQueue(`Message sent!`);
+    resolve(true)
+  });
+})
+
 
 /*
 ******************

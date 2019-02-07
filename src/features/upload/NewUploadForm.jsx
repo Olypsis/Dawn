@@ -6,6 +6,11 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 
+// store
+// import store from "../../state/store";
+
+// utils
+import isEmpty from "../../util/is-empty"
 
 const styles = theme => ({
 	container: {
@@ -31,8 +36,6 @@ class UploadForm extends Component {
 		this.state = {
 			publicKey: '',
 			message: '',
-			multiline: 'Controlled',
-			currency: 'EUR',
 		};
 	}
 
@@ -42,33 +45,31 @@ class UploadForm extends Component {
 		});
 	};
 
-		// Send a message
-	sendMessage = (upload, sendStatusMessage) => async e => {
+	// Encrypts file, then sends a message
+	handleFormSubmit = (
+		encryptAndAddFile,
+	) => async e => {
 		e.preventDefault();
-		const { ipfsAddedFile, encryptedFile } = upload;
+		const { publicKey, message } = this.state; 
+		if (isEmpty(publicKey)) return alert("Please provide a proper public key!")
 
-		// Construct payload from IPFS and encrypted file data redux store
-		const payload = {
-			hash: ipfsAddedFile.fileHash,
-			path: ipfsAddedFile.filePath,
-			key: encryptedFile.decryptionKey,
-			iv: encryptedFile.decryptionIv,
-			note: this.state.message ? this.state.message : '',
-		};
-
-		if (payload.hash === '' || payload.path === '' || payload.iv === '') {
-			return alert('Upload a file before sending through whisper!');
-		}
-
-		// this.props.sendMessage(payload, this.state.form.publicKey);
-		return await sendStatusMessage(payload, this.state.publicKey);
+		await encryptAndAddFile(publicKey, message);
 	};
 
 	render() {
-		const { classes, children, upload , sendStatusMessage } = this.props;
+		const {
+			classes,
+			children,
+			encryptAndAddFile,
+		} = this.props;
 
 		return (
-			<form className={classes.container} onSubmit={e => this.sendMessage(upload, sendStatusMessage)(e) } noValidate autoComplete="off">
+			<form
+				className={classes.container}
+				onSubmit={e => this.handleFormSubmit(encryptAndAddFile)(e)}
+				noValidate
+				autoComplete="off"
+			>
 				<TextField
 					id="public-key-textfield"
 					label="Public Key"
@@ -77,7 +78,7 @@ class UploadForm extends Component {
 					onChange={this.handleChange('publicKey')}
 					margin="normal"
 				/>
-				<Divider />	
+				<Divider />
 				<TextField
 					id="message-textfield"
 					label="Message"
@@ -94,8 +95,7 @@ class UploadForm extends Component {
 
 UploadForm.propTypes = {
 	classes: PropTypes.object.isRequired,
-	upload: PropTypes.object.isRequired,
-	sendStatusMessage: PropTypes.func.isRequired
+	encryptAndAddFile: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(UploadForm);

@@ -39,8 +39,8 @@ export const signMetamaskLogin = () => async (dispatch, getState) => {
     // Log into status using hexstring as PK
     const { keyId, publicKey, userName } = await loginWithStatus(
       status,
-      undefined,
       loginHash,
+      undefined,
     );
     dispatch(clearEventsAction());
     return dispatch(statusConnectAction(keyId, publicKey, userName));

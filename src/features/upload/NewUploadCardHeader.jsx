@@ -8,6 +8,9 @@ import CardContent from '@material-ui/core/CardContent';
 // // DropZone Config
 import config from "../../config"
 
+// is-empty
+import isEmpty from "../../util/is-empty";
+
 // Dropzone Styles
 const dropzoneStyle = {
 	width: '100%',
@@ -39,7 +42,9 @@ class UploadCardHeader extends Component {
 		const file = accepted[0];
 
 		try {
-			await this.readFile(file);
+			// await this.readFile(file);
+			await this.props.clearFileQueue();
+			await this.props.pushFileToQueue(file);
 			this.setState({ fileError: '' });
 		} catch (err) {
 			console.log(err);
@@ -80,18 +85,18 @@ class UploadCardHeader extends Component {
 	}
 
 	render() {
-		console.log('Props', this.props);
 		const { classes, upload } = this.props;
-		const { ipfsAddedFile } = upload;
+		const { fileQueue } = upload;
 		// Get latest addedFile from props
 		let renderUploadContent;
 
+
 		// Change Display based on status of uploaded file
-		if (ipfsAddedFile.filePath) {
+		if (!isEmpty(fileQueue)) {
 			renderUploadContent = (
 				<div>
 					<p className="file-added-confirmation">
-						File Added! {ipfsAddedFile.filePath}
+						File Added! {fileQueue[0].name}
 					</p>
 					<span> (Click to add another) </span>
 				</div>
@@ -133,8 +138,8 @@ class UploadCardHeader extends Component {
 }
 
 UploadCardHeader.propTypes = {
-	encryptAndAddFile: PropTypes.func.isRequired,
-	onFileUploaded: PropTypes.func.isRequired,
+	pushFileToQueue: PropTypes.func.isRequired,
+	clearFileQueue: PropTypes.func.isRequired,
 	upload: PropTypes.object.isRequired,
 };
 

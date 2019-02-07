@@ -12,9 +12,24 @@ export const CREATE_MESSAGE_FILTER = 'CREATE_MESSAGE_FILTER';
 
 export const UPDATE_WHISPER_IDENTITY = 'UPDATE_WHISPER_IDENTITY';
 
+
+// Transfer
+export const TRANSFER_START = 'TRANSFER_START';
+export const TRANSFER_FINISHED = 'TRANSFER_FINISHED';
+
 // Upload
-export const FILE_UPLOADED = 'FILE_UPLOADED';
-export const IPFS_ADD_FILE = 'IPFS_ADD_FILE';
+export const FILE_READ = 'FILE_READ';
+export const PUSH_FILE_TO_QUEUE = 'PUSH_FILE_TO_QUEUE';
+export const CLEAR_FILE_QUEUE = 'CLEAR_FILE_QUEUE';
+export const UPLOAD_START = 'UPLOAD_START';
+export const UPLOAD_FINISHED = 'UPLOAD_FINISHED';
+export const CLEAR_UPLOAD_STATE = 'CLEAR_UPLOAD_STATE';
+
+
+// IPFS
+export const START_IPFS_ADD_FILE = 'START_IPFS_ADD_FILE';
+export const FINISH_IPFS_ADD_FILE = 'FINISH_IPFS_ADD_FILE';
+
 
 // Download
 export const DOWNLOAD_FILE = 'DOWNLOAD_FILE';
@@ -22,7 +37,8 @@ export const IPFS_GET_FILE = 'IPFS_GET_FILE';
 
 // Encryption
 export const GENERATE_ENCRYPTION_KEY = 'GENERATE_ENCRYPTION_KEY';
-export const ENCRYPT_FILE = 'ENCRYPT_FILE';
+export const START_ENCRYPT_FILE = 'START_ENCRYPT_FILE';
+export const FINISH_ENCRYPT_FILE = 'FINISH_ENCRYPT_FILE';
 
 // Decryption
 export const DECRYPT_FILE = 'DECRYPT_FILE';
@@ -34,6 +50,8 @@ export const METAMASK_LOGIN = 'METAMASK_LOGIN';
 // Status
 export const NEW_STATUS_INSTANCE = 'NEW_STATUS_INSTANCE';
 export const STATUS_CONNECTED = 'STATUS_CONNECT';
+export const SEND_START = 'SEND_START';
+export const SEND_FINISHED = 'SEND_FINISHED';
 
 // Sidebar
 export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';

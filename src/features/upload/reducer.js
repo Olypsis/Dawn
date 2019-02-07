@@ -1,10 +1,14 @@
 import {
+  TRANSFER_START,
+  TRANSFER_FINISHED,
   UPLOAD_START,
   UPLOAD_FINISHED,
   START_IPFS_ADD_FILE,
   FINISH_IPFS_ADD_FILE,
   START_ENCRYPT_FILE,
   FINISH_ENCRYPT_FILE,
+  SEND_START,
+  SEND_FINISHED,
   FILE_READ,
   PUSH_FILE_TO_QUEUE,
   CLEAR_FILE_QUEUE,
@@ -29,42 +33,66 @@ const initialState = {
     fileBuffer: [],
   },
   fileQueue: [],
-  uploading: false,
   transferStatus: {
     isUploading: false,
     isEncrypting: false,
     isAddingToIPFS: false,
+    isSendingMessage: false, 
     isFinished: false,
+    isTransfering: false, 
   },
+  finishedTransfer: {
+    url: '',
+    publicKey: ''
+  }
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case TRANSFER_START:
+      return {
+        ...state,
+        transferStatus: { ...initialState.transferStatus, isTransfering: true },
+      };
+    case TRANSFER_FINISHED:
+      return {
+        ...state,
+        transferStatus: { ...initialState.transferStatus, isFinished: true },
+        finishedTransfer: { publicKey: action.payload.publicKey, url: action.payload.url }
+      };
+
     case UPLOAD_START:
       return {
         ...state,
         uploading: true,
-        transferStatus: { ...initialState.transferStatus, isUploading: true },
+        transferStatus: { ...initialState.transferStatus, isTransfering: true, isUploading: true },
       };
+    case UPLOAD_FINISHED:
+      return {
+        ...state,
+        transferStatus: { ...state.transferStatus, isUploading: false },
+      };
+
     case START_IPFS_ADD_FILE:
       return {
         ...state,
         transferStatus: {
           ...initialState.transferStatus,
+          isTransfering: true,
           isAddingToIPFS: true,
         },
       };
-    case START_ENCRYPT_FILE:
-      return {
-        ...state,
-        transferStatus: { ...initialState.transferStatus, isEncrypting: true },
-      };
-
     case FINISH_IPFS_ADD_FILE:
       return {
         ...state,
         ipfsAddedFile: action.payload,
         transferStatus: { ...state.transferStatus, isAddingToIPFS: false },
+      };
+
+    case START_ENCRYPT_FILE:
+      return {
+        ...state,
+        transferStatus: { ...initialState.transferStatus, isTransfering: true, isEncrypting: true },
       };
     case FINISH_ENCRYPT_FILE:
       return {
@@ -72,6 +100,18 @@ export default function(state = initialState, action) {
         encryptedFile: action.payload,
         transferStatus: { ...state.transferStatus, isEncrypting: false },
       };
+
+    case SEND_START:
+      return {
+        ...state,
+        transferStatus: { ...initialState.transferStatus, isTransfering: true, isSendingMessage: true },
+      };
+    case SEND_FINISHED:
+      return {
+        ...state,
+        transferStatus: { ...state.transferStatus, isSendingMessage: false },
+      };
+
     case FILE_READ:
       return {
         ...state,
@@ -87,11 +127,8 @@ export default function(state = initialState, action) {
         ...state,
         fileQueue: [],
       };
-    case UPLOAD_FINISHED:
-      return {
-        ...state,
-        transferStatus: { ...state.transferStatus, isFinished: true },
-      };
+
+
     case CLEAR_UPLOAD_STATE:
       return initialState;
     default:

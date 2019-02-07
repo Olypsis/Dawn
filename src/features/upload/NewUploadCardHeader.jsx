@@ -138,8 +138,8 @@ class UploadCardHeader extends Component {
 }
 
 UploadCardHeader.propTypes = {
-	encryptAndAddFile: PropTypes.func.isRequired,
-	onFileUploaded: PropTypes.func.isRequired,
+	pushFileToQueue: PropTypes.func.isRequired,
+	clearFileQueue: PropTypes.func.isRequired,
 	upload: PropTypes.object.isRequired,
 };
 

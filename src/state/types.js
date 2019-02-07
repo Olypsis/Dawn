@@ -12,6 +12,11 @@ export const CREATE_MESSAGE_FILTER = 'CREATE_MESSAGE_FILTER';
 
 export const UPDATE_WHISPER_IDENTITY = 'UPDATE_WHISPER_IDENTITY';
 
+
+// Transfer
+export const TRANSFER_START = 'TRANSFER_START';
+export const TRANSFER_FINISHED = 'TRANSFER_FINISHED';
+
 // Upload
 export const FILE_READ = 'FILE_READ';
 export const PUSH_FILE_TO_QUEUE = 'PUSH_FILE_TO_QUEUE';
@@ -45,6 +50,8 @@ export const METAMASK_LOGIN = 'METAMASK_LOGIN';
 // Status
 export const NEW_STATUS_INSTANCE = 'NEW_STATUS_INSTANCE';
 export const STATUS_CONNECTED = 'STATUS_CONNECT';
+export const SEND_START = 'SEND_START';
+export const SEND_FINISHED = 'SEND_FINISHED';
 
 // Sidebar
 export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';

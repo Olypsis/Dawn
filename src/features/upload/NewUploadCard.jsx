@@ -38,15 +38,30 @@ class UploadCard extends React.Component {
 		} = this.props;
 		// console.log("props", this.props)
 		const {
-			transferStatus: { isUploading, isEncrypting, isAddingToIPFS, isFinished },
+			transferStatus: { isUploading, isEncrypting, isAddingToIPFS, isSendingMessage, isFinished, isTransfering },
+			finishedTransfer
 		} = upload;
 
 		let renderedCardContent, transferStatusMessage;
-		if (isUploading) transferStatusMessage = 'Uploading...';
-		if (isEncrypting) transferStatusMessage = 'Encrypting...';
-		if (isAddingToIPFS) transferStatusMessage = 'Adding to IPFS...';
+		if (isUploading) {
+			console.log("isUploading");
+			transferStatusMessage = 'Uploading...';
+		}
+		if (isEncrypting) {
+			console.log("isEncrypting");
+			transferStatusMessage = 'Encrypting...';
+		}
+		if (isAddingToIPFS) {
+			console.log("isAddingToIPFS");
+			transferStatusMessage = 'Adding to IPFS...';
+		}
+		if (isSendingMessage) {
+			console.log("isSendingMessage");
+			transferStatusMessage = 'Sending Message over Status...';
+		}
 
-		if (isUploading || isEncrypting || isAddingToIPFS) {
+
+		if (isTransfering) {
 		// Transfer Progress Indicator
 			renderedCardContent = (
 				<CardContent>
@@ -60,6 +75,8 @@ class UploadCard extends React.Component {
 				<Fragment>
 				<CardContent>
 					<h1>You're Finished!</h1>
+					<p> Sent to Public Key: </p>
+					<p> {finishedTransfer.publicKey} </p>
 				</CardContent>
 				<Divider />
 				<CardContent>

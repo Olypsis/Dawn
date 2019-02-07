@@ -84,8 +84,8 @@ class UploadForm extends Component {
 		encryptAndAddFile,
 	) => async e => {
 		e.preventDefault();
-		await encryptAndAddFile();
-		await this.sendMessage(sendStatusMessage);
+		await encryptAndAddFile(this.state.publicKey, this.state.message);
+		// await this.sendMessage(sendStatusMessage);
 	};
 
 	render() {

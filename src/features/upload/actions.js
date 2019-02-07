@@ -1,10 +1,14 @@
 import {
+  TRANSFER_START,
+  TRANSFER_FINISHED,
   UPLOAD_START,
   UPLOAD_FINISHED,
   START_IPFS_ADD_FILE,
   FINISH_IPFS_ADD_FILE,
   START_ENCRYPT_FILE,
   FINISH_ENCRYPT_FILE,
+  SEND_START,
+  SEND_FINISHED,
   FILE_READ,
   PUSH_FILE_TO_QUEUE,
   CLEAR_FILE_QUEUE,
@@ -12,6 +16,9 @@ import {
 } from '../../state/types';
 import node from '../../util/ipfs';
 import { encrypt } from '../../util/encrypt';
+
+// Whisper
+import { sendMessage } from "../whisper/actions_status"
 
 /*
 ******************
@@ -29,16 +36,19 @@ export const onFileUploaded = (
   dispatch(fileReadAction(fileName, mimeType, filePreview, fileBuffer));
 };
 
-export const encryptAndAddFile = () => async (dispatch, getState) => {
+export const encryptAndAddFile = (publicKey, message) => async (dispatch, getState) => {
   const { fileQueue } = getState().upload;
 
   try {
-    dispatch(uploadStartingAction());
+    dispatch(transferStartingAction());
 
     // Read file from queue
+    dispatch(uploadStartingAction());
     const file = fileQueue[0];
     const fileBuffer = await readFile(file);
     dispatch(fileReadAction(file.name, file.type, file.preview, fileBuffer));
+    dispatch(uploadFinishedAction());
+
 
     // Encrypt file, then push buffer to store
     dispatch(startEncryptFileAction());
@@ -52,7 +62,23 @@ export const encryptAndAddFile = () => async (dispatch, getState) => {
     dispatch(startIpfsAddFileAction());
     const { path, hash } = await ipfsAddFile(encryptedBuffer, file.name);
     dispatch(finishIpfsAddFileAction(path, hash));
-    dispatch(uploadFinishedAction());
+
+    // Construct message payload
+    const payload = {
+      hash,
+      path,
+      key,
+      iv,
+      note: message ? message : '',
+    };
+    dispatch(sendStartAction());
+    console.log("encryptAndAddFile: sending message - payload:", payload, "publicKey:", publicKey);
+    const result = await sendMessage(payload, publicKey);
+    console.log("sendMessage: result: ", result)
+    dispatch(sendFinishedAction());
+
+    dispatch(transferFinishedAction(publicKey));
+
   } catch (err) {
     console.log(err.message);
   }
@@ -187,6 +213,26 @@ const uploadStartingAction = () => ({
 
 const uploadFinishedAction = () => ({
   type: UPLOAD_FINISHED,
+});
+
+const transferStartingAction = () => ({
+  type: TRANSFER_START,
+});
+
+const transferFinishedAction = (publicKey, url) => ({
+  type: TRANSFER_FINISHED,
+  payload: {
+    publicKey,
+    url
+  }
+});
+
+const sendStartAction = () => ({
+  type: SEND_START,
+});
+
+const sendFinishedAction = () => ({
+  type: SEND_FINISHED,
 });
 
 const clearUploadStateAction = () => ({

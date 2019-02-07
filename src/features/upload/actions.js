@@ -40,7 +40,7 @@ export const onFileUploaded = (
   dispatch(fileReadAction(fileName, mimeType, filePreview, fileBuffer));
 };
 
-export const encryptAndAddFile = (publicKey, message) => async (dispatch, getState) => {
+export const encryptAndAddFile = (publicKey, message,  burnerLink) => async (dispatch, getState) => {
   const { fileQueue } = getState().upload;
 
   try {
@@ -81,7 +81,7 @@ export const encryptAndAddFile = (publicKey, message) => async (dispatch, getSta
     console.log("sendMessage: result: ", result)
     dispatch(sendFinishedAction());
 
-    dispatch(transferFinishedAction(publicKey));
+    dispatch(transferFinishedAction(publicKey, burnerLink));
 
   } catch (err) {
     console.log("Error During Transfer:", err.message);

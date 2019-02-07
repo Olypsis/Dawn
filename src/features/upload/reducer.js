@@ -42,7 +42,7 @@ const initialState = {
     isTransfering: false, 
   },
   finishedTransfer: {
-    url: '',
+    burnerLink: '',
     publicKey: ''
   }
 };
@@ -58,7 +58,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         transferStatus: { ...initialState.transferStatus, isFinished: true },
-        finishedTransfer: { publicKey: action.payload.publicKey, url: action.payload.url }
+        finishedTransfer: { publicKey: action.payload.publicKey, burnerLink: action.payload.url }
       };
 
     case UPLOAD_START:

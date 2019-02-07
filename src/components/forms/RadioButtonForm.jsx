@@ -25,12 +25,16 @@ const styles = theme => ({
 
 class RadioButtonsGroup extends React.Component {
   state = {
-    value: 'female',
+    value: 'whisper',
   };
 
   handleChange = event => {
     this.setState({ value: event.target.value });
-    console.log("RadioButtonsGroup: handleChange: event.target.value: ", event.target.value)
+    console.log(
+      'RadioButtonsGroup: handleChange: event.target.value: ',
+      event.target.value,
+    );
+    this.props.changeForm(event.target.value);
   };
 
   render() {
@@ -39,18 +43,20 @@ class RadioButtonsGroup extends React.Component {
     return (
       <div className={classes.root}>
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend" className={classes.expandSectionHeader}>Send As</FormLabel>
+          <FormLabel component="legend" className={classes.expandSectionHeader}>
+            Send As
+          </FormLabel>
           <RadioGroup
-            aria-label="gender"
-            name="gender2"
+            aria-label="p2p-messaging-option"
+            name="p2p-messaging-option"
             className={classes.group}
             value={this.state.value}
             onChange={this.handleChange}
           >
             <FormControlLabel
-              value="email"
+              value="whisper"
               control={<Radio color="primary" />}
-              label="email"
+              label="whisper"
               labelPlacement="start"
             />
             <FormControlLabel

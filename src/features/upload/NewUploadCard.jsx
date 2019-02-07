@@ -13,8 +13,9 @@ import Divider from '@material-ui/core/Divider';
 import UploadForm from './NewUploadForm';
 import RadioButtonForm from '../../components/forms/RadioButtonForm';
 import UploadCardHeaderContainer from './UploadCardHeaderContainer';
-import IndeterminateSpinner from '../../components/spinners/IndeterminateSpinner';
 import TransferFinishedCardContent from './TransferFinishedCardContent';
+import TransferProgressCardContent from './TransferProgressCardContent';
+
 
 class UploadCard extends React.Component {
 	constructor(props) {
@@ -37,38 +38,21 @@ class UploadCard extends React.Component {
 			encryptAndAddFile,
 			upload,
 		} = this.props;
-		// console.log("props", this.props)
+
 		const {
-			transferStatus: { isUploading, isEncrypting, isAddingToIPFS, isSendingMessage, isFinished, isTransfering },
+			transferStatus,
 			finishedTransfer
 		} = upload;
+		
+		const { isFinished, isTransfering } = transferStatus; 
 
-		let renderedCardContent, transferStatusMessage;
-		if (isUploading) {
-			console.log("isUploading");
-			transferStatusMessage = 'Uploading...';
-		}
-		if (isEncrypting) {
-			console.log("isEncrypting");
-			transferStatusMessage = 'Encrypting...';
-		}
-		if (isAddingToIPFS) {
-			console.log("isAddingToIPFS");
-			transferStatusMessage = 'Adding to IPFS...';
-		}
-		if (isSendingMessage) {
-			console.log("isSendingMessage");
-			transferStatusMessage = 'Sending Message over Status...';
-		}
+		let renderedCardContent;
 
 
 		if (isTransfering) {
 		// Transfer Progress Indicator
 			renderedCardContent = (
-				<CardContent>
-					<IndeterminateSpinner />
-					<p> {transferStatusMessage} </p>
-				</CardContent>
+				<TransferProgressCardContent transferStatus={transferStatus} />
 			);
 		} else if (isFinished) {
 			// Transfer Finished 

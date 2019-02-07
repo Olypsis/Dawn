@@ -36,8 +36,6 @@ class UploadForm extends Component {
 		this.state = {
 			publicKey: '',
 			message: '',
-			multiline: 'Controlled',
-			currency: 'EUR',
 		};
 	}
 
@@ -47,60 +45,28 @@ class UploadForm extends Component {
 		});
 	};
 
-	// Send a message
-	sendMessage = async (sendStatusMessage) => {
-		const { ipfsAddedFile, encryptedFile } = store.getState().upload;
-
-		// Get Public Key from form field
-		const { publicKey } = this.state;
-
-		// Construct payload from IPFS and encrypted file data redux store
-		const payload = {
-			hash: ipfsAddedFile.fileHash,
-			path: ipfsAddedFile.filePath,
-			key: encryptedFile.decryptionKey,
-			iv: encryptedFile.decryptionIv,
-			note: this.state.message ? this.state.message : '',
-		};
-
-		console.log("sendMessage: payload:", payload, "publicKey:", publicKey)
-
-		if (payload.hash === '' || payload.path === '' || payload.iv === '') {
-			return alert('Upload a file before sending through whisper!');
-		}
-
-		if (isEmpty(publicKey)) {
-			return alert('Input a Public Key!');
-		}
-
-		// this.props.sendMessage(payload, this.state.form.publicKey);
-		return await sendStatusMessage(payload, this.state.publicKey);
-	};
-
 	// Encrypts file, then sends a message
 	handleFormSubmit = (
-		upload,
-		sendStatusMessage,
 		encryptAndAddFile,
 	) => async e => {
 		e.preventDefault();
-		await encryptAndAddFile(this.state.publicKey, this.state.message);
-		// await this.sendMessage(sendStatusMessage);
+		const { publicKey, message } = this.state; 
+		if (isEmpty(publicKey)) return alert("Please provide a proper public key!")
+
+		await encryptAndAddFile(publicKey, message);
 	};
 
 	render() {
 		const {
 			classes,
 			children,
-			upload,
-			sendStatusMessage,
 			encryptAndAddFile,
 		} = this.props;
 
 		return (
 			<form
 				className={classes.container}
-				onSubmit={e => this.handleFormSubmit(upload, sendStatusMessage, encryptAndAddFile)(e)}
+				onSubmit={e => this.handleFormSubmit(encryptAndAddFile)(e)}
 				noValidate
 				autoComplete="off"
 			>
@@ -129,8 +95,7 @@ class UploadForm extends Component {
 
 UploadForm.propTypes = {
 	classes: PropTypes.object.isRequired,
-	upload: PropTypes.object.isRequired,
-	sendStatusMessage: PropTypes.func.isRequired,
+	encryptAndAddFile: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(UploadForm);

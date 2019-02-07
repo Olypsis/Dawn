@@ -62,6 +62,7 @@ class UploadCard extends React.Component {
 					publicKey={finishedTransfer.publicKey} />
 			);
 		} else {
+			// Transfer Uninitiated. Fill out form. 
 			renderedCardContent = (
 				<Fragment>
 					{/*  Upload Header  */}
@@ -70,8 +71,6 @@ class UploadCard extends React.Component {
 					{/*  Upload Form  */}
 					<CardContent>
 						<UploadForm
-							upload={upload}
-							sendStatusMessage={sendStatusMessage}
 							encryptAndAddFile={encryptAndAddFile}
 						>
 							{/* Expand Button + Collapse - passed into form as children */}

@@ -8,13 +8,13 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 // SubComponents
 import UploadForm from './NewUploadForm';
 import RadioButtonForm from '../../components/forms/RadioButtonForm';
 import UploadCardHeaderContainer from './UploadCardHeaderContainer';
 import IndeterminateSpinner from '../../components/spinners/IndeterminateSpinner';
+import TransferFinishedCardContent from './TransferFinishedCardContent';
 
 class UploadCard extends React.Component {
 	constructor(props) {
@@ -73,18 +73,9 @@ class UploadCard extends React.Component {
 		} else if (isFinished) {
 			// Transfer Finished 
 			renderedCardContent = (
-				<Fragment>
-				<CardContent>
-					<CheckCircleIcon />
-					<h1>You're Finished!</h1>
-					<p> Sent to Public Key: </p>
-					<p> {finishedTransfer.publicKey} </p>
-				</CardContent>
-				<Divider />
-				<CardContent>
-					<button onClick={this.handleClickNewUpload} className={'app-button primary'}> Upload a New File </button>
-				</CardContent>
-				</Fragment>
+				<TransferFinishedCardContent 
+					handleClickNewUpload={this.handleClickNewUpload} 
+					publicKey={finishedTransfer.publicKey} />
 			);
 		} else {
 			renderedCardContent = (

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 // Custom Buttons
 import Button from '../buttons/DefaultButton';
+import BadgedButton from '../buttons/BadgedButton';
 import IdenticonButton from '../buttons/IdenticonButton';
 
 // Material-UI
@@ -83,7 +84,11 @@ class SidebarNav extends Component {
 						openDrawer,
 						closeDrawer,
 						sidebar,
+						events
 					} = context;
+
+					// const numReceivedMessages = events.recieved_messages ? events.recieved_messages : 0;
+
 					return (
 						<Fragment>
 							<div className={classes.navContainer}>
@@ -100,7 +105,7 @@ class SidebarNav extends Component {
 										'/messages',
 									)}
 								>
-									<Button
+									<BadgedButton
 										onClick={e =>
 											this.handleDrawerToggleClick(
 												e,
@@ -113,9 +118,10 @@ class SidebarNav extends Component {
 											)
 										}
 										className={classes.menuButton}
+										badgeNum={1}
 									>
 										My Wallet
-									</Button>
+									</BadgedButton>
 								</Link>
 
 								<Link

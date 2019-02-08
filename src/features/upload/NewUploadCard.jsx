@@ -143,7 +143,6 @@ class UploadCard extends React.Component {
 			);
 		}
 
-
 		return <Card className={classes.card}>{renderedCardContent}</Card>;
 	}
 }

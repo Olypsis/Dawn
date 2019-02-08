@@ -30,9 +30,9 @@ class UploadCard extends React.Component {
 		};
 	}
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
+	handleExpandClick = () => {
+		this.setState(state => ({ expanded: !state.expanded }));
+	};
 
 	handleClickNewUpload = () => {
 		this.props.restartUploadForm();
@@ -95,7 +95,7 @@ class UploadCard extends React.Component {
 				<TransferFinishedCardContent
 					handleClickNewUpload={this.handleClickNewUpload}
 					publicKey={finishedTransfer.publicKey}
-					burnerLink={ finishedTransfer.burnerLink }
+					burnerLink={finishedTransfer.burnerLink}
 				/>
 			);
 		} else {
@@ -142,6 +142,8 @@ class UploadCard extends React.Component {
 				</Fragment>
 			);
 		}
+
+
 		return <Card className={classes.card}>{renderedCardContent}</Card>;
 	}
 }

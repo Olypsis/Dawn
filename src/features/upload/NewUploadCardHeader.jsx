@@ -12,8 +12,8 @@ import config from '../../config';
 import isEmpty from '../../util/is-empty';
 
 // SVG icons
-import PlusIcon from "../../img/plus.svg"
-import PlusSVG from "../../img/wetransferplus.svg"
+// import PlusIcon from "../../img/plus.svg"
+// import PlusSVG from "../../img/wetransferplus.svg"
 
 // Dropzone Styles
 const dropzoneStyle = {

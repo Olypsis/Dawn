@@ -69,7 +69,7 @@ class SidebarNav extends Component {
 	};
 
 	validateLocation = (location, to) => {
-		if (location.pathname === to) return { to: '/' };
+		if (location.pathname === to) return '/';
 		return to;
 	};
 

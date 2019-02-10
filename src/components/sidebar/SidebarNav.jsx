@@ -118,7 +118,7 @@ class SidebarNav extends Component {
 											)
 										}
 										className={classes.menuButton}
-										badgeNum={1}
+										badgeNum={0}
 									>
 										My Wallet
 									</BadgedButton>

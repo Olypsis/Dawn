@@ -17,14 +17,16 @@ import { withStyles } from '@material-ui/core/styles';
 // Logomark
 import Logomark from '../../img/logomark.svg';
 
-const styles = theme => ({
+const styles = theme => {
+  return ({
   Applogo: {
     animation: 'App-logo-spin infinite 20s linear',
     height: 100,
     margin: theme.spacing.unit * 2,
     marginLeft: 0,
   },
-});
+})
+};
 
 class Homepage extends React.Component {
   render() {

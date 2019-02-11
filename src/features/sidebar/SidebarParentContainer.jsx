@@ -12,7 +12,8 @@ import SidebarContextProvider from './SidebarContextProvider';
 const mapStateToProps = state => ({
   whisper: state.whisper,
   events: state.events,
-  sidebar: state.sidebar
+  sidebar: state.sidebar,
+  notifications: state.notifications
 });
 
 const mapDispatchToProps = dispatch =>

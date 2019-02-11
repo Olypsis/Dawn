@@ -12,17 +12,16 @@ import {
   FILE_READ,
   PUSH_FILE_TO_QUEUE,
   CLEAR_FILE_QUEUE,
-  CLEAR_UPLOAD_STATE
+  CLEAR_UPLOAD_STATE,
 } from '../../state/types';
 import node from '../../util/ipfs';
 import { encrypt } from '../../util/encrypt';
 
 // Whisper
-import { sendMessage } from "../whisper/actions_status"
-
+import { sendMessage } from '../whisper/actions_status';
 
 // notifications
-import { _pushNotificationToQueue } from "../notifications/actions"
+import { _pushNotificationToQueue } from '../notifications/actions';
 
 /*
 ******************
@@ -40,7 +39,10 @@ export const onFileUploaded = (
   dispatch(fileReadAction(fileName, mimeType, filePreview, fileBuffer));
 };
 
-export const encryptAndAddFile = (publicKey, message,  burnerLink) => async (dispatch, getState) => {
+export const encryptAndAddFile = (publicKey, message, burnerLink) => async (
+  dispatch,
+  getState,
+) => {
   const { fileQueue } = getState().upload;
 
   try {
@@ -53,14 +55,13 @@ export const encryptAndAddFile = (publicKey, message,  burnerLink) => async (dis
     dispatch(fileReadAction(file.name, file.type, file.preview, null));
     dispatch(uploadFinishedAction());
 
-
     // Encrypt file, then push buffer to store
     dispatch(startEncryptFileAction());
     const { encryptedBuffer, key, iv } = await encryptFile(fileBuffer);
     console.log('encryptAndAddFile: key/iv:', key, iv);
     dispatch(finishEncryptFileAction(null, key, null, file.name));
 
-    console.log("encryptAndAddFile: adding to IPFS");
+    console.log('encryptAndAddFile: adding to IPFS');
 
     // Upload File to IPFS, push hash & filename to store
     dispatch(startIpfsAddFileAction());
@@ -76,16 +77,21 @@ export const encryptAndAddFile = (publicKey, message,  burnerLink) => async (dis
       note: message ? message : '',
     };
     dispatch(sendStartAction());
-    console.log("encryptAndAddFile: sending message - payload:", payload, "publicKey:", publicKey);
+    console.log(
+      'encryptAndAddFile: sending message - payload:',
+      payload,
+      'publicKey:',
+      publicKey,
+    );
     const result = await sendMessage(payload, publicKey);
-    console.log("sendMessage: result: ", result)
+    console.log('sendMessage: result: ', result);
     dispatch(sendFinishedAction());
 
     dispatch(transferFinishedAction(publicKey, burnerLink));
-
   } catch (err) {
-    console.log("Error During Transfer:", err.message);
-    _pushNotificationToQueue("Error During Transfer:", err.message);
+    console.log(`Error During Transfer: ${err.message}`);
+    alert(err.message);
+    _pushNotificationToQueue('Error During Transfer:', err.message);
     dispatch(clearUploadStateAction());
   }
 };
@@ -101,7 +107,7 @@ export const clearFileQueue = () => dispatch => {
 
 export const restartUploadForm = () => dispatch => {
   dispatch(clearUploadStateAction());
-}
+};
 
 /*
 ******************
@@ -115,6 +121,7 @@ const ipfsAddFile = async (buffer, fileName) => {
     content: buffer,
     path: fileName,
   });
+
   const { path, hash } = filesAdded[0];
   console.log('Added file:', path, hash);
   return { path, hash };
@@ -229,8 +236,8 @@ const transferFinishedAction = (publicKey, url) => ({
   type: TRANSFER_FINISHED,
   payload: {
     publicKey,
-    url
-  }
+    url,
+  },
 });
 
 const sendStartAction = () => ({
@@ -242,5 +249,5 @@ const sendFinishedAction = () => ({
 });
 
 const clearUploadStateAction = () => ({
-  type: CLEAR_UPLOAD_STATE
-})
+  type: CLEAR_UPLOAD_STATE,
+});

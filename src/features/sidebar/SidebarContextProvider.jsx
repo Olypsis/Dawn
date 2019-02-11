@@ -9,6 +9,7 @@ class SidebarContextProvider extends React.Component {
 					events: this.props.events,
 					whisper: this.props.whisper,
 					sidebar: this.props.sidebar,
+					notifications: this.props.notifications,
 					toggleDrawer: this.props.toggleDrawer,
 					openDrawer: this.props.openDrawer,
 					closeDrawer: this.props.closeDrawer,

@@ -9,14 +9,15 @@ import {
   RECEIVED_MESSAGE,
 } from '../../state/types';
 
-import { _pushNotificationToQueue } from "../notifications/actions"
+import {
+  _pushNotificationToQueue,
+  _incrementNewMessageCounter,
+} from '../notifications/actions';
 
 // Config variables
 const { httpProvider } = config.whisper;
 const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
-
-
 
 // Status public channel
 const channel = 'test999';
@@ -80,11 +81,11 @@ export const createStatusListener = () => async (dispatch, getState) => {
       const payload = JSON.parse(data.payload);
       console.log(`Payload Received! Payload: ${JSON.stringify(payload)}`);
       dispatch(receivedStatusMessageAction(payload[1][0]));
+      _incrementNewMessageCounter();
       _pushNotificationToQueue(`Message(s) recieved!`);
     }
   });
 };
-
 
 // Queries for historic messages
 export const statusUseMailservers = () => async (dispatch, getState) => {
@@ -112,7 +113,7 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
 
       // Request user / private messages from mailservers
       status.mailservers.requestUserMessages({ from, to }, (err, res) => {
-        if (err) console.log('requestUserMessages: err:',err);
+        if (err) console.log('requestUserMessages: err:', err);
         console.log('requestUserMessages: res:', res);
       });
     });
@@ -131,7 +132,7 @@ Helper functions
 export const loginWithStatus = (
   status,
   privateKey = null,
-  provider = corsProxy + httpProvider
+  provider = corsProxy + httpProvider,
 ) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -139,37 +140,39 @@ export const loginWithStatus = (
         'loginWithStatus: about to log in in with status provider:',
         provider,
       );
-      await status.connect(
-        provider,
-        privateKey,
-      );
+      await status.connect(provider, privateKey);
       const keyId = await status.getKeyId();
       const publicKey = await status.getPublicKey();
       const userName = await status.getUserName();
-      _pushNotificationToQueue(`Logged In as ${userName}!`)
+      _pushNotificationToQueue(`Logged In as ${userName}!`);
       resolve({ keyId, publicKey, userName });
     } catch (err) {
       console.log('loginWithStatus:', err);
-      _pushNotificationToQueue(`Failed to login to Status. Check Console`)
+      _pushNotificationToQueue(`Failed to login to Status. Check Console`);
       reject(err);
     }
   });
 
-export const sendMessage = (payload, publicKey) => new Promise((resolve, reject) => {
+export const sendMessage = (payload, publicKey) =>
+  new Promise((resolve, reject) => {
     const { status } = store.getState().whisper;
-  console.log("Trying to send message over Status.. ")
-  status.sendUserMessage(publicKey, payload, (err, res) => {
-    if (err) {
-      _pushNotificationToQueue(`Error Sending Message.`);
-      return reject(err);
-    }
-    console.log('sendStatusMessage: PAYLOAD SENT OVER STATUS:', payload, "SENT TO PUBLICKEY:",publicKey );
-    store.dispatch(sendStatusMessageAction(payload));
-    _pushNotificationToQueue(`Message sent!`);
-    resolve(true)
+    console.log('Trying to send message over Status.. ');
+    status.sendUserMessage(publicKey, payload, (err, res) => {
+      if (err) {
+        _pushNotificationToQueue(`Error Sending Message.`);
+        return reject(err);
+      }
+      console.log(
+        'sendStatusMessage: PAYLOAD SENT OVER STATUS:',
+        payload,
+        'SENT TO PUBLICKEY:',
+        publicKey,
+      );
+      store.dispatch(sendStatusMessageAction(payload));
+      _pushNotificationToQueue(`Message sent!`);
+      resolve(true);
+    });
   });
-})
-
 
 /*
 ******************

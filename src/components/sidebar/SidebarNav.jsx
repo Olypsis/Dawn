@@ -84,11 +84,12 @@ class SidebarNav extends Component {
 						openDrawer,
 						closeDrawer,
 						sidebar,
+						notifications
 						// events
 					} = context;
 
-					// const numReceivedMessages = events.recieved_messages ? events.recieved_messages : 0;
-
+					let numReceivedMessages =  notifications.newMessageNum;
+;
 					return (
 						<Fragment>
 							<div className={classes.navContainer}>
@@ -118,7 +119,7 @@ class SidebarNav extends Component {
 											)
 										}
 										className={classes.menuButton}
-										badgeNum={0}
+										badgeNum={numReceivedMessages}
 									>
 										My Wallet
 									</BadgedButton>

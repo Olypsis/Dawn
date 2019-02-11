@@ -1,4 +1,4 @@
-import React, { Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 // SubComponents
@@ -15,6 +15,9 @@ import Paper from '@material-ui/core/Paper';
 
 // Context API
 import { SidebarContext } from '../../features/sidebar/SidebarContext';
+
+// Redux
+import { _clearMessageCounter } from '../../features/notifications/actions';
 
 const styles = theme => ({
 	drawerInnerContentHeader: {
@@ -41,6 +44,10 @@ function createData(name, sender, size, message, payload) {
 }
 
 class DrawerInnerMessageTable extends Component {
+	componentDidMount() {
+		_clearMessageCounter();
+	}
+
 	render() {
 		const { classes } = this.props;
 		return (
@@ -50,58 +57,39 @@ class DrawerInnerMessageTable extends Component {
 						// TODO: rename to events.all
 						// get payload from message
 						const { payload } = event;
-						return createData(
-							payload.path,
-							null,
-							null,
-							payload.note,
-							payload,
-						);
+						return createData(payload.path, null, null, payload.note, payload);
 					});
 
 					return (
 						<Fragment>
-						<h3 className={classes.drawerInnerContentHeader}>
-								Your Files
-							</h3>
-						<Paper className={classes.root}>
-							<Table className={classes.table}>
-								<TableHead>
-									<TableRow>
-										<TableCell align="left">Name</TableCell>
-										<TableCell align="left">
-											Message
-										</TableCell>
-										<TableCell align="left">
-											Options
-										</TableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{rows.map(row => {
-										return (
-											<TableRow key={row.id}>
-												<TableCell
-													component="th"
-													scope="row"
-												>
-													{row.name}
-												</TableCell>
-							
-												<TableCell align="left">
-													{row.message}
-												</TableCell>
-												<TableCell align="left">
-													<FileOptionsMenu
-														payload={row.payload}
-													/>
-												</TableCell>
-											</TableRow>
-										);
-									})}
-								</TableBody>
-							</Table>
-						</Paper>
+							<h3 className={classes.drawerInnerContentHeader}>Your Files</h3>
+							<Paper className={classes.root}>
+								<Table className={classes.table}>
+									<TableHead>
+										<TableRow>
+											<TableCell align="left">Name</TableCell>
+											<TableCell align="left">Message</TableCell>
+											<TableCell align="left">Options</TableCell>
+										</TableRow>
+									</TableHead>
+									<TableBody>
+										{rows.map(row => {
+											return (
+												<TableRow key={row.id}>
+													<TableCell component="th" scope="row">
+														{row.name}
+													</TableCell>
+
+													<TableCell align="left">{row.message}</TableCell>
+													<TableCell align="left">
+														<FileOptionsMenu payload={row.payload} />
+													</TableCell>
+												</TableRow>
+											);
+										})}
+									</TableBody>
+								</Table>
+							</Paper>
 						</Fragment>
 					);
 				}}

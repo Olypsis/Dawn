@@ -68,8 +68,8 @@ class SidebarNav extends Component {
 		alert('About Modal');
 	};
 
-	validateLocation = (location, to) => {
-		if (location.pathname === to) return '/';
+	validateLocation = (location, open, to) => {
+		if (location.pathname === to && open) return '/';
 		return to;
 	};
 
@@ -103,6 +103,7 @@ class SidebarNav extends Component {
 								<Link
 									to={this.validateLocation(
 										location,
+										sidebar.open,
 										'/messages',
 									)}
 								>
@@ -128,6 +129,7 @@ class SidebarNav extends Component {
 								<Link
 									to={this.validateLocation(
 										location,
+										sidebar.open,
 										'/account',
 									)}
 								>

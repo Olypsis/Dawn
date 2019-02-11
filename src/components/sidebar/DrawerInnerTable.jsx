@@ -12,6 +12,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
 
 // Context API
 import { SidebarContext } from '../../features/sidebar/SidebarContext';
@@ -32,7 +34,7 @@ const styles = theme => ({
 		overflowX: 'auto',
 	},
 	table: {
-		minWidth: 700,
+		width: "100%",
 	},
 });
 
@@ -53,10 +55,8 @@ class DrawerInnerMessageTable extends Component {
 		return (
 			<SidebarContext.Consumer>
 				{context => {
-					const rows = context.events.events.map(event => {
+					const rows = context.events.received_messages.map(payload => {
 						// TODO: rename to events.all
-						// get payload from message
-						const { payload } = event;
 						return createData(payload.path, null, null, payload.note, payload);
 					});
 
@@ -67,9 +67,21 @@ class DrawerInnerMessageTable extends Component {
 								<Table className={classes.table}>
 									<TableHead>
 										<TableRow>
-											<TableCell align="left">Name</TableCell>
-											<TableCell align="left">Message</TableCell>
-											<TableCell align="left">Options</TableCell>
+											<TableCell align="left">
+											<Typography component="p" noWrap>
+												Name
+											</Typography>
+											</TableCell>
+											<TableCell align="left">
+											<Typography component="p" noWrap>
+												Message
+											</Typography>
+											</TableCell>
+											<TableCell align="left">
+											<Typography component="p" noWrap>
+												Options
+											</Typography>
+											</TableCell>
 										</TableRow>
 									</TableHead>
 									<TableBody>
@@ -77,10 +89,15 @@ class DrawerInnerMessageTable extends Component {
 											return (
 												<TableRow key={row.id}>
 													<TableCell component="th" scope="row">
+													<Typography component="p" noWrap>
 														{row.name}
+													</Typography>
 													</TableCell>
-
-													<TableCell align="left">{row.message}</TableCell>
+													<TableCell align="left">
+													<Typography component="p" noWrap>
+														{row.message}
+													</Typography>
+													</TableCell>
 													<TableCell align="left">
 														<FileOptionsMenu payload={row.payload} />
 													</TableCell>

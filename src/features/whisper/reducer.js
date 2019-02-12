@@ -26,6 +26,7 @@ const initialState = {
     publicKey: '',
     username: '',
   },
+  isLoading: false,
 };
 
 export default function(state = initialState, action) {

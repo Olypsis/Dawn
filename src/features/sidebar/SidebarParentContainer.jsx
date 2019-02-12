@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
   whisper: state.whisper,
   events: state.events,
   sidebar: state.sidebar,
+  download: state.download,
   notifications: state.notifications
 });
 

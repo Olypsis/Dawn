@@ -34,6 +34,9 @@ export const FINISH_IPFS_ADD_FILE = 'FINISH_IPFS_ADD_FILE';
 // Download
 export const DOWNLOAD_FILE = 'DOWNLOAD_FILE';
 export const IPFS_GET_FILE = 'IPFS_GET_FILE';
+export const START_DOWNLOAD = 'START_DOWNLOAD';
+export const FINISH_DOWNLOAD = 'FINISH_DOWNLOAD';
+
 
 // Encryption
 export const GENERATE_ENCRYPTION_KEY = 'GENERATE_ENCRYPTION_KEY';

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // SubComponents
 import FileOptionsMenu from '../menus/FileOptionsMenu';
+// import IndeterminateSpinner from '../spinners/IndeterminateSpinner';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -13,7 +14,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-
 
 // Context API
 import { SidebarContext } from '../../features/sidebar/SidebarContext';
@@ -34,7 +34,10 @@ const styles = theme => ({
 		overflowX: 'auto',
 	},
 	table: {
-		width: "100%",
+		width: '100%',
+	},
+	spinner: {
+		height: '100%',
 	},
 });
 
@@ -60,6 +63,10 @@ class DrawerInnerMessageTable extends Component {
 						return createData(payload.path, null, null, payload.note, payload);
 					});
 
+					// let renderedDownloadSpinner = context.download.isDownloading ? (
+					// 	<IndeterminateSpinner className={classes.spinner} />
+					// ) : null;
+
 					return (
 						<Fragment>
 							<h3 className={classes.drawerInnerContentHeader}>Your Files</h3>
@@ -68,19 +75,13 @@ class DrawerInnerMessageTable extends Component {
 									<TableHead>
 										<TableRow>
 											<TableCell align="left">
-											<Typography component="p" noWrap>
-												Name
-											</Typography>
+													Name
 											</TableCell>
 											<TableCell align="left">
-											<Typography component="p" noWrap>
-												Message
-											</Typography>
+													Message
 											</TableCell>
 											<TableCell align="left">
-											<Typography component="p" noWrap>
-												Options
-											</Typography>
+													Options
 											</TableCell>
 										</TableRow>
 									</TableHead>
@@ -89,18 +90,19 @@ class DrawerInnerMessageTable extends Component {
 											return (
 												<TableRow key={row.id}>
 													<TableCell component="th" scope="row">
-													<Typography component="p" noWrap>
-														{row.name}
-													</Typography>
+														<Typography component="p" noWrap={true}>
+															{row.name}
+														</Typography>
 													</TableCell>
 													<TableCell align="left">
-													<Typography component="p" noWrap>
-														{row.message}
-													</Typography>
+														<Typography component="p" noWrap={true}>
+															{row.message}
+														</Typography>
 													</TableCell>
 													<TableCell align="left">
 														<FileOptionsMenu payload={row.payload} />
 													</TableCell>
+													
 												</TableRow>
 											);
 										})}

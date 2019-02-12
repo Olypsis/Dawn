@@ -1,7 +1,14 @@
 import fileDownload from 'js-file-download';
-import { IPFS_GET_FILE, DECRYPT_FILE, DOWNLOAD_FILE } from '../../state/types';
+import {
+  IPFS_GET_FILE,
+  DECRYPT_FILE,
+  DOWNLOAD_FILE,
+  START_DOWNLOAD,
+  FINISH_DOWNLOAD,
+} from '../../state/types';
 import node from '../../util/ipfs';
 import { decrypt } from '../../util/encrypt';
+import { _pushNotificationToQueue } from '../notifications/actions';
 
 /*
 ******************
@@ -17,6 +24,7 @@ export const downloadAndDecryptFile = (
   iv = null,
 ) => async dispatch => {
   try {
+    dispatch(startDownloadAction());
     // Get file from IPFS using hash
     const file = await getFile(hash).then(res => res[0].content);
     dispatch(ipfsGetFileAction(file));
@@ -25,13 +33,15 @@ export const downloadAndDecryptFile = (
 
     // Decrypt File
     const decryptedBuffer = await decryptFile(file, key, iv);
-    dispatch(decryptFileAction(decryptedBuffer, fileName));
+    dispatch(decryptFileAction(null, fileName));
 
     // Trigger file download
     downloadFile(decryptedBuffer, fileName);
     dispatch(downloadFileAction());
+    dispatch(finishDownloadAction());
   } catch (err) {
     console.log('downloadAndDecryptFile:', new Error(err.message));
+    _pushNotificationToQueue(`ERROR: downloadAndDecryptFile: ${err.message}`);
   }
 };
 
@@ -91,4 +101,12 @@ const ipfsGetFileAction = file => ({
 
 const downloadFileAction = () => ({
   type: DOWNLOAD_FILE,
+});
+
+const startDownloadAction = () => ({
+  type: START_DOWNLOAD,
+});
+
+const finishDownloadAction = () => ({
+  type: FINISH_DOWNLOAD,
 });

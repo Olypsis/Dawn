@@ -75,7 +75,6 @@ class SidebarNav extends Component {
 
 	render() {
 		const { classes, location } = this.props;
-		console.log("SIDEBARNAV: this.location", location)
 		return (
 			<SidebarContext.Consumer>
 				{context => {

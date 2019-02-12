@@ -1,29 +1,21 @@
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  processQueue,
-  openNotification,
-  closeNotification,
-  pushNotificationToQueue,
-} from './actions';
+import { withSnackbar } from 'notistack';
+import { enqueueSnackbar, removeSnackbar } from './actions';
 
 // Core Component
-import MultipleNotificationsComponent from './MultipleNotificationsComponent';
+import NotistackComponent from './NotistackComponent';
 
 const mapStateToProps = state => ({
-  notifications: state.notifications,
-  events: state.events,
-  sidebar: state.sidebar,
+  notifications: state.notifications.notifications,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      processQueue,
-      openNotification,
-      closeNotification,
-      pushNotificationToQueue,
+      enqueueSnackbar,
+      removeSnackbar
     },
     dispatch,
   );
@@ -31,4 +23,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MultipleNotificationsComponent);
+)(withSnackbar(NotistackComponent));

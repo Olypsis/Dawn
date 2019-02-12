@@ -8,7 +8,7 @@ import {
 } from '../../state/types';
 import node from '../../util/ipfs';
 import { decrypt } from '../../util/encrypt';
-import { _pushNotificationToQueue } from '../notifications/actions';
+import { _enqueueSnackbar } from '../notifications/actions';
 
 /*
 ******************
@@ -39,9 +39,10 @@ export const downloadAndDecryptFile = (
     downloadFile(decryptedBuffer, fileName);
     dispatch(downloadFileAction());
     dispatch(finishDownloadAction());
+    _enqueueSnackbar(`Downloaded File!`, {variant: 'success'});
   } catch (err) {
     console.log('downloadAndDecryptFile:', new Error(err.message));
-    _pushNotificationToQueue(`ERROR: downloadAndDecryptFile: ${err.message}`);
+    _enqueueSnackbar(`downloadAndDecryptFile: ${err.message}`, {variant: 'error'});
   }
 };
 

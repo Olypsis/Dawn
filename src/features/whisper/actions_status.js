@@ -9,10 +9,7 @@ import {
   RECEIVED_MESSAGE,
 } from '../../state/types';
 
-import {
-  _pushNotificationToQueue,
-  _incrementNewMessageCounter,
-} from '../notifications/actions';
+import { _enqueueSnackbar, _incrementNewMessageCounter } from '../notifications/actions';
 
 // Config variables
 const { httpProvider } = config.whisper;
@@ -82,7 +79,7 @@ export const createStatusListener = () => async (dispatch, getState) => {
       console.log(`Payload Received! Payload: ${JSON.stringify(payload)}`);
       dispatch(receivedStatusMessageAction(payload[1][0]));
       _incrementNewMessageCounter();
-      _pushNotificationToQueue(`Message(s) recieved!`);
+      _enqueueSnackbar(`Message(s) recieved!`, { variant: 'info' });
     }
   });
 };
@@ -113,7 +110,10 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
 
       // Request user / private messages from mailservers
       status.mailservers.requestUserMessages({ from, to }, (err, res) => {
-        if (err) console.log('requestUserMessages: err:', err);
+        if (err) {
+          console.log(new Error('requestUserMessages: err:', err), err.message);
+          _enqueueSnackbar(err, {variant: 'error'})
+        } 
         console.log('requestUserMessages: res:', res);
       });
     });
@@ -144,11 +144,13 @@ export const loginWithStatus = (
       const keyId = await status.getKeyId();
       const publicKey = await status.getPublicKey();
       const userName = await status.getUserName();
-      _pushNotificationToQueue(`Logged In as ${userName}!`);
+      _enqueueSnackbar(`Logged In as ${userName}!`, { variant: 'default' });
       resolve({ keyId, publicKey, userName });
     } catch (err) {
       console.log('loginWithStatus:', err);
-      _pushNotificationToQueue(`Failed to login to Status. Check Console`);
+      _enqueueSnackbar(`Failed to login to Status. Check Console`, {
+        variant: 'error',
+      });
       reject(err);
     }
   });
@@ -159,7 +161,7 @@ export const sendMessage = (payload, publicKey) =>
     console.log('Trying to send message over Status.. ');
     status.sendUserMessage(publicKey, payload, (err, res) => {
       if (err) {
-        _pushNotificationToQueue(`Error Sending Message.`);
+        _enqueueSnackbar(`Error Sending Message.`, { variant: 'error' });
         return reject(err);
       }
       console.log(
@@ -169,7 +171,7 @@ export const sendMessage = (payload, publicKey) =>
         publicKey,
       );
       store.dispatch(sendStatusMessageAction(payload));
-      _pushNotificationToQueue(`Message sent!`);
+      _enqueueSnackbar(`Message sent!`, { variant: 'success' });
       resolve(true);
     });
   });

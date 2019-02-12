@@ -7,7 +7,6 @@ import NotificationsContainer from '../../features/notifications/NotificationsCo
 
 // SubComponents
 import SidebarParent from '../../components/sidebar/SidebarParent';
-// import CustomSnackBars from '../../components/snackbars/MultipleSnackBars';
 
 // import Toggle from '../../components/reusable/ToggleRPC';
 
@@ -46,10 +45,11 @@ class Homepage extends React.Component {
 
             {/* Right Half of Page */}
             <div className="container messages">
-              <NotificationsContainer />
               <Whisper />
             </div>
           </div>
+          <NotificationsContainer />
+          
         </div>
       </div>
     );

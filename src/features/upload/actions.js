@@ -21,7 +21,7 @@ import { encrypt } from '../../util/encrypt';
 import { sendMessage } from '../whisper/actions_status';
 
 // notifications
-import { _pushNotificationToQueue } from '../notifications/actions';
+import { _enqueueSnackbar } from '../notifications/actions';
 
 /*
 ******************
@@ -90,8 +90,7 @@ export const encryptAndAddFile = (publicKey, message, burnerLink) => async (
     dispatch(transferFinishedAction(publicKey, burnerLink));
   } catch (err) {
     console.log(`Error During Transfer: ${err.message}`);
-    alert(err.message);
-    _pushNotificationToQueue('Error During Transfer:', err.message);
+    _enqueueSnackbar(`Error During Transfer: ${err.message}`, {variant: 'error'});
     dispatch(clearUploadStateAction());
   }
 };

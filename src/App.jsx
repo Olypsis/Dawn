@@ -5,6 +5,10 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import store from './state/store';
 
+// NotiStack
+import { SnackbarProvider } from 'notistack';
+
+
 // Routes
 import Routes from './routes';
 
@@ -21,10 +25,12 @@ class App extends Component {
 
   render() {
     return (
-      <Provider store={store}>
+      <Provider store={store} >
+      <SnackbarProvider maxSnack={2}>
         <div className="App">
           <Routes />
         </div>
+      </SnackbarProvider>
       </Provider>
     );
   }

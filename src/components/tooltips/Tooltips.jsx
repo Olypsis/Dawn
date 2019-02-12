@@ -2,7 +2,7 @@ import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
 export const RefreshTooltip = ({ children }) => (
-  <Tooltip title="Refresh">{children}</Tooltip>
+  <Tooltip title="Request Messages">{children}</Tooltip>
 );
 
 export const UploadToolTip = ({ children }) => (

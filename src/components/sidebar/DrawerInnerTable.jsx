@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 // SubComponents
 import FileOptionsMenu from '../menus/FileOptionsMenu';
-import TableOptions from "./TableOptions"
-// import IndeterminateSpinner from '../spinners/IndeterminateSpinner';
+import TableOptions from './TableOptions';
+import IndeterminateSpinner from '../spinners/IndeterminateSpinner';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -22,11 +22,15 @@ import { SidebarContext } from '../../features/sidebar/SidebarContext';
 // Redux
 import { _clearMessageCounter } from '../../features/notifications/actions';
 
+// Utils
+import isEmpty from '../../util/is-empty';
+
 const styles = theme => ({
 	drawerInnerContentHeader: {
 		paddingLeft: theme.spacing.unit * 2,
 	},
 	drawerInnerTable: {
+		margin: theme.spacing.unit * 2,
 		paddingLeft: theme.spacing.unit * 2,
 	},
 	root: {
@@ -38,7 +42,13 @@ const styles = theme => ({
 		width: '100%',
 	},
 	spinner: {
-		height: '100%',
+		width: '100%',
+		marginLeft: 'auto',
+		marginRight: 'auto',
+	},
+	typography: {
+		margin: theme.spacing.unit,
+		paddingLeft: theme.spacing.unit * 2,
 	},
 });
 
@@ -59,56 +69,79 @@ class DrawerInnerMessageTable extends Component {
 		return (
 			<SidebarContext.Consumer>
 				{context => {
-					const rows = context.events.received_messages.map(payload => {
-						// TODO: rename to events.all
-						return createData(payload.path, null, null, payload.note, payload);
-					});
-
 					// let renderedDownloadSpinner = context.download.isDownloading ? (
 					// 	<IndeterminateSpinner className={classes.spinner} />
 					// ) : null;
+					let renderedTableBody;
+
+					if (!isEmpty(context.events.received_messages)) {
+						const rows = context.events.received_messages.map(payload => {
+							// TODO: rename to events.all
+							return createData(
+								payload.path,
+								null,
+								null,
+								payload.note,
+								payload,
+							);
+						});
+						renderedTableBody = rows.map(row => {
+							return (
+								<TableRow key={row.id}>
+									<TableCell component="th" scope="row">
+										<Typography component="p" variant="p" noWrap={true}>
+											{row.name}
+										</Typography>
+									</TableCell>
+									<TableCell align="left">
+										<Typography component="p" variant="p" noWrap={true}>
+											{row.message}
+										</Typography>
+									</TableCell>
+									<TableCell align="left">
+										<FileOptionsMenu payload={row.payload} />
+									</TableCell>
+								</TableRow>
+							);
+						});
+					} else if (context.whisper.isRequestingMessages) {
+						renderedTableBody = (
+							<TableRow className={classes.drawerInnerTable}>
+								<IndeterminateSpinner className={classes.spinner} />
+								<Typography component="p" variant="p">
+									Requesting...
+								</Typography>
+							</TableRow>
+						);
+					} else {
+						renderedTableBody = (
+							<TableRow className={classes.drawerInnerTable}>
+								<Typography component="p" variant="p">
+									No files yet...
+								</Typography>
+								<br />
+								<Typography component="p" variant="p">
+									{' '}
+									Try logging in with metamask, or requesting messages!{' '}
+								</Typography>
+							</TableRow>
+						);
+					}
 
 					return (
 						<Fragment>
 							<h3 className={classes.drawerInnerContentHeader}>Your Files</h3>
-							<TableOptions />
+							<TableOptions requestMessages={context.statusUseMailservers}/>
 							<Paper className={classes.root}>
 								<Table className={classes.table}>
 									<TableHead>
 										<TableRow>
-											<TableCell align="left">
-													Name
-											</TableCell>
-											<TableCell align="left">
-													Message
-											</TableCell>
-											<TableCell align="left">
-													Options
-											</TableCell>
+											<TableCell align="left">Name</TableCell>
+											<TableCell align="left">Message</TableCell>
+											<TableCell align="left">Options</TableCell>
 										</TableRow>
 									</TableHead>
-									<TableBody>
-										{rows.map(row => {
-											return (
-												<TableRow key={row.id}>
-													<TableCell component="th" scope="row">
-														<Typography component="p" noWrap={true}>
-															{row.name}
-														</Typography>
-													</TableCell>
-													<TableCell align="left">
-														<Typography component="p" noWrap={true}>
-															{row.message}
-														</Typography>
-													</TableCell>
-													<TableCell align="left">
-														<FileOptionsMenu payload={row.payload} />
-													</TableCell>
-													
-												</TableRow>
-											);
-										})}
-									</TableBody>
+									<TableBody>{renderedTableBody}</TableBody>
 								</Table>
 							</Paper>
 						</Fragment>

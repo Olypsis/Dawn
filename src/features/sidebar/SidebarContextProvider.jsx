@@ -14,7 +14,8 @@ class SidebarContextProvider extends React.Component {
 					toggleDrawer: this.props.toggleDrawer,
 					openDrawer: this.props.openDrawer,
 					closeDrawer: this.props.closeDrawer,
-					downloadAndDecryptFile: this.props.downloadAndDecryptFile
+					downloadAndDecryptFile: this.props.downloadAndDecryptFile,
+					statusUseMailservers: this.props.statusUseMailservers
 				}}
 			>
 				{this.props.children}

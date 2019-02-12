@@ -9,7 +9,10 @@ import {
   RECEIVED_MESSAGE,
 } from '../../state/types';
 
-import { _enqueueSnackbar, _incrementNewMessageCounter } from '../notifications/actions';
+import {
+  _enqueueSnackbar,
+  _incrementNewMessageCounter,
+} from '../notifications/actions';
 
 // Config variables
 const { httpProvider } = config.whisper;
@@ -35,7 +38,7 @@ export const connectStatus = (pKey = undefined) => async (
   console.log(pKey);
   dispatch(newStatusInstanceAction(status));
   try {
-    dispatch(startLoginAction())
+    dispatch(startLoginAction());
     const { keyId, publicKey, userName } = await loginWithStatus(status, pKey);
     console.log(
       'Status KeyId:',
@@ -45,10 +48,10 @@ export const connectStatus = (pKey = undefined) => async (
       'userName:',
       userName,
     );
-    dispatch(finishLoginAction())
+    dispatch(finishLoginAction());
     dispatch(statusConnectAction(keyId, publicKey, userName));
   } catch (err) {
-    dispatch(finishLoginAction())
+    dispatch(finishLoginAction());
     console.log(new Error(err));
   }
 };
@@ -92,6 +95,8 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
   const { status } = getState().whisper;
   const enode = mailserver;
 
+  dispatch(startRequestMessagesAction());
+
   try {
     //
     status.mailservers.useMailserver(enode, (err, res) => {
@@ -112,15 +117,17 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
       // );
 
       // Request user / private messages from mailservers
-      _enqueueSnackbar("Requesting messages from mailserver...", {variant: 'default'})
+      // _enqueueSnackbar("Requesting messages from mailserver...", {variant: 'default'})
       status.mailservers.requestUserMessages({ from, to }, (err, res) => {
         if (err) {
           console.log(new Error('requestUserMessages: err:', err), err.message);
-          _enqueueSnackbar(err, {variant: 'error'})
-        } 
+          _enqueueSnackbar(err, { variant: 'error' });
+        }
         console.log('requestUserMessages: res:', res);
-        _enqueueSnackbar("Requested messages from mailserver.", {variant: 'success'})
-
+        _enqueueSnackbar('Requested messages from mailserver.', {
+          variant: 'success',
+        });
+        dispatch(finishRequestMessagesAction());
       });
     });
   } catch (err) {
@@ -221,4 +228,10 @@ export const finishLoginAction = () => ({
   type: 'FINISH_LOGIN',
 });
 
+export const startRequestMessagesAction = () => ({
+  type: 'START_REQUEST_MESSAGES',
+});
 
+export const finishRequestMessagesAction = () => ({
+  type: 'FINISH_REQUEST_MESSAGES',
+});

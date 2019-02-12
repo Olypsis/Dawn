@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { downloadAndDecryptFile } from '../download/actions';
 import { toggleDrawer, openDrawer, closeDrawer } from './actions';
+import { statusUseMailservers } from '../whisper/actions_status';
+
 
 
 
@@ -21,6 +23,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       downloadAndDecryptFile,
+      statusUseMailservers,
       toggleDrawer,
       openDrawer,
       closeDrawer

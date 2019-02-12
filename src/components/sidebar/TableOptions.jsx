@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // SubComponents
@@ -12,24 +12,40 @@ import IconButton from '@material-ui/core/IconButton';
 
 const styles = theme => ({
 	tableOptionsContainer: {
-		margin: "inherit",
+		margin: 'inherit',
 		display: 'flex',
-		"flex-direction": "row",
-		"justify-content": "flex-end"
+		'flex-direction': 'row',
+		'justify-content': 'flex-end',
 	},
 	tableAction: {
-		"align-self": "flex-end"
-	}
+		'align-self': 'flex-end',
+	},
 });
 
 class DrawerInnerMessageTable extends Component {
+
+	handleRequestMessagesClick(requestMessages) {
+		return async function(e) {
+			try {
+				await requestMessages();
+			} catch (err) {
+				alert('ERROR: Check console');
+				console.log('handleRequestMessagesClick:', 
+					err.message);
+			}
+		};
+	}
+
 	render() {
-		const { classes, ...props } = this.props;
+		const { classes, requestMessages } = this.props;
 
 		return (
 			<div className={classes.tableOptionsContainer}>
 				<RefreshTooltip>
-					<IconButton aria-label="Delete">
+					<IconButton
+						onClick={e => this.handleRequestMessagesClick(requestMessages)(e)}
+						aria-label="Delete"
+					>
 						<AutoRenewIcon />
 					</IconButton>
 				</RefreshTooltip>

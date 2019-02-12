@@ -26,7 +26,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store} >
-      <SnackbarProvider maxSnack={1}>
+      <SnackbarProvider maxSnack={2}>
         <div className="App">
           <Routes />
         </div>

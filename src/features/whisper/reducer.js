@@ -27,6 +27,7 @@ const initialState = {
     username: '',
   },
   isLoggingIn: false,
+  isRequestingMessages: false,
 };
 
 export default function(state = initialState, action) {
@@ -92,6 +93,17 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isLoggingIn: false
+      }
+
+    case 'START_REQUEST_MESSAGES':
+      return {
+        ...state,
+        isRequestingMessages: true
+      }
+    case 'FINISH_REQUEST_MESSAGES':
+      return {
+        ...state,
+        isRequestingMessages: false
       }
 
     default:

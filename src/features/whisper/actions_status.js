@@ -13,7 +13,7 @@ import { _enqueueSnackbar, _incrementNewMessageCounter } from '../notifications/
 
 // Config variables
 const { httpProvider } = config.whisper;
-const mailserver = config.mailservers['mail-02.gc-us-central1-a.eth.beta'];
+const mailserver = config.mailservers['mail-01.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
 
 // Status public channel
@@ -35,6 +35,7 @@ export const connectStatus = (pKey = undefined) => async (
   console.log(pKey);
   dispatch(newStatusInstanceAction(status));
   try {
+    dispatch(startLoginAction())
     const { keyId, publicKey, userName } = await loginWithStatus(status, pKey);
     console.log(
       'Status KeyId:',
@@ -44,8 +45,10 @@ export const connectStatus = (pKey = undefined) => async (
       'userName:',
       userName,
     );
+    dispatch(finishLoginAction())
     dispatch(statusConnectAction(keyId, publicKey, userName));
   } catch (err) {
+    dispatch(finishLoginAction())
     console.log(new Error(err));
   }
 };
@@ -109,12 +112,15 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
       // );
 
       // Request user / private messages from mailservers
+      _enqueueSnackbar("Requesting messages from mailserver...", {variant: 'default'})
       status.mailservers.requestUserMessages({ from, to }, (err, res) => {
         if (err) {
           console.log(new Error('requestUserMessages: err:', err), err.message);
           _enqueueSnackbar(err, {variant: 'error'})
         } 
         console.log('requestUserMessages: res:', res);
+        _enqueueSnackbar("Requested messages from mailserver.", {variant: 'success'})
+
       });
     });
   } catch (err) {
@@ -140,11 +146,12 @@ export const loginWithStatus = (
         'loginWithStatus: about to log in in with status provider:',
         provider,
       );
+      _enqueueSnackbar(`Attempting to login...`, { variant: 'default' });
       await status.connect(provider, privateKey);
       const keyId = await status.getKeyId();
       const publicKey = await status.getPublicKey();
       const userName = await status.getUserName();
-      _enqueueSnackbar(`Logged In as ${userName}!`, { variant: 'default' });
+      _enqueueSnackbar(`Logged In as ${userName}!`, { variant: 'info' });
       resolve({ keyId, publicKey, userName });
     } catch (err) {
       console.log('loginWithStatus:', err);
@@ -205,3 +212,13 @@ export const statusConnectAction = (
   type: STATUS_CONNECTED,
   payload: { statusKeypairId, statusPublicKey, statusUsername },
 });
+
+export const startLoginAction = () => ({
+  type: 'START_LOGIN',
+});
+
+export const finishLoginAction = () => ({
+  type: 'FINISH_LOGIN',
+});
+
+

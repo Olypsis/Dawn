@@ -26,7 +26,7 @@ const initialState = {
     publicKey: '',
     username: '',
   },
-  isLoading: false,
+  isLoggingIn: false,
 };
 
 export default function(state = initialState, action) {
@@ -82,6 +82,17 @@ export default function(state = initialState, action) {
           username: action.payload.statusUsername,
         },
       };
+
+    case 'START_LOGIN':
+      return {
+        ...state,
+        isLoggingIn: true
+      }
+    case 'FINISH_LOGIN':
+      return {
+        ...state,
+        isLoggingIn: false
+      }
 
     default:
       return state;

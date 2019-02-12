@@ -68,7 +68,7 @@ class DrawerInnerAccountPage extends Component {
 						</Fragment>
 					);
 
-					return (
+						return (
 						<Fragment>
 							<h3 className={classes.drawerInnerContentHeader}>Account</h3>
 							{renderedAccount}

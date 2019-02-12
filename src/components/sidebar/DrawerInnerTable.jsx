@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // SubComponents
 import FileOptionsMenu from '../menus/FileOptionsMenu';
+import TableOptions from "./TableOptions"
 // import IndeterminateSpinner from '../spinners/IndeterminateSpinner';
 
 // Material-UI
@@ -70,6 +71,7 @@ class DrawerInnerMessageTable extends Component {
 					return (
 						<Fragment>
 							<h3 className={classes.drawerInnerContentHeader}>Your Files</h3>
+							<TableOptions />
 							<Paper className={classes.root}>
 								<Table className={classes.table}>
 									<TableHead>

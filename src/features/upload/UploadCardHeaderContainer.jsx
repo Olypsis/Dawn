@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { pushFileToQueue, clearFileQueue } from './actions';
 
 // Core Component
-import NewUploadCardHeader from './NewUploadCardHeader';
+import NewUploadCardHeader from './UploadCardHeader';
 
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { encryptAndAddFile, restartUploadForm} from './actions';
 
 // Core Component
-import NewUploadCard from './NewUploadCard';
+import NewUploadCard from './UploadCard';
 
 // Material-ui
 import red from '@material-ui/core/colors/red';

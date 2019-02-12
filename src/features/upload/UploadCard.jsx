@@ -13,7 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
 
 // SubComponents
-import UploadForm from './NewUploadForm';
+import UploadForm from './UploadForm';
 import RadioButtonForm from '../../components/forms/RadioButtonForm';
 import UploadCardHeaderContainer from './UploadCardHeaderContainer';
 import TransferFinishedCardContent from './TransferFinishedCardContent';

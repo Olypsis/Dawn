@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Notifier extends Component {
+class Notifier extends React.Component {
   displayed = [];
 
   storeDisplayed = id => {

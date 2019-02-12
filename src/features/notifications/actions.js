@@ -1,8 +1,6 @@
 import {
 	REMOVE_SNACKBAR,
 	ENQUEUE_SNACKBAR,
-	CLOSE_NOTIFICATION,
-	PUSH_NOTIFICATION,
 	INCREMENT_NEW_MESSAGE_COUNTER,
 	CLEAR_NEW_MESSAGE_COUNTER,
 } from '../../state/types';
@@ -67,9 +65,7 @@ const clearNewMessageCounterAction = () => ({
 	type: CLEAR_NEW_MESSAGE_COUNTER,
 });
 
-
-
-export const enqueueSnackbarAction = (message, options) => ({
+const enqueueSnackbarAction = (message, options) => ({
     type: ENQUEUE_SNACKBAR,
     payload: {
         key: new Date().getTime() + Math.random(),
@@ -78,7 +74,7 @@ export const enqueueSnackbarAction = (message, options) => ({
     },
 });
 
-export const removeSnackbarAction = key => ({
+const removeSnackbarAction = key => ({
     type: REMOVE_SNACKBAR,
     payload: key,
 });

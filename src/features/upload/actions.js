@@ -14,7 +14,6 @@ import {
   CLEAR_FILE_QUEUE,
   CLEAR_UPLOAD_STATE,
 } from '../../state/types';
-import node from '../../util/ipfs';
 import { encrypt } from '../../util/encrypt';
 
 // Whisper
@@ -22,6 +21,9 @@ import { sendMessage, queryMailserver } from '../whisper/actions_status';
 
 // notifications
 import { _enqueueSnackbar } from '../notifications/actions';
+
+import node from '../../util/ipfs';
+// let node;
 
 /*
 ******************

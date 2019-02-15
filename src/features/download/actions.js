@@ -6,10 +6,12 @@ import {
   START_DOWNLOAD,
   FINISH_DOWNLOAD,
 } from '../../state/types';
-import node from '../../util/ipfs';
 import { decrypt } from '../../util/encrypt';
 import { _enqueueSnackbar } from '../notifications/actions';
 
+
+// import node from '../../util/ipfs';
+let node;
 /*
 ******************
 Thunks

@@ -139,7 +139,7 @@ Helper functions
 export const loginWithStatus = (
   status,
   privateKey = null,
-  provider = httpProvider,
+  provider = corsProxy + httpProvider,
 ) =>
   new Promise(async (resolve, reject) => {
     try {

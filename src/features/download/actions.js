@@ -9,9 +9,8 @@ import {
 import { decrypt } from '../../util/encrypt';
 import { _enqueueSnackbar } from '../notifications/actions';
 
-
-// import node from '../../util/ipfs';
-let node;
+import node from '../../util/ipfs';
+// let node;
 /*
 ******************
 Thunks
@@ -41,10 +40,12 @@ export const downloadAndDecryptFile = (
     downloadFile(decryptedBuffer, fileName);
     dispatch(downloadFileAction());
     dispatch(finishDownloadAction());
-    _enqueueSnackbar(`Downloaded File!`, {variant: 'success'});
+    _enqueueSnackbar(`Downloaded File!`, { variant: 'success' });
   } catch (err) {
     console.log('downloadAndDecryptFile:', new Error(err.message));
-    _enqueueSnackbar(`downloadAndDecryptFile: ${err.message}`, {variant: 'error'});
+    _enqueueSnackbar(`downloadAndDecryptFile: ${err.message}`, {
+      variant: 'error',
+    });
   }
 };
 
@@ -67,11 +68,13 @@ const getFile = async hash => {
   console.log('getFile: Getting file from IPFS. Hash:', hash);
 
   try {
+    // await node.start();
     const files = await node.get(hash);
     const res = files.map(file => {
       const { content, name, path } = file;
       return { content, name, path };
     });
+    // await node.stop();
     // Returns an array of length 1 containing an object with file details
     return res;
   } catch (err) {

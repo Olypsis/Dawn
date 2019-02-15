@@ -13,7 +13,9 @@ class Whisper extends React.Component {
   async componentDidMount() {
     const params = new URLSearchParams(this.props.location.search);
     const pKey = params.get('pkey');
-    console.log(pKey);
+    if (pKey) {
+      console.log("Logging in With Private Key:", pKey);
+    }
 
     await this.props.connectStatus(pKey);
     await this.props.createStatusListener();

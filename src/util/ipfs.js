@@ -1,9 +1,15 @@
 const IPFS = require('ipfs');
 
-const node = new IPFS({ emptyRepo: true });
+const node = new IPFS({ emptyRepo: true, start: true});
+
 node.on('start', async () => {
-	console.log('IPFS Node Started...');
+	console.log('IPFS Node Started...', Date.now());
 });
+
+node.on('stop', async () => {
+	console.log('IPFS Node STOPPED.', Date.now());
+});
+
 
 node.on('ready', async () => {
 	const version = await node.version();

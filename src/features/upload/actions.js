@@ -128,14 +128,21 @@ export const restartUploadForm = () => dispatch => {
 
 // Helper fn - Add file to IPFS
 const ipfsAddFile = async (buffer, fileName) => {
-  const filesAdded = await node.add({
-    content: buffer,
-    path: fileName,
-  });
+  try {
+    // await node.start();
+    const filesAdded = await node.add({
+      content: buffer,
+      path: fileName,
+    });
 
-  const { path, hash } = filesAdded[0];
-  console.log('Added file:', path, hash);
-  return { path, hash };
+    const { path, hash } = filesAdded[0];
+    console.log('Added file:', path, hash);
+    // await node.stop();
+    return { path, hash };
+  } catch (err) {
+    throw err;
+  }
+
   // dispatch(ipfsAddFileAction(filesAdded[0].path, filesAdded[0].hash));
 };
 

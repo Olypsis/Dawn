@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 
 // store
-// import store from "../../state/store";
+import store from '../../state/store';
 
 // utils
 import isEmpty from '../../util/is-empty';
@@ -36,7 +36,13 @@ class UploadForm extends Component {
 		this.state = {
 			publicKey: '',
 			message: '',
-			burnerLink: '',
+			burnerAccount: {
+				burnerPrivateKey: '',
+				burnerKeyPairId: '',
+				burnerPublicKey: '',
+				burnerLink: '',
+			},
+			formType: 'whisper',
 		};
 	}
 
@@ -49,31 +55,67 @@ class UploadForm extends Component {
 	// Encrypts file, then sends a message
 	handleFormSubmit = encryptAndAddFile => async e => {
 		e.preventDefault();
-		const { publicKey, message, burnerLink } = this.state;
-		if (isEmpty(publicKey)) return alert('Please provide a proper public key!');
+		const { formType, publicKey, message, burnerAccount } = this.state;
 
-		await encryptAndAddFile(publicKey, message, burnerLink);
+		if (formType === 'whisper') {
+			if (isEmpty(publicKey))
+				return alert('Please provide a proper public key!');
+			return await encryptAndAddFile(publicKey, message, burnerAccount);
+		} else {
+			return await encryptAndAddFile(
+				burnerAccount.burnerPublicKey,
+				message,
+				burnerAccount,
+			);
+		}
 	};
 
 	formChanged = async formType => {
 		if (formType === 'link') {
 			// Form is link
 			// 1. Create burner account
-			const {
-				// newKeyPairId,
-				newPubKey,
-				// burnerpKey,
-				burnerLink,
-			} = await this.props.generateLink();
+			const burnerAccount = await this.generateLink();
 			// 2. Set Public key to form
-			console.log('pubkey', newPubKey, burnerLink);
-			this.setState({ publicKey: newPubKey, formType: 'link', burnerLink });
+			console.log('burnerAccount', burnerAccount);
+			this.setState({ formType: 'link', burnerAccount });
 		} else {
 			// Form is whisper
 			console.log('formChanged: formType:', formType);
 			this.setState({ publicKey: '', formType: 'whisper' });
 		}
 	};
+
+	async generateLink() {
+		const { shh } = store.getState().whisper.status;
+		try {
+			// Generate a random keyPairId
+			const tempKeypairId = await shh.newKeyPair();
+			// This is our Private Key: What we send through link - generates new account below
+			const burnerPrivateKey = await shh.getPrivateKey(tempKeypairId);
+			// This is the keypairId we generate using privKey
+			const burnerKeyPairId = await shh.addPrivateKey(burnerPrivateKey);
+			// this is pubkey we send msg to
+			const burnerPublicKey = await shh.getPublicKey(burnerKeyPairId);
+
+			console.log(
+				'Burner account:',
+				'keypairId:',
+				burnerKeyPairId,
+				'publicKey:',
+				burnerPublicKey,
+				'privateKey',
+				burnerPrivateKey,
+			);
+			// Generate Link
+			// FIXME Change to none localhost link
+			let { href } = window.location;
+			href = href.substring(0, href.lastIndexOf('/') + 1);
+			const burnerLink = href + '?pkey=' + burnerPrivateKey;
+			return { burnerPrivateKey, burnerKeyPairId, burnerPublicKey, burnerLink };
+		} catch (err) {
+			console.log(err);
+		}
+	}
 
 	async componentWillReceiveProps(nextProps) {
 		console.log(nextProps);
@@ -94,7 +136,7 @@ class UploadForm extends Component {
 					id="public-key-textfield"
 					label="Public Key"
 					className={classes.textField}
-					value={this.state.publicKey}
+					value={this.state.burnerAccount.burnerPublicKey}
 					margin="normal"
 				/>
 			);

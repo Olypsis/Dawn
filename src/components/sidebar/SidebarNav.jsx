@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 // Custom Buttons
 import Button from '../buttons/DefaultButton';
+import BadgedButton from '../buttons/BadgedButton';
 import IdenticonButton from '../buttons/IdenticonButton';
 
 // Material-UI
@@ -67,14 +68,13 @@ class SidebarNav extends Component {
 		alert('About Modal');
 	};
 
-	validateLocation = (location, to) => {
-		if (location.pathname === to) return { to: '/' };
+	validateLocation = (location, open, to) => {
+		if (location.pathname === to && open) return '/';
 		return to;
 	};
 
 	render() {
 		const { classes, location } = this.props;
-		console.log("SIDEBARNAV: this.location", location)
 		return (
 			<SidebarContext.Consumer>
 				{context => {
@@ -83,7 +83,12 @@ class SidebarNav extends Component {
 						openDrawer,
 						closeDrawer,
 						sidebar,
+						notifications
+						// events
 					} = context;
+
+					let numReceivedMessages =  notifications.newMessageNum;
+;
 					return (
 						<Fragment>
 							<div className={classes.navContainer}>
@@ -97,10 +102,11 @@ class SidebarNav extends Component {
 								<Link
 									to={this.validateLocation(
 										location,
+										sidebar.open,
 										'/messages',
 									)}
 								>
-									<Button
+									<BadgedButton
 										onClick={e =>
 											this.handleDrawerToggleClick(
 												e,
@@ -113,14 +119,16 @@ class SidebarNav extends Component {
 											)
 										}
 										className={classes.menuButton}
+										badgeNum={numReceivedMessages}
 									>
 										My Wallet
-									</Button>
+									</BadgedButton>
 								</Link>
 
 								<Link
 									to={this.validateLocation(
 										location,
+										sidebar.open,
 										'/account',
 									)}
 								>

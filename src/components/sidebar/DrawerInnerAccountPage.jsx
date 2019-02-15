@@ -1,5 +1,8 @@
 import React, { Component, Fragment } from 'react';
 
+// SubComponents
+import IndeterminateSpinner from '../spinners/IndeterminateSpinner';
+
 // Metamask Feature
 import ConnectMetamaskContainer from '../../features/account/ConnectMetamaskContainer';
 
@@ -25,6 +28,11 @@ const styles = theme => ({
 	innerText: {
 		'overflow-wrap': 'word-break',
 	},
+	spinner: {
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		width: '100%',
+	},
 });
 
 class DrawerInnerAccountPage extends Component {
@@ -37,11 +45,10 @@ class DrawerInnerAccountPage extends Component {
 		return (
 			<SidebarContext.Consumer>
 				{context => {
-					return (
+					let renderedAccount = context.whisper.isLoggingIn ? (
+						<IndeterminateSpinner className={classes.spinner} />
+					) : (
 						<Fragment>
-							<h3 className={classes.drawerInnerContentHeader}>
-								Account
-							</h3>
 							<Paper className={classes.root} elevation={1}>
 								<Typography variant="h5" component="h3">
 									Your Username
@@ -58,6 +65,13 @@ class DrawerInnerAccountPage extends Component {
 									{context.whisper.statusDetails.publicKey}
 								</Typography>
 							</Paper>
+						</Fragment>
+					);
+
+						return (
+						<Fragment>
+							<h3 className={classes.drawerInnerContentHeader}>Account</h3>
+							{renderedAccount}
 
 							<ConnectMetamaskContainer />
 						</Fragment>

@@ -9,6 +9,8 @@ import {
 import {
   loginWithStatus,
   statusConnectAction,
+  startLoginAction,
+  finishLoginAction
 } from '../whisper/actions_status';
 
 /*
@@ -36,6 +38,7 @@ export const signMetamaskLogin = () => async (dispatch, getState) => {
     const loginHash = hash.slice(0, 66);
     dispatch(signLoginMetamaskAction(loginHash));
 
+    dispatch(startLoginAction());
     // Log into status using hexstring as PK
     const { keyId, publicKey, userName } = await loginWithStatus(
       status,
@@ -43,6 +46,7 @@ export const signMetamaskLogin = () => async (dispatch, getState) => {
       undefined,
     );
     dispatch(clearEventsAction());
+    dispatch(finishLoginAction());
     return dispatch(statusConnectAction(keyId, publicKey, userName));
   } catch (err) {
     console.log(err);

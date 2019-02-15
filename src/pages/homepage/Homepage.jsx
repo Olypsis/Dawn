@@ -7,7 +7,6 @@ import NotificationsContainer from '../../features/notifications/NotificationsCo
 
 // SubComponents
 import SidebarParent from '../../components/sidebar/SidebarParent';
-// import CustomSnackBars from '../../components/snackbars/MultipleSnackBars';
 
 // import Toggle from '../../components/reusable/ToggleRPC';
 
@@ -17,14 +16,16 @@ import { withStyles } from '@material-ui/core/styles';
 // Logomark
 import Logomark from '../../img/logomark.svg';
 
-const styles = theme => ({
+const styles = theme => {
+  return ({
   Applogo: {
     animation: 'App-logo-spin infinite 20s linear',
     height: 100,
     margin: theme.spacing.unit * 2,
     marginLeft: 0,
   },
-});
+})
+};
 
 class Homepage extends React.Component {
   render() {
@@ -44,10 +45,11 @@ class Homepage extends React.Component {
 
             {/* Right Half of Page */}
             <div className="container messages">
-              <NotificationsContainer />
               <Whisper />
             </div>
           </div>
+          <NotificationsContainer />
+          
         </div>
       </div>
     );

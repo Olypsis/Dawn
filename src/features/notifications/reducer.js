@@ -1,38 +1,48 @@
-import { PROCESS_NOTIFICATIONS_QUEUE, OPEN_NOTIFICATION, CLOSE_NOTIFICATION, PUSH_NOTIFICATION} from '../../state/types';
+import {
+  ENQUEUE_SNACKBAR,
+  REMOVE_SNACKBAR,
+  INCREMENT_NEW_MESSAGE_COUNTER,
+  CLEAR_NEW_MESSAGE_COUNTER,
+} from '../../state/types';
 
 const initialState = {
-  open: false,
-  queue: [],
   messageInfo: {},
+  newMessageNum: 0,
+  notifications: [],
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case PUSH_NOTIFICATION:
+    case INCREMENT_NEW_MESSAGE_COUNTER:
       return {
         ...state,
-        queue: [...state.queue, {
-          message: action.payload.message, 
-          key: action.payload.key
-        }]
-      };
-    case OPEN_NOTIFICATION:
-      return {
-        ...state,
-        open: true,
-      };
-    case CLOSE_NOTIFICATION:
-      return {
-        ...state,
-        open: false,
+        newMessageNum: state.newMessageNum + 1,
       };
 
-    case PROCESS_NOTIFICATIONS_QUEUE:
+    case CLEAR_NEW_MESSAGE_COUNTER:
       return {
         ...state,
-        messageInfo: state.queue.shift(),
-        open: true
-      }
+        newMessageNum: 0,
+      };
+
+    case ENQUEUE_SNACKBAR:
+      return {
+        ...state,
+        notifications: [
+          ...state.notifications,
+          {
+            ...action.payload,
+          },
+        ],
+      };
+
+    case REMOVE_SNACKBAR:
+      return {
+        ...state,
+        notifications: state.notifications.filter(
+          notification => notification.key !== action.payload,
+        ),
+      };
 
     default:
       return state;

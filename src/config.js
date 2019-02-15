@@ -35,7 +35,7 @@ const config = {
     'mail-03.gc-us-central1-a.eth.beta':
       'enode://531e252ec966b7e83f5538c19bf1cde7381cc7949026a6e499b6e998e695751aadf26d4c98d5a4eabfb7cefd31c3c88d600a775f14ed5781520a88ecd25da3c6@35.225.227.79:30504',
   },
-  corsProxy: 'https://cors-anywhere.herokuapp.com/',
+  corsProxy: 'https://lit-atoll-88066.herokuapp.com/',
 };
 
 export default config;

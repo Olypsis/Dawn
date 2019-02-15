@@ -1,8 +1,16 @@
 import fileDownload from 'js-file-download';
-import { IPFS_GET_FILE, DECRYPT_FILE, DOWNLOAD_FILE } from '../../state/types';
-import node from '../../util/ipfs';
+import {
+  IPFS_GET_FILE,
+  DECRYPT_FILE,
+  DOWNLOAD_FILE,
+  START_DOWNLOAD,
+  FINISH_DOWNLOAD,
+} from '../../state/types';
 import { decrypt } from '../../util/encrypt';
+import { _enqueueSnackbar } from '../notifications/actions';
 
+import node from '../../util/ipfs';
+// let node;
 /*
 ******************
 Thunks
@@ -17,6 +25,7 @@ export const downloadAndDecryptFile = (
   iv = null,
 ) => async dispatch => {
   try {
+    dispatch(startDownloadAction());
     // Get file from IPFS using hash
     const file = await getFile(hash).then(res => res[0].content);
     dispatch(ipfsGetFileAction(file));
@@ -25,13 +34,18 @@ export const downloadAndDecryptFile = (
 
     // Decrypt File
     const decryptedBuffer = await decryptFile(file, key, iv);
-    dispatch(decryptFileAction(decryptedBuffer, fileName));
+    dispatch(decryptFileAction(null, fileName));
 
     // Trigger file download
     downloadFile(decryptedBuffer, fileName);
     dispatch(downloadFileAction());
+    dispatch(finishDownloadAction());
+    _enqueueSnackbar(`Downloaded File!`, { variant: 'success' });
   } catch (err) {
     console.log('downloadAndDecryptFile:', new Error(err.message));
+    _enqueueSnackbar(`downloadAndDecryptFile: ${err.message}`, {
+      variant: 'error',
+    });
   }
 };
 
@@ -54,11 +68,13 @@ const getFile = async hash => {
   console.log('getFile: Getting file from IPFS. Hash:', hash);
 
   try {
+    // await node.start();
     const files = await node.get(hash);
     const res = files.map(file => {
       const { content, name, path } = file;
       return { content, name, path };
     });
+    // await node.stop();
     // Returns an array of length 1 containing an object with file details
     return res;
   } catch (err) {
@@ -91,4 +107,12 @@ const ipfsGetFileAction = file => ({
 
 const downloadFileAction = () => ({
   type: DOWNLOAD_FILE,
+});
+
+const startDownloadAction = () => ({
+  type: START_DOWNLOAD,
+});
+
+const finishDownloadAction = () => ({
+  type: FINISH_DOWNLOAD,
 });

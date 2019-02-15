@@ -13,8 +13,6 @@ import sidebarReducer from '../features/sidebar/reducer';
 import notificationsReducer from '../features/notifications/reducer';
 
 
-
-
 const rootReducer = combineReducers({
   whisper: whisperReducer,
   web3: web3Reducer,

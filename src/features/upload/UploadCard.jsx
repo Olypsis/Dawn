@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import store from '../../state/store';
+// import store from '../../state/store';
 
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -13,7 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
 
 // SubComponents
-import UploadForm from './NewUploadForm';
+import UploadForm from './UploadForm';
 import RadioButtonForm from '../../components/forms/RadioButtonForm';
 import UploadCardHeaderContainer from './UploadCardHeaderContainer';
 import TransferFinishedCardContent from './TransferFinishedCardContent';
@@ -30,9 +30,9 @@ class UploadCard extends React.Component {
 		};
 	}
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
+	handleExpandClick = () => {
+		this.setState(state => ({ expanded: !state.expanded }));
+	};
 
 	handleClickNewUpload = () => {
 		this.props.restartUploadForm();
@@ -43,37 +43,7 @@ class UploadCard extends React.Component {
 		console.log('changeForm: formType:', formType);
 	};
 
-	async generateLink() {
-		const { shh } = store.getState().whisper.status;
-		try {
-			// Generate random keyPairId
-			const tempKeypairId = await shh.newKeyPair();
-			// What we send through link
-			const burnerpKey = await shh.getPrivateKey(tempKeypairId);
-			// This is keypairId we generate using privKey
-			const newKeyPairId = await shh.addPrivateKey(burnerpKey);
-			// this is pubkey we send msg to
-			const newPubKey = await shh.getPublicKey(newKeyPairId);
 
-			console.log(
-				'Burner account:',
-				'keypairId:',
-				newKeyPairId,
-				'publicKey:',
-				newPubKey,
-				'privateKey',
-				burnerpKey,
-			);
-			// Generate Link
-			// FIXME Change to none localhost link
-			const burnerLink =
-				'https://shrouded-caverns-47686.herokuapp.com/#/?pkey=' + burnerpKey;
-			console.log(burnerLink);
-			return { newKeyPairId, newPubKey, burnerpKey, burnerLink };
-		} catch (err) {
-			console.log(err);
-		}
-	}
 
 	render() {
 		const { classes, encryptAndAddFile, upload } = this.props;
@@ -95,7 +65,7 @@ class UploadCard extends React.Component {
 				<TransferFinishedCardContent
 					handleClickNewUpload={this.handleClickNewUpload}
 					publicKey={finishedTransfer.publicKey}
-					burnerLink={ finishedTransfer.burnerLink }
+					burnerLink={finishedTransfer.burnerLink}
 				/>
 			);
 		} else {
@@ -110,7 +80,6 @@ class UploadCard extends React.Component {
 						<UploadForm
 							encryptAndAddFile={encryptAndAddFile}
 							formType={this.state.formType}
-							generateLink={this.generateLink}
 						>
 							{/* Expand Button + Collapse - passed into form as children */}
 							<CardActions className={classes.actions} disableActionSpacing>
@@ -142,6 +111,7 @@ class UploadCard extends React.Component {
 				</Fragment>
 			);
 		}
+
 		return <Card className={classes.card}>{renderedCardContent}</Card>;
 	}
 }

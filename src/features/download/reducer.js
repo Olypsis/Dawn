@@ -1,4 +1,9 @@
-import { IPFS_GET_FILE, DECRYPT_FILE } from '../../state/types';
+import {
+  IPFS_GET_FILE,
+  DECRYPT_FILE,
+  START_DOWNLOAD,
+  FINISH_DOWNLOAD,
+} from '../../state/types';
 
 const initialState = {
   decrypted: {
@@ -6,6 +11,7 @@ const initialState = {
     fileName: '',
   },
   encryptedFile: [],
+  isDownloading: false,
 };
 
 export default function(state = initialState, action) {
@@ -20,6 +26,18 @@ export default function(state = initialState, action) {
         ...state,
         encryptedFile: action.payload,
       };
+
+    case START_DOWNLOAD:
+      return {
+        ...state,
+        isDownloading: true,
+      };
+    case FINISH_DOWNLOAD:
+      return {
+        ...state,
+        isDownloading: false,
+      };
+
     default:
       return state;
   }

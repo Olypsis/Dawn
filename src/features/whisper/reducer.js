@@ -26,6 +26,8 @@ const initialState = {
     publicKey: '',
     username: '',
   },
+  isLoggingIn: false,
+  isRequestingMessages: false,
 };
 
 export default function(state = initialState, action) {
@@ -81,6 +83,28 @@ export default function(state = initialState, action) {
           username: action.payload.statusUsername,
         },
       };
+
+    case 'START_LOGIN':
+      return {
+        ...state,
+        isLoggingIn: true
+      }
+    case 'FINISH_LOGIN':
+      return {
+        ...state,
+        isLoggingIn: false
+      }
+
+    case 'START_REQUEST_MESSAGES':
+      return {
+        ...state,
+        isRequestingMessages: true
+      }
+    case 'FINISH_REQUEST_MESSAGES':
+      return {
+        ...state,
+        isRequestingMessages: false
+      }
 
     default:
       return state;

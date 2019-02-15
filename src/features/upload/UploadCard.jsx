@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import store from '../../state/store';
+// import store from '../../state/store';
 
 import PropTypes from 'prop-types';
 import classnames from 'classnames';

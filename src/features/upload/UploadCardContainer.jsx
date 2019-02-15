@@ -2,13 +2,13 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { encryptAndAddFile, restartUploadForm} from './actions';
-
 // Core Component
 import NewUploadCard from './UploadCard';
 
 // Material-ui
 import red from '@material-ui/core/colors/red';
 import { withStyles } from '@material-ui/core/styles';
+
 
 // Styles for NewUploadCard defined here, so they can be passed in
 const styles = theme => ({

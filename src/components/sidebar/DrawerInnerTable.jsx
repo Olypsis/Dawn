@@ -74,7 +74,16 @@ class DrawerInnerMessageTable extends Component {
 					// ) : null;
 					let renderedTableBody;
 
-					if (!isEmpty(context.events.received_messages)) {
+					if (context.whisper.isRequestingMessages) {
+						renderedTableBody = (
+							<TableRow className={classes.drawerInnerTable}>
+								<IndeterminateSpinner className={classes.spinner} />
+								<Typography component="p" variant="p">
+									Requesting...
+								</Typography>
+							</TableRow>
+						);
+					} else if (!isEmpty(context.events.received_messages)) {
 						const rows = context.events.received_messages.map(payload => {
 							// TODO: rename to events.all
 							return createData(
@@ -104,15 +113,6 @@ class DrawerInnerMessageTable extends Component {
 								</TableRow>
 							);
 						});
-					} else if (context.whisper.isRequestingMessages) {
-						renderedTableBody = (
-							<TableRow className={classes.drawerInnerTable}>
-								<IndeterminateSpinner className={classes.spinner} />
-								<Typography component="p" variant="p">
-									Requesting...
-								</Typography>
-							</TableRow>
-						);
 					} else {
 						renderedTableBody = (
 							<TableRow className={classes.drawerInnerTable}>
@@ -131,7 +131,7 @@ class DrawerInnerMessageTable extends Component {
 					return (
 						<Fragment>
 							<h3 className={classes.drawerInnerContentHeader}>Your Files</h3>
-							<TableOptions requestMessages={context.statusUseMailservers}/>
+							<TableOptions requestMessages={context.statusUseMailservers} />
 							<Paper className={classes.root}>
 								<Table className={classes.table}>
 									<TableHead>

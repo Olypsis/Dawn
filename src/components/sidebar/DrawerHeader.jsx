@@ -41,7 +41,6 @@ class DrawerHeader extends Component {
 							>
 								<ChevronLeftIcon />
 							</IconButton>
-							<span>Dawn</span>
 						</div>
 					);
 				}}

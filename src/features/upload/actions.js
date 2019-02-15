@@ -18,7 +18,7 @@ import node from '../../util/ipfs';
 import { encrypt } from '../../util/encrypt';
 
 // Whisper
-import { sendMessage } from '../whisper/actions_status';
+import { sendMessage, queryMailserver } from '../whisper/actions_status';
 
 // notifications
 import { _enqueueSnackbar } from '../notifications/actions';
@@ -39,7 +39,7 @@ export const onFileUploaded = (
   dispatch(fileReadAction(fileName, mimeType, filePreview, fileBuffer));
 };
 
-export const encryptAndAddFile = (publicKey, message, burnerLink) => async (
+export const encryptAndAddFile = (publicKey, message, burnerAccount) => async (
   dispatch,
   getState,
 ) => {
@@ -75,6 +75,7 @@ export const encryptAndAddFile = (publicKey, message, burnerLink) => async (
       key,
       iv,
       note: message ? message : '',
+      date: Date.now(),
     };
     dispatch(sendStartAction());
     console.log(
@@ -83,14 +84,23 @@ export const encryptAndAddFile = (publicKey, message, burnerLink) => async (
       'publicKey:',
       publicKey,
     );
+
+    // Send File over Status
     const result = await sendMessage(payload, publicKey);
     console.log('sendMessage: result: ', result);
-    dispatch(sendFinishedAction());
 
-    dispatch(transferFinishedAction(publicKey, burnerLink));
+    // If link, Query Mailserver to pre-emptively retrieve messages
+    if (burnerAccount.burnerPrivateKey) {
+      queryMailserver(burnerAccount.burnerPrivateKey);
+    }
+
+    dispatch(sendFinishedAction());
+    dispatch(transferFinishedAction(publicKey, burnerAccount.burnerLink));
   } catch (err) {
     console.log(`Error During Transfer: ${err.message}`);
-    _enqueueSnackbar(`Error During Transfer: ${err.message}`, {variant: 'error'});
+    _enqueueSnackbar(`Error During Transfer: ${err.message}`, {
+      variant: 'error',
+    });
     dispatch(clearUploadStateAction());
   }
 };

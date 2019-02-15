@@ -14,9 +14,13 @@ import {
   _incrementNewMessageCounter,
 } from '../notifications/actions';
 
+
+// Utils
+import forceMailserverQuery from "../../util/forceStatusMailserver"
+
 // Config variables
 const { httpProvider } = config.whisper;
-const mailserver = config.mailservers['mail-01.gc-us-central1-a.eth.beta'];
+const mailserver = config.mailservers['mail-03.gc-us-central1-a.eth.beta'];
 const { corsProxy } = config;
 
 // Status public channel
@@ -104,30 +108,20 @@ export const statusUseMailservers = () => async (dispatch, getState) => {
 
       // 24hr time window from current timestamp
       const from = parseInt(new Date().getTime() / 1000 - 86400, 10);
-      const to = parseInt(new Date().getTime() / 1000, 10);
-
-      // // Request public channel messages from mailservers
-      // status.mailservers.requestChannelMessages(
-      //   channel,
-      //   { from, to },
-      //   (err, res) => {
-      //     if (err) console.log(err);
-      //     console.log('requestChannelMessages: res:', res);
-      //   },
-      // );
+      const to = parseInt(new Date().getTime() / 1000, 10)
 
       // Request user / private messages from mailservers
       // _enqueueSnackbar("Requesting messages from mailserver...", {variant: 'default'})
       status.mailservers.requestUserMessages({ from, to }, (err, res) => {
+        dispatch(finishRequestMessagesAction());
         if (err) {
           console.log(new Error('requestUserMessages: err:', err), err.message);
-          _enqueueSnackbar(err, { variant: 'error' });
+          return _enqueueSnackbar(err, { variant: 'error' });
         }
         console.log('requestUserMessages: res:', res);
-        _enqueueSnackbar('Requested messages from mailserver.', {
+        return _enqueueSnackbar('Requested messages from mailserver.', {
           variant: 'success',
         });
-        dispatch(finishRequestMessagesAction());
       });
     });
   } catch (err) {
@@ -145,7 +139,7 @@ Helper functions
 export const loginWithStatus = (
   status,
   privateKey = null,
-  provider = corsProxy + httpProvider,
+  provider = httpProvider,
 ) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -189,6 +183,12 @@ export const sendMessage = (payload, publicKey) =>
       resolve(true);
     });
   });
+
+
+// Queries for historic messages
+export const queryMailserver = (privateKey, mailserver=null) => {
+  forceMailserverQuery(privateKey, mailserver);
+};
 
 /*
 ******************
